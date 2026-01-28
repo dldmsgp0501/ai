@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>삼성전자 데이터 분석 보고서 (EDA)</title>
+  <style>
+    :root{
+      --bg:#0b1020;
+      --panel:#121a33;
+      --panel2:#0f1730;
+      --text:#e9ecff;
+      --muted:#aab3dd;
+      --line:rgba(255,255,255,.10);
+      --accent:#7aa7ff;
+      --good:#49d17d;
+      --warn:#ffcc66;
+      --bad:#ff6b7a;
+      --chip:#1a2550;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius:16px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Malgun Gothic", "Apple SD Gothic Neo", "Noto Sans KR", Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(1200px 800px at 20% -10%, rgba(122,167,255,.25), transparent 60%),
+                  radial-gradient(1000px 700px at 90% 10%, rgba(73,209,125,.15), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+      line-height:1.55;
+    }
+    a{color:var(--accent); text-decoration:none}
+    a:hover{text-decoration:underline}
+    .container{
+      max-width:1100px;
+      margin:0 auto;
+      padding:28px 18px 80px;
+    }
+    header{
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      padding:22px 22px 18px;
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      background: linear-gradient(180deg, rgba(18,26,51,.95), rgba(15,23,48,.85));
+      box-shadow:var(--shadow);
+      position:relative;
+      overflow:hidden;
+    }
+    header:before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background: radial-gradient(600px 200px at 30% 0%, rgba(122,167,255,.25), transparent 60%),
+                  radial-gradient(500px 200px at 80% 20%, rgba(255,204,102,.14), transparent 60%);
+      pointer-events:none;
+    }
+    .title{
+      position:relative;
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:18px;
+      flex-wrap:wrap;
+    }
+    .title h1{
+      margin:0;
+      font-size:22px;
+      letter-spacing:-.2px;
+    }
+    .subtitle{
+      margin:2px 0 0;
+      color:var(--muted);
+      font-size:14px;
+    }
+    .meta{
+      position:relative;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:6px;
+    }
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:7px 10px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      background:rgba(26,37,80,.65);
+      color:var(--muted);
+      font-size:12px;
+    }
+    .chip b{color:var(--text); font-weight:600}
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:16px;
+      margin-top:18px;
+    }
+    @media (min-width: 920px){
+      .grid{
+        grid-template-columns: 280px 1fr;
+        align-items:start;
+      }
+      .sidebar{
+        position:sticky;
+        top:16px;
+      }
+    }
+    .card{
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      background:rgba(18,26,51,.92);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .card .hd{
+      padding:14px 16px;
+      border-bottom:1px solid var(--line);
+      background:rgba(255,255,255,.02);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .card .hd h2, .card .hd h3{
+      margin:0;
+      font-size:15px;
+      letter-spacing:-.2px;
+    }
+    .card .bd{
+      padding:14px 16px 16px;
+      color:var(--text);
+    }
+    .muted{color:var(--muted)}
+    .toc{
+      padding:10px 6px 12px;
+    }
+    .toc a{
+      display:block;
+      padding:8px 10px;
+      border-radius:10px;
+      color:var(--muted);
+      border:1px solid transparent;
+    }
+    .toc a:hover{
+      background:rgba(122,167,255,.10);
+      border-color:rgba(122,167,255,.22);
+      color:var(--text);
+    }
+    .kpi{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap:10px;
+      margin-top:10px;
+    }
+    .kpi .box{
+      padding:12px 12px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:rgba(15,23,48,.6);
+    }
+    .kpi .label{color:var(--muted); font-size:12px}
+    .kpi .value{font-size:16px; margin-top:6px; font-weight:700}
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      font-size:12px;
+      color:var(--muted);
+      background:rgba(15,23,48,.55);
+    }
+    .pill.good{border-color:rgba(73,209,125,.30); background:rgba(73,209,125,.10)}
+    .pill.warn{border-color:rgba(255,204,102,.30); background:rgba(255,204,102,.10)}
+    .pill.bad{border-color:rgba(255,107,122,.30); background:rgba(255,107,122,.10)}
+    .pill b{color:var(--text)}
+    .table{
+      width:100%;
+      border-collapse:separate;
+      border-spacing:0;
+      overflow:hidden;
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:rgba(15,23,48,.55);
+    }
+    .table th, .table td{
+      padding:10px 10px;
+      border-bottom:1px solid var(--line);
+      font-size:13px;
+    }
+    .table th{
+      text-align:left;
+      color:var(--muted);
+      font-weight:600;
+      background:rgba(255,255,255,.03);
+    }
+    .table tr:last-child td{border-bottom:none}
+    .callout{
+      margin-top:12px;
+      padding:12px 12px;
+      border-radius:14px;
+      border:1px dashed rgba(122,167,255,.35);
+      background:rgba(122,167,255,.08);
+      color:var(--text);
+    }
+    .callout .muted{color:rgba(233,236,255,.78)}
+    .two{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:12px;
+    }
+    @media (min-width: 720px){
+      .two{grid-template-columns:1fr 1fr}
+    }
+    ul{margin:8px 0 0 18px}
+    li{margin:6px 0}
+    .footer{
+      margin-top:16px;
+      color:var(--muted);
+      font-size:12px;
+      text-align:center;
+      opacity:.9;
+    }
+    .badge{
+      font-size:11px;
+      padding:4px 8px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.02);
+      color:var(--muted);
+      white-space:nowrap;
+    }
+    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;}
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <div class="title">
+        <div>
+          <h1>삼성전자 종목 평가 자료 분석 보고서 (EDA)</h1>
+          <p class="subtitle">업로드 데이터 기반: 단변량/다변량 EDA + 결측치 점검 + 상관 히트맵 해석 + 종가 예측(참고)</p>
+        </div>
+        <span class="badge">Report v1 • HTML/CSS</span>
+      </div>
+      <div class="meta">
+        <span class="chip">데이터 파일: <b>삼성전자.xlsx</b></span>
+        <span class="chip">관측치: <b>243행</b></span>
+        <span class="chip">변수: <b>11열</b></span>
+        <span class="chip">기간: <b>2024-12-12 ~ 2025-12-12</b></span>
+      </div>
+    </header>
+
+    <div class="grid">
+      <!-- Sidebar / TOC -->
+      <aside class="sidebar card">
+        <div class="hd">
+          <h3>목차</h3>
+          <span class="pill good"><b>EDA</b> 요약</span>
+        </div>
+        <div class="bd toc">
+          <a href="#overview">1. 데이터 개요</a>
+          <a href="#missing">2. 결측치 탐지</a>
+          <a href="#univariate">3. 일변량 EDA 요약</a>
+          <a href="#multivariate">4. 다변량 EDA 요약</a>
+          <a href="#heatmap">5. 상관 히트맵 해석</a>
+          <a href="#forecast">6. 2026-01-27 종가 예측(참고)</a>
+        </div>
+      </aside>
+
+      <!-- Main -->
+      <main class="main">
+        <!-- Overview -->
+        <section id="overview" class="card">
+          <div class="hd">
+            <h2>1) 데이터 개요</h2>
+            <span class="pill"><b>요약</b> 구조 파악</span>
+          </div>
+          <div class="bd">
+            <div class="two">
+              <div class="kpi">
+                <div class="box">
+                  <div class="label">기간</div>
+                  <div class="value">2024-12-12 ~ 2025-12-12</div>
+                </div>
+                <div class="box">
+                  <div class="label">행/열</div>
+                  <div class="value">243 × 11</div>
+                </div>
+                <div class="box">
+                  <div class="label">일자 중복</div>
+                  <div class="value">없음</div>
+                </div>
+                <div class="box">
+                  <div class="label">변수 목록</div>
+                  <div class="value mono">일자, 종가, 대비, 등락률, 시가, 고가, 저가, 거래량, 거래대금, 시가총액, 상장주식수</div>
+                </div>
+              </div>
+
+              <div class="callout">
+                <b>해석 포인트</b>
+                <div class="muted" style="margin-top:6px">
+                  가격(시가/고가/저가/종가)과 시가총액은 레벨(수준) 정보, 대비/등락률은 변동 정보, 거래량/거래대금은 유동성(수급) 정보로 역할이 분리됩니다.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Missing -->
+        <section id="missing" class="card" style="margin-top:16px">
+          <div class="hd">
+            <h2>2) 전처리: 결측치 탐지</h2>
+            <span class="pill good"><b>OK</b> 0%</span>
+          </div>
+          <div class="bd">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>항목</th>
+                  <th>결과</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>전체 결측치 개수</td>
+                  <td><b>0개</b></td>
+                </tr>
+                <tr>
+                  <td>결측치 존재 컬럼</td>
+                  <td><b>없음</b></td>
+                </tr>
+                <tr>
+                  <td>결측치 비율</td>
+                  <td><b>0%</b></td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="callout" style="margin-top:12px">
+              <b>주의(결측은 아니지만 구조 이슈)</b>
+              <ul class="muted">
+                <li><b>상장주식수</b>는 값이 2개 구간으로만 존재(레벨 변화). 통계적 이상치처럼 보일 수 있으나 결측/오류라고 단정하긴 어려움.</li>
+                <li><b>등락률</b>은 종가 변화율과 거의 동일 → 분석/모델링에서는 중복 변수로 취급 가능.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Univariate -->
+        <section id="univariate" class="card" style="margin-top:16px">
+          <div class="hd">
+            <h2>3) 일변량 EDA 요약</h2>
+            <span class="pill warn"><b>분포</b> 비대칭/꼬리</span>
+          </div>
+          <div class="bd">
+            <div class="two">
+              <div>
+                <h3 style="margin:0 0 8px">가격(원) — 종가 중심</h3>
+                <ul class="muted">
+                  <li>종가 분포는 <b>오른쪽 꼬리(상승 구간)</b>가 존재 → 고가 구간이 일부 포함.</li>
+                  <li>박스플롯에서 상단 이상치가 보일 수 있으나, 주가 데이터 특성상 급등 구간 반영일 가능성.</li>
+                  <li>시가/고가/저가도 종가와 유사한 분포 및 추세를 공유.</li>
+                </ul>
+              </div>
+              <div>
+                <h3 style="margin:0 0 8px">변동(대비/등락률) & 유동성(거래량/거래대금)</h3>
+                <ul class="muted">
+                  <li>대비/등락률은 0 근처에 밀집하되, <b>급등락 꼬리</b>가 존재(평소 작고 가끔 크게 튐).</li>
+                  <li>거래량/거래대금은 <b>우측 꼬리</b>가 매우 강함 → 로그 변환(log1p)으로 분포가 안정화됨.</li>
+                  <li>시계열에서 후반부로 갈수록 가격 상승과 함께 유동성 지표 스파이크가 증가하는 경향.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="callout">
+              <b>시각화(일변량)에서 관찰한 핵심</b>
+              <ul class="muted">
+                <li>종가: 초기 박스권 → 중반 완만한 상승 → 후반 가파른 상승(추세 형성)</li>
+                <li>등락률: 변동성 군집(큰 변동이 특정 구간에 몰림)</li>
+                <li>거래대금: 이벤트성 급증 구간 존재(수급/뉴스 가능성)</li>
+                <li>상장주식수: 한 번의 계단식 변화(구조 변화 변수로 취급 권장)</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Multivariate -->
+        <section id="multivariate" class="card" style="margin-top:16px">
+          <div class="hd">
+            <h2>4) 다변량 EDA 요약</h2>
+            <span class="pill"><b>관계</b> 구조 파악</span>
+          </div>
+          <div class="bd">
+            <div class="two">
+              <div>
+                <h3 style="margin:0 0 8px">강한 공선성(가격 레벨 변수)</h3>
+                <ul class="muted">
+                  <li><b>종가–시가/고가/저가–시가총액</b>은 거의 같은 방향으로 움직임.</li>
+                  <li>모델링에서는 대표 1~2개만 사용 권장(중복 정보 제거).</li>
+                </ul>
+              </div>
+              <div>
+                <h3 style="margin:0 0 8px">변동/유동성의 결합</h3>
+                <ul class="muted">
+                  <li><b>거래량–거래대금</b>은 강하게 연결(거래대금 = 거래량×가격 성격).</li>
+                  <li>큰 등락이 나오는 날에 거래/변동성 지표가 동반 확대되는 경향.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="callout">
+              <b>분석 팁</b>
+              <ul class="muted">
+                <li>등락률과 대비는 유사 정보(둘 중 하나 선택).</li>
+                <li>거래대금은 가격 레벨의 영향을 받으므로, 수급 비교는 <b>turnover(거래대금/시가총액)</b> 같은 정규화 지표가 유리.</li>
+                <li>상장주식수 구간 변화가 있어, 전/후 구간 더미 또는 분리 분석이 깔끔.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Heatmap -->
+        <section id="heatmap" class="card" style="margin-top:16px">
+          <div class="hd">
+            <h2>5) 상관관계 히트맵 해석</h2>
+            <span class="pill warn"><b>상관</b> 그룹화</span>
+          </div>
+          <div class="bd">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>관계</th>
+                  <th>해석</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><b>가격끼리(종가·시가·고가·저가·시가총액)</b> ≈ 1.00</td>
+                  <td>같은 레벨 정보를 공유 → 공선성 매우 큼(대표 변수만 선택 권장)</td>
+                </tr>
+                <tr>
+                  <td><b>대비–등락률</b> ≈ 0.97</td>
+                  <td>일간 변동을 거의 동일하게 설명 → 중복 변수</td>
+                </tr>
+                <tr>
+                  <td><b>거래량–거래대금</b> ≈ 0.86</td>
+                  <td>유동성(수급) 동행 → 거래대금은 거래량+가격 효과</td>
+                </tr>
+                <tr>
+                  <td><b>거래대금–가격</b> ≈ 0.64~0.66</td>
+                  <td>가격 레벨이 올라가면 거래대금도 커지는 경향(단가 효과 포함)</td>
+                </tr>
+                <tr>
+                  <td><b>상장주식수–가격</b> ≈ -0.41~-0.42</td>
+                  <td>구간 변화(계단)로 인한 구조적 상관 가능성(인과 단정 X)</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="callout">
+              <b>핵심 메시지</b>
+              <div class="muted" style="margin-top:6px">
+                이 데이터에서 “추가 정보”는 가격 변수 자체보다 <b>변동성(등락률/대비) + 유동성(거래량/거래대금)</b> 조합에서 더 잘 나오며,
+                가격 변수들은 서로 거의 동일한 정보를 공유합니다.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Forecast -->
+        <section id="forecast" class="card" style="margin-top:16px">
+          <div class="hd">
+            <h2>6) 2026-01-27 종가 예측(참고)</h2>
+            <span class="pill bad"><b>주의</b> 참고용</span>
+          </div>
+          <div class="bd">
+            <div class="two">
+              <div>
+                <h3 style="margin:0 0 8px">예측 결과</h3>
+                <div class="kpi" style="grid-template-columns:1fr">
+                  <div class="box">
+                    <div class="label">예측 종가 (2026-01-27)</div>
+                    <div class="value">약 119,832원</div>
+                    <div class="muted" style="margin-top:6px; font-size:12px">
+                      사용 모델: <span class="mono">Holt-Winters(추세 포함)</span> / 영업일 기준 32스텝 전망
+                    </div>
+                  </div>
+                </div>
+
+                <div class="callout">
+                  <b>왜 이렇게 예측했나 (10줄 요약)</b>
+                  <ol class="muted" style="margin:8px 0 0 18px">
+                    <li>종가가 후반부에 뚜렷한 상승 추세를 보임.</li>
+                    <li>Holt-Winters는 최근 값에 더 큰 가중치를 주어 최신 추세를 반영.</li>
+                    <li>주기성이 뚜렷하지 않아 계절성은 제외하고 추세만 학습.</li>
+                    <li>학습된 평균 상승 속도를 미래로 연장해 예측값 산출.</li>
+                    <li>그래서 예측선이 완만한 상승 형태로 나타남.</li>
+                    <li>이벤트/뉴스/실적/수급 같은 외생변수는 반영하지 않음.</li>
+                    <li>따라서 정밀 값보다 “추세 기반 참고치”로 해석 권장.</li>
+                  </ol>
+                </div>
+              </div>
+
+              <div>
+                <h3 style="margin:0 0 8px">해석/주의사항</h3>
+                <ul class="muted">
+                  <li>단순 시계열 추세 기반이라 <b>급락/급등 이벤트</b>를 예측하지 못함.</li>
+                  <li>연휴/공휴일 등 거래일 캘린더의 미세 차이도 실제 값에 영향.</li>
+                  <li>예측을 고도화하려면: 로그수익률, 변동성(rolling), 거래대금/turnover, 이벤트 더미 등을 포함한 모델이 유리.</li>
+                </ul>
+                <div class="callout">
+                  <b>추천 다음 단계</b>
+                  <ul class="muted">
+                    <li>예측 신뢰구간(상·하단 밴드) 추가</li>
+                    <li>ARIMA/Prophet/회귀(특징: 거래대금·변동성) 비교</li>
+                    <li>구간 분할(상장주식수 변화 전/후) 별 모델 성능 비교</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="footer">
+          본 페이지는 대화에서 도출된 EDA 결과를 웹페이지 형태로 정리한 템플릿입니다. (그래프 이미지는 별도 삽입 필요)
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>
