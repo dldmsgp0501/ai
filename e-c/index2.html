@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>BLACKUP Clone</title>
+    <style>
+        /* 기본 초기화 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            color: #000;
+            /* 데스크톱 전용 최소 너비 고정 */
+            min-width: 1280px; 
+            overflow-x: auto;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        /* 레이아웃 컨테이너 */
+        .container {
+            width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* 상단 헤더 */
+        .top-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 40px;
+            background-color: #fff;
+        }
+
+        .header-left {
+            font-size: 13px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            width: 200px;
+        }
+
+        .header-center .logo {
+            font-family: 'Arial Black', sans-serif;
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 25px;
+            font-size: 13px;
+            font-weight: bold;
+            width: 200px;
+            justify-content: flex-end;
+        }
+
+        /* 서브 네비게이션 (검은띠) */
+        .sub-nav {
+            background-color: #000;
+            color: #fff;
+            padding: 15px 0;
+            text-align: center;
+        }
+
+        .sub-nav a {
+            font-size: 12px;
+            font-weight: bold;
+            margin: 0 25px;
+            letter-spacing: 0.5px;
+        }
+
+        /* 메인 배너 */
+        .hero-banner {
+            width: 100%;
+            position: relative;
+            background-color: #f5f5f5;
+        }
+
+        .hero-banner img {
+            width: 100%;
+            height: 700px;
+            object-fit: cover;
+            object-position: center top;
+            display: block;
+        }
+
+        .banner-controls {
+            position: absolute;
+            right: 40px;
+            bottom: 40px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .banner-controls span {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 30px;
+            height: 30px;
+            background-color: #222;
+            color: #fff;
+            font-size: 12px;
+            cursor: pointer;
+            margin-top: 1px;
+        }
+
+        /* 섹션 공통 */
+        section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            font-family: 'Arial Black', sans-serif;
+            font-size: 22px;
+            font-weight: 900;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+        }
+
+        /* ONLY BLACKUP 섹션 */
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .grid-3 .item img {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .grid-3 .item-info {
+            margin-top: 15px;
+        }
+
+        .grid-3 .item-title {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .grid-3 .item-desc {
+            font-size: 12px;
+            color: #666;
+        }
+
+        /* 룩북 섹션 */
+        .lookbook-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .lookbook-header h2 {
+            font-family: 'Arial Black', sans-serif;
+            font-size: 26px;
+            font-weight: 900;
+            margin-bottom: 10px;
+        }
+
+        .lookbook-header p {
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px 15px;
+        }
+
+        .product-item img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            display: block;
+            background-color: #eee;
+        }
+
+        .image-wrapper {
+            position: relative;
+        }
+
+        .project-label {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 10px;
+            font-weight: 900;
+            line-height: 1.2;
+            font-family: 'Arial Black', sans-serif;
+        }
+
+        .product-info {
+            margin-top: 15px;
+            position: relative;
+        }
+
+        .product-name {
+            font-size: 12px;
+            line-height: 1.4;
+            margin-bottom: 8px;
+            padding-right: 20px;
+            color: #333;
+        }
+
+        .product-price {
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .cart-icon {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 12px;
+            height: 12px;
+            border: 1px solid #ccc;
+        }
+
+        /* 더보기 버튼 */
+        .btn-container {
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .btn-more {
+            background-color: #000;
+            color: #fff;
+            padding: 18px 80px;
+            font-size: 13px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            letter-spacing: 1px;
+        }
+
+        /* 푸터 */
+        .site-footer {
+            background-color: #222;
+            color: #aaa;
+            padding: 50px 0 80px;
+            margin-top: 50px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 80px;
+            border-bottom: 1px solid #444;
+            padding-bottom: 30px;
+            margin-bottom: 30px;
+        }
+
+        .footer-links a {
+            color: #fff;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-info-wrap {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            line-height: 1.8;
+            color: #888;
+        }
+
+        .footer-info-left {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .footer-info-right {
+             display: flex;
+             flex-direction: column;
+             text-align: right;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 헤더 -->
+    <header class="top-header">
+        <div class="header-left">
+            <a href="#">SHOP</a>
+        </div>
+        <div class="header-center">
+            <a href="#" class="logo">BLACKUP</a>
+        </div>
+        <div class="header-right">
+            <a href="#">SEARCH</a>
+            <a href="#">ACCOUNT</a>
+            <a href="#">BAG : 0</a>
+        </div>
+    </header>
+
+    <!-- 서브 네비게이션 -->
+    <nav class="sub-nav">
+        <a href="#">25HS LOOKBOOK</a>
+        <a href="#">실시간 신상품</a>
+        <a href="#">베스트</a>
+        <a href="#">MADE BY BLACKUP</a>
+        <a href="#">이벤트/기획전</a>
+    </nav>
+
+    <!-- 메인 배너 -->
+    <section class="hero-banner">
+        <!-- 비슷한 느낌의 패션 이미지 대체 URL 사용 -->
+        <img src="./image/1.jpg" alt="Main Banner">
+        <div class="banner-controls">
+            <span>▲</span>
+            <span>▼</span>
+        </div>
+    </section>
+
+    <!-- 메인 컨텐츠 영역 -->
+    <main class="container">
+        
+        <!-- SECTION 1: ONLY BLACKUP -->
+        <section>
+            <h2 class="section-title">ONLY BLACKUP</h2>
+            <div class="grid-3">
+                <div class="item">
+                    <img src="./image/2.jpg" alt="B-BASIC">
+                    <div class="item-info">
+                        <div class="item-title">B-BASIC & B-DENIM</div>
+                        <div class="item-desc">블랙업만의 베이직 & 데님 아이템</div>
+                    </div>
+                </div>
+                <div class="item">
+                    <img src="./image/3.jpg" alt="PROJECT">
+                    <div class="item-info">
+                        <div class="item-title">BLACKUP PROJECT</div>
+                        <div class="item-desc">블랙업 프로젝트</div>
+                    </div>
+                </div>
+                <div class="item">
+                    <img src="./image/4.jpg" alt="DELIVERY">
+                    <div class="item-info">
+                        <div class="item-title">TODAY DELIVERY</div>
+                        <div class="item-desc">오늘출발 -> 내일도착</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: LOOKBOOK -->
+        <section>
+            <div class="lookbook-header">
+                <h2>2025 HS LOOKBOOK</h2>
+                <p>핫썸머 신상품 발매</p>
+            </div>
+            
+            <div class="grid-4">
+                <!-- 상품 1 -->
+                <div class="product-item">
+                    <div class="image-wrapper">
+                        <span class="project-label">BLACKUP<br>PROJECT</span>
+                        <img src="./image/5.jpg" alt="Product">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-name">[MADE] 베리나 펀칭 슬리브리스 원피스</div>
+                        <div class="product-price">34,000원</div>
+                        <div class="cart-icon"></div>
+                    </div>
+                </div>
+                <!-- 상품 2 -->
+                <div class="product-item">
+                    <div class="image-wrapper">
+                        <span class="project-label">BLACKUP<br>PROJECT</span>
+                        <img src="./image/img.jpg" alt="Product">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-name">[MADE] 로제트 레이어드 나시 가디건 세트</div>
+                        <div class="product-price">32,000원</div>
+                        <div class="cart-icon"></div>
+                    </div>
+                </div>
+                <!-- 상품 3 -->
+                <div class="product-item">
+                    <div class="image-wrapper">
+                        <span class="project-label">BLACKUP<br>PROJECT</span>
+                        <img src="./image/img-1.jpg" alt="Product">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-name">[MADE] 마틴 플리츠 스커트 팬츠 투웨이</div>
+                        <div class="product-price">39,000원</div>
+                        <div class="cart-icon"></div>
+                    </div>
+                </div>
+                <!-- 상품 4 -->
+                <div class="product-item">
+                    <div class="image-wrapper">
+                        <span class="project-label">BLACKUP<br>PROJECT</span>
+                        <img src="./image/img-2.jpg" alt="Product">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-name">[MADE] 엘리엇 홀터넥 슬리브리스 탑</div>
+                        <div class="product-price">22,000원</div>
+                        <div class="cart-icon"></div>
+                    </div>
+                </div>
+                
+                <!-- 상품 5 -->
+                <div class="product-item">
+                    <div class="image-wrapper">
+                        <span class="project-label">BLACKUP<br>PROJECT</span>
+                        <img src="./image/img-3.jpg" alt="Product">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-name">[MADE] 메이브 셔링 블라우스 티셔츠</div>
+                        <div class="product-price">28,000원</div>
+                        <div class="cart-icon"></div>
+                    </div>
+                </div>
+                <!-- 상품 6 -->
+                <div class="product-item">
+                    <div class="image-wrapper">
+                        <span class="project-label">BLACKUP<br>PROJECT</span>
+                        <img src="./image/img-4.jpg" alt="Product">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-name">[MADE] 데이지 패턴 밴딩 숏 팬츠</div>
+                        <div class="product-price">24,000원</div>
+                        <div class="cart-icon"></div>
+                    </div>
+                </div>
+                <!-- 상품 7 -->
+                <div class="product-item">
+                    <div class="image-wrapper">
+                        <span class="project-label">BLACKUP<br>PROJECT</span>
+                        <img src="./image/img-5.jpg" alt="Product">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-name">[MADE] 플로라 리본 나시 세트 (캡내장)</div>
+                        <div class="product-price">26,000원</div>
+                        <div class="cart-icon"></div>
+                    </div>
+                </div>
+                <!-- 상품 8 -->
+                <div class="product-item">
+                    <div class="image-wrapper">
+                        <span class="project-label">BLACKUP<br>PROJECT</span>
+                        <img src="./image/img-6.jpg" alt="Product">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-name">[MADE] 젤라토 오프숄더 니트 탑 티셔츠</div>
+                        <div class="product-price">29,000원</div>
+                        <div class="cart-icon"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="btn-container">
+                <button class="btn-more">핫썸머 신상품 더보기</button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 푸터 -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="#">AGREEMENT</a>
+                <a href="#">GUIDE</a>
+                <a href="#">PRIVACY POLICY</a>
+                <a href="#">CONTACT US</a>
+                <a href="#">SHOPPING GUIDE</a>
+                <a href="#">CUSTOM SERVICE</a>
+            </div>
+            
+            <div class="footer-info-wrap">
+                <div class="footer-info-left">
+                    <p>COMPANY : (주)블랙업 / OWNER : 최블랙 / BUSINESS NO : 123-45-67890</p>
+                    <p>ADDRESS : 서울특별시 성동구 성수동2가 123-45 블랙타워</p>
+                    <p>개인정보보호책임자 : 홍길동 (privacy@blackup.co.kr)</p>
+                    <p>COPYRIGHT © BLACKUP ALL RIGHTS RESERVED. DESIGN BY BLACKUP</p>
+                </div>
+                <div class="footer-info-right">
+                    <p>CS CENTER</p>
+                    <p style="font-size: 16px; font-weight: bold; color: #fff; margin-top: 5px;">1588-0000</p>
+                    <p style="margin-top: 5px;">MON-FRI 10:00 - 17:00</p>
+                    <p>LUNCH 12:00 - 13:00</p>
+                    <p>SAT, SUN, HOLIDAY OFF</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
