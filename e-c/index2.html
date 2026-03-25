@@ -82,11 +82,17 @@
             letter-spacing: 0.5px;
         }
 
+        /* 섹션 공통 */
+        section {
+            padding: 80px 0;
+        }
+
         /* 메인 배너 */
         .hero-banner {
             width: 100%;
             position: relative;
             background-color: #f5f5f5;
+            padding: 0; /* 추가: 공통 section의 padding(80px 0)을 무시하고 여백 제거 */
         }
 
         .hero-banner img {
@@ -94,7 +100,7 @@
             height: 700px;
             object-fit: cover;
             object-position: center top;
-            display: block;
+            display: block; /* 추가: 하단 미세한 공백 제거용 */
         }
 
         .banner-controls {
@@ -116,11 +122,6 @@
             font-size: 12px;
             cursor: pointer;
             margin-top: 1px;
-        }
-
-        /* 섹션 공통 */
-        section {
-            padding: 80px 0;
         }
 
         .section-title {
@@ -321,7 +322,6 @@
 
     <!-- 메인 배너 -->
     <section class="hero-banner">
-        <!-- 비슷한 느낌의 패션 이미지 대체 URL 사용 -->
         <img src="./image/1.jpg" alt="Main Banner">
         <div class="banner-controls">
             <span>▲</span>
