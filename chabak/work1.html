@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>차박 온보딩</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      font-family: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", Arial, sans-serif;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: #dcdcdc;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .app {
+      position: relative;
+      width: 375px;
+      height: 812px;
+      overflow: hidden;
+      background: #efefef;
+    }
+
+    .bg-shape {
+      position: absolute;
+      right: -90px;
+      top: 270px;
+      width: 460px;
+      height: 300px;
+      background: #e2e4eb;
+      border-radius: 50%;
+      transform: rotate(-8deg);
+      z-index: 0;
+    }
+
+    .content {
+      position: relative;
+      z-index: 1;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      padding: 88px 24px 32px;
+    }
+
+    .headline {
+      color: #4c66ad;
+      font-weight: 800;
+      font-size: 21px;
+      line-height: 1.45;
+      letter-spacing: -0.02em;
+    }
+
+    .headline .accent {
+      font-weight: 700;
+      color: #5670ba;
+    }
+
+    .subtext {
+      margin-top: 10px;
+      color: #6f86bf;
+      font-size: 12px;
+      line-height: 1.55;
+      letter-spacing: -0.02em;
+    }
+
+    .illustration-wrap {
+      position: relative;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-top: 16px;
+      padding-bottom: 8px;
+    }
+
+    .question {
+      position: absolute;
+      color: #5d79bf;
+      font-size: 54px;
+      font-weight: 700;
+      opacity: 0.95;
+      user-select: none;
+    }
+
+    .question.left {
+      left: 42px;
+      top: 112px;
+      transform: rotate(-10deg);
+    }
+
+    .question.right {
+      right: 36px;
+      top: 118px;
+      transform: rotate(14deg);
+    }
+
+    .thought {
+      position: absolute;
+      top: 70px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 104px;
+      height: 74px;
+    }
+
+    .thought svg {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    .scene {
+      position: relative;
+      width: 295px;
+      height: 350px;
+    }
+
+    .bear {
+      position: absolute;
+      left: 50%;
+      top: 76px;
+      transform: translateX(-50%);
+      width: 185px;
+      height: 205px;
+    }
+
+    .hat {
+      position: absolute;
+      left: 28px;
+      top: -12px;
+      width: 130px;
+      height: 52px;
+      background: #e9d36b;
+      border: 2px solid #2f3f76;
+      border-radius: 55% 55% 45% 45% / 70% 70% 35% 35%;
+      transform: rotate(2deg);
+      box-shadow: inset 0 -5px 0 rgba(0,0,0,0.08);
+    }
+
+    .hat::before {
+      content: "";
+      position: absolute;
+      left: -17px;
+      right: -17px;
+      bottom: 9px;
+      height: 16px;
+      background: #f2de88;
+      border: 2px solid #2f3f76;
+      border-radius: 50px;
+    }
+
+    .hat::after {
+      content: "";
+      position: absolute;
+      left: 16px;
+      right: 16px;
+      bottom: 16px;
+      height: 6px;
+      border-top: 2px solid #6c7b26;
+      border-bottom: 2px solid #6c7b26;
+      opacity: 0.85;
+    }
+
+    .ear {
+      position: absolute;
+      top: 2px;
+      width: 42px;
+      height: 48px;
+      background: #6b8fe9;
+      border: 2px solid #415ba5;
+      border-radius: 50%;
+      z-index: 0;
+    }
+
+    .ear.left { left: 16px; }
+    .ear.right { right: 16px; }
+
+    .ear::after {
+      content: "";
+      position: absolute;
+      left: 9px;
+      top: 10px;
+      width: 16px;
+      height: 18px;
+      background: #ffffff;
+      border-radius: 50%;
+      opacity: 0.9;
+    }
+
+    .head {
+      position: absolute;
+      top: 25px;
+      left: 25px;
+      width: 135px;
+      height: 122px;
+      background: #6b8fe9;
+      border: 2px solid #415ba5;
+      border-radius: 48% 48% 45% 45%;
+      z-index: 1;
+    }
+
+    .face {
+      position: absolute;
+      left: 28px;
+      top: 40px;
+      width: 80px;
+      height: 62px;
+      background: #f7f3ea;
+      border-radius: 44% 44% 48% 48%;
+    }
+
+    .eye {
+      position: absolute;
+      top: 42px;
+      width: 11px;
+      height: 15px;
+      background: #1c2341;
+      border-radius: 50%;
+    }
+
+    .eye.left { left: 30px; }
+    .eye.right { right: 30px; }
+
+    .eye::after {
+      content: "";
+      position: absolute;
+      left: 3px;
+      top: 2px;
+      width: 3px;
+      height: 3px;
+      background: #fff;
+      border-radius: 50%;
+    }
+
+    .brow {
+      position: absolute;
+      top: 31px;
+      width: 18px;
+      height: 10px;
+      border-top: 3px solid #5167aa;
+      border-radius: 50%;
+      opacity: 0.8;
+    }
+
+    .brow.left { left: 23px; transform: rotate(-20deg); }
+    .brow.right { right: 24px; transform: rotate(20deg); }
+
+    .nose {
+      position: absolute;
+      left: 50%;
+      top: 56px;
+      transform: translateX(-50%);
+      width: 14px;
+      height: 10px;
+      background: #1c2341;
+      border-radius: 50% 50% 60% 60%;
+    }
+
+    .mouth {
+      position: absolute;
+      left: 50%;
+      top: 65px;
+      transform: translateX(-50%);
+      width: 24px;
+      height: 14px;
+      border-bottom: 3px solid #4a5f98;
+      border-radius: 0 0 20px 20px;
+    }
+
+    .blush {
+      position: absolute;
+      top: 62px;
+      width: 12px;
+      height: 10px;
+      background: #ffb7c8;
+      border-radius: 50%;
+      opacity: 0.8;
+    }
+
+    .blush.left { left: 15px; }
+    .blush.right { right: 15px; }
+
+    .sweat {
+      position: absolute;
+      right: 14px;
+      top: 40px;
+      width: 10px;
+      height: 18px;
+      background: linear-gradient(180deg, #d7ecff 0%, #9bc4ff 100%);
+      border-radius: 50% 50% 60% 60%;
+      transform: rotate(12deg);
+    }
+
+    .body {
+      position: absolute;
+      left: 18px;
+      top: 120px;
+      width: 150px;
+      height: 84px;
+      background: #6b8fe9;
+      border: 2px solid #415ba5;
+      border-radius: 44% 44% 48% 48%;
+      z-index: 0;
+    }
+
+    .belly {
+      position: absolute;
+      left: 43px;
+      top: 13px;
+      width: 64px;
+      height: 56px;
+      background: #f8f4ea;
+      border-radius: 46% 46% 50% 50%;
+    }
+
+    .arm {
+      position: absolute;
+      top: 128px;
+      width: 52px;
+      height: 80px;
+      background: #6b8fe9;
+      border: 2px solid #415ba5;
+      border-radius: 36px;
+      z-index: 2;
+    }
+
+    .arm.left {
+      left: 10px;
+      transform: rotate(18deg);
+    }
+
+    .arm.right {
+      right: 12px;
+      transform: rotate(-16deg);
+    }
+
+    .leg {
+      position: absolute;
+      bottom: 0;
+      width: 62px;
+      height: 74px;
+      background: #6b8fe9;
+      border: 2px solid #415ba5;
+      border-radius: 40px;
+      z-index: 1;
+    }
+
+    .leg.left {
+      left: 28px;
+      transform: rotate(5deg);
+    }
+
+    .leg.right {
+      right: 28px;
+      transform: rotate(-5deg);
+    }
+
+    .paw {
+      position: absolute;
+      left: 8px;
+      right: 8px;
+      bottom: 8px;
+      height: 28px;
+      background: #7f9cf0;
+      border-radius: 50%;
+      border: 1px solid rgba(65,91,165,0.5);
+    }
+
+    .phone {
+      position: absolute;
+      left: 50%;
+      top: 146px;
+      transform: translateX(-50%) rotate(-6deg);
+      width: 38px;
+      height: 64px;
+      background: #27334c;
+      border-radius: 8px;
+      border: 2px solid #182032;
+      z-index: 3;
+      box-shadow: inset 0 0 0 2px rgba(255,255,255,0.04);
+    }
+
+    .phone::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 7px;
+      transform: translateX(-50%);
+      width: 18px;
+      height: 3px;
+      background: rgba(255,255,255,0.12);
+      border-radius: 3px;
+    }
+
+    .backpack {
+      position: absolute;
+      right: -4px;
+      top: 112px;
+      width: 52px;
+      height: 78px;
+      background: #445168;
+      border: 2px solid #2b3342;
+      border-radius: 18px;
+      z-index: -1;
+      transform: rotate(8deg);
+    }
+
+    .roll {
+      position: absolute;
+      right: -3px;
+      top: 96px;
+      width: 50px;
+      height: 20px;
+      background: #d7c7a7;
+      border: 2px solid #8b7b5f;
+      border-radius: 20px;
+      transform: rotate(12deg);
+      z-index: -2;
+    }
+
+    .bottle {
+      position: absolute;
+      left: 18px;
+      bottom: 64px;
+      width: 24px;
+      height: 56px;
+      background: linear-gradient(180deg, #7aa14d 0%, #5b8c3f 45%, #8fb56b 45%, #8fb56b 100%);
+      border: 2px solid #49556f;
+      border-radius: 6px;
+    }
+
+    .cup {
+      position: absolute;
+      left: 48px;
+      bottom: 68px;
+      width: 26px;
+      height: 42px;
+      background: linear-gradient(180deg, #38445d 0%, #6a7281 35%, #283149 36%, #283149 100%);
+      border-radius: 4px 4px 8px 8px;
+      border: 2px solid #2b3342;
+    }
+
+    .map {
+      position: absolute;
+      left: 36px;
+      bottom: 32px;
+      width: 84px;
+      height: 24px;
+      background: #f6f1e7;
+      border: 2px solid #c8baa3;
+      border-radius: 4px;
+      transform: rotate(-10deg);
+    }
+
+    .map::before {
+      content: "";
+      position: absolute;
+      left: 10px;
+      top: 8px;
+      width: 42px;
+      height: 10px;
+      background: linear-gradient(90deg, #7bb26d 0 40%, #8ec1ff 40% 70%, #deb764 70% 100%);
+      border-radius: 2px;
+    }
+
+    .pen {
+      position: absolute;
+      bottom: 18px;
+      width: 42px;
+      height: 4px;
+      background: #3d67c3;
+      border-radius: 4px;
+      border: 1px solid #25427e;
+    }
+
+    .pen.left {
+      left: 8px;
+      transform: rotate(6deg);
+    }
+
+    .pen.right {
+      left: 126px;
+      transform: rotate(-14deg);
+    }
+
+    .car {
+      position: absolute;
+      right: 22px;
+      bottom: 24px;
+      width: 74px;
+      height: 34px;
+      background: #4f648b;
+      border: 2px solid #2e3850;
+      border-radius: 18px 20px 10px 10px;
+    }
+
+    .car::before {
+      content: "";
+      position: absolute;
+      left: 14px;
+      top: 5px;
+      width: 32px;
+      height: 12px;
+      background: #d9e6f7;
+      border-radius: 8px 10px 2px 2px;
+      border: 2px solid #2e3850;
+    }
+
+    .wheel {
+      position: absolute;
+      bottom: -6px;
+      width: 16px;
+      height: 16px;
+      background: #222836;
+      border-radius: 50%;
+      border: 2px solid #4b5363;
+    }
+
+    .wheel.left { left: 10px; }
+    .wheel.right { right: 10px; }
+
+    .dots {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #cad1e3;
+      transition: 0.25s ease;
+    }
+
+    .dot.active {
+      width: 11px;
+      height: 11px;
+      background: #5872bb;
+    }
+
+    .start-btn {
+      width: 100%;
+      height: 74px;
+      border: none;
+      border-radius: 14px;
+      background: #5b73ba;
+      color: #fff;
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      cursor: pointer;
+      box-shadow: 0 8px 18px rgba(91, 115, 186, 0.2);
+      transition: transform 0.15s ease, filter 0.15s ease;
+    }
+
+    .start-btn:active {
+      transform: scale(0.99);
+      filter: brightness(0.97);
+    }
+
+    .toast {
+      position: absolute;
+      left: 50%;
+      bottom: 126px;
+      transform: translateX(-50%) translateY(16px);
+      background: rgba(33, 43, 73, 0.92);
+      color: #fff;
+      font-size: 13px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      opacity: 0;
+      pointer-events: none;
+      transition: 0.25s ease;
+      z-index: 5;
+      white-space: nowrap;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    @media (max-width: 420px) {
+      body {
+        background: #efefef;
+      }
+
+      .app {
+        width: 100vw;
+        height: 100vh;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="bg-shape"></div>
+
+    <div class="content">
+      <div>
+        <h1 class="headline">
+          차박,<br />
+          어디로 <span class="accent">떠나야 할지 모르겠나요?</span>
+        </h1>
+        <p class="subtext">
+          지도기반 위치 앱 및 키워드 검색으로 내가 원하는 장소를 한번에
+        </p>
+      </div>
+
+      <div class="illustration-wrap">
+        <div class="question left">?</div>
+        <div class="question right">?</div>
+
+        <div class="thought" aria-hidden="true">
+          <svg viewBox="0 0 120 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18 35C23 24 35 18 48 21C57 11 74 11 84 20C96 18 106 27 103 39C111 47 105 59 92 58C86 66 73 68 61 63C48 69 32 66 25 55C14 53 10 43 18 35Z" stroke="#4f679f" stroke-width="3.3" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M22 28C28 34 35 29 40 36C46 44 56 39 60 46C65 55 75 44 82 51C87 56 95 52 97 45" stroke="#4f679f" stroke-width="3.3" stroke-linecap="round"/>
+            <circle cx="61" cy="69" r="3.5" fill="#4f679f"/>
+            <circle cx="61" cy="77" r="2.6" fill="#4f679f"/>
+          </svg>
+        </div>
+
+        <div class="scene">
+          <div class="bottle"></div>
+          <div class="cup"></div>
+          <div class="map"></div>
+          <div class="pen left"></div>
+          <div class="pen right"></div>
+
+          <div class="bear">
+            <div class="roll"></div>
+            <div class="backpack"></div>
+            <div class="ear left"></div>
+            <div class="ear right"></div>
+            <div class="hat"></div>
+            <div class="head">
+              <div class="face"></div>
+              <div class="brow left"></div>
+              <div class="brow right"></div>
+              <div class="eye left"></div>
+              <div class="eye right"></div>
+              <div class="nose"></div>
+              <div class="mouth"></div>
+              <div class="blush left"></div>
+              <div class="blush right"></div>
+              <div class="sweat"></div>
+            </div>
+            <div class="body">
+              <div class="belly"></div>
+            </div>
+            <div class="arm left"></div>
+            <div class="arm right"></div>
+            <div class="phone"></div>
+            <div class="leg left"><div class="paw"></div></div>
+            <div class="leg right"><div class="paw"></div></div>
+          </div>
+
+          <div class="car">
+            <div class="wheel left"></div>
+            <div class="wheel right"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dots" aria-label="페이지 인디케이터">
+        <span class="dot active"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
+
+      <button class="start-btn" id="startBtn">시작하기</button>
+    </div>
+
+    <div class="toast" id="toast">온보딩을 시작합니다</div>
+  </div>
+
+  <script>
+    const startBtn = document.getElementById('startBtn');
+    const toast = document.getElementById('toast');
+
+    startBtn.addEventListener('click', () => {
+      toast.classList.add('show');
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 1600);
+    });
+  </script>
+</body>
+</html>
