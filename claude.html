@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1680" />
+  <title>Claude Header Desktop</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      min-width: 1220px;
+      overflow-x: hidden;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #ffffff;
+    }
+
+    body {
+      display: block;
+    }
+
+    /* ── 메인 헤더 ── */
+    .header {
+      width: 100%;
+      height: 70px;
+      background: #ffffff;
+      border-bottom: 1px solid #d8d8d8;
+      position: relative;
+      z-index: 100;
+    }
+
+    .header-inner {
+      width: 1220px;
+      height: 70px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .logo-mark {
+      color: #d97a55;
+      font-size: 26px;
+      line-height: 1;
+      transform: translateY(-1px);
+    }
+
+    .logo-text {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 34px;
+      font-weight: 700;
+      color: #111;
+      letter-spacing: -0.8px;
+      line-height: 1;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 54px;
+      justify-self: center;
+    }
+
+    /* 각 nav 아이템을 감싸는 wrapper */
+    .nav-item {
+      position: static;
+      display: inline-flex;
+      align-items: center;
+      height: 70px;
+    }
+
+    .nav a {
+      display: inline-block;
+      text-decoration: none;
+      color: #303030;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+      line-height: 1;
+      white-space: nowrap;
+      position: relative;
+      transition: color 0.2s ease;
+      z-index: 1;
+    }
+
+    .nav > .nav-item > a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -30px;
+      width: 100%;
+      height: 6px;
+      background: #D97757;
+      transform: scaleX(0);
+      transform-origin: center;
+      transition: transform 0.25s ease;
+      z-index: 2;
+    }
+
+    .nav a:hover {
+      color: #D97757;
+    }
+
+    .nav > .nav-item > a:hover::after {
+      transform: scaleX(1);
+    }
+
+    /* ABOUT hover 시 underline 효과는 서브메뉴가 있으므로 별도 처리 */
+    .nav-item--has-sub:hover > a {
+      color: #D97757;
+    }
+
+    .nav-item--has-sub:hover > a::after {
+      transform: scaleX(1);
+    }
+
+    /* ── 서브메뉴 바 ── */
+    .subnav {
+      position: absolute;
+      top: 70px; /* 헤더 높이만큼 */
+      left: 0;
+      width: 100%;
+      background: #ffffff;
+      border-bottom: 2px solid #e8e8e8;
+      z-index: 99;
+
+      /* 초기 상태: 숨김 */
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-6px);
+      transition:
+        opacity 0.22s ease,
+        transform 0.22s ease,
+        visibility 0s linear 0.22s;
+    }
+
+    /* ABOUT wrapper에 hover 시 서브메뉴 표시 */
+    .nav-item--has-sub:hover .subnav {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+      transition:
+        opacity 0.22s ease,
+        transform 0.22s ease,
+        visibility 0s linear 0s;
+    }
+
+    .subnav-inner {
+      width: 1220px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      height: 52px;
+    }
+
+    .subnav-inner a {
+      display: inline-flex;
+      align-items: center;
+      height: 52px;
+      padding: 0 20px;
+      text-decoration: none;
+      color: #303030;
+      font-size: 14.5px;
+      font-weight: 600;
+      letter-spacing: -0.1px;
+      white-space: nowrap;
+      position: relative;
+      transition: color 0.18s ease;
+    }
+
+    /* 첫 번째 아이템은 좌측 패딩 제거 (ABOUT 정렬용 JS가 대신 처리) */
+    .subnav-inner a:first-child {
+      padding-left: 0;
+    }
+
+    /* 텍스트를 span으로 감싸 텍스트 너비만큼 밑줄 적용 */
+    .subnav-inner a span {
+      position: relative;
+      display: inline-block;
+    }
+
+    .subnav-inner a:hover {
+      color: #D97757;
+    }
+
+    /* ── 버튼 영역 ── */
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 40px;
+      padding: 0 20px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .btn-dark {
+      background: #333333;
+      color: #ffffff;
+    }
+
+    .btn-orange {
+      background: #dc845c;
+      color: #ffffff;
+    }
+
+    /* ── 히어로 영역 ── */
+    .hero {
+      width: 100%;
+      height: calc(100vh - 70px);
+      overflow: hidden;
+    }
+
+    .hero img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+
+      <!-- 로고 -->
+      <div class="logo-area">
+        <span class="logo-mark">✳</span>
+        <h1 class="logo-text">Claude</h1>
+      </div>
+
+      <!-- 내비게이션 -->
+      <nav class="nav">
+
+        <!-- ABOUT: 서브메뉴 있음 -->
+        <div class="nav-item nav-item--has-sub">
+          <a href="#">ABOUT</a>
+
+          <!-- 서브메뉴 바 (full-width, 헤더 바로 아래) -->
+          <div class="subnav">
+            <div class="subnav-inner" id="subnavInner">
+              <a href="#"><span>대표 인사말</span></a>
+              <a href="#"><span>기업소개</span></a>
+              <a href="#"><span>비주얼 아이덴티티</span></a>
+              <a href="#"><span>사회공헌</span></a>
+              <a href="#"><span>오시는길</span></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="nav-item nav-item--has-sub">
+          <a href="#">PRODUCTS</a>
+          <div class="subnav">
+            <div class="subnav-inner subnav-inner--products">
+              <a href="#"><span>AI&amp;인공지능</span></a>
+              <a href="#"><span>Sonnet 모델</span></a>
+              <a href="#"><span>Coding pro</span></a>
+              <a href="#"><span>대표적인 AI</span></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="nav-item nav-item--has-sub">
+          <a href="#">PARTERSHIP</a>
+          <div class="subnav">
+            <div class="subnav-inner subnav-inner--partership">
+              <a href="#"><span>가맹점 현황</span></a>
+              <a href="#"><span>가맹점 개설 안내</span></a>
+              <a href="#"><span>가맹점 개설 문의</span></a>
+              <a href="#"><span>제휴 문의</span></a>
+            </div>
+          </div>
+        </div>
+        <div class="nav-item"><a href="#">EDUCATION</a></div>
+        <div class="nav-item"><a href="#">WHAT'S NEW</a></div>
+        <div class="nav-item"><a href="#">SUPPORT</a></div>
+      </nav>
+
+      <!-- 버튼 -->
+      <div class="actions">
+        <a href="#" class="btn btn-dark">매장찾기</a>
+        <a href="#" class="btn btn-orange">글로벌마켓</a>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- 히어로 -->
+  <div class="hero">
+    <img src="./ing/Frame 4.jpg" alt="Hero Image" />
+  </div>
+
+  <script>
+    function alignSubnavs() {
+      const pairs = [
+        { linkSelector: '.nav-item--has-sub:nth-of-type(1) > a', innerId: 'subnavInner' },
+        { linkSelector: '.nav-item--has-sub:nth-of-type(2) > a', innerClass: 'subnav-inner--products' },
+        { linkSelector: '.nav-item--has-sub:nth-of-type(3) > a', innerClass: 'subnav-inner--partership' },
+      ];
+
+      const containerLeft = (window.innerWidth - 1220) / 2;
+
+      pairs.forEach(({ linkSelector, innerId, innerClass }) => {
+        const linkEl = document.querySelector(linkSelector);
+        const innerEl = innerId
+          ? document.getElementById(innerId)
+          : document.querySelector('.' + innerClass);
+        if (!linkEl || !innerEl) return;
+
+        const linkLeft = linkEl.getBoundingClientRect().left;
+        const offset = linkLeft - containerLeft;
+        innerEl.style.paddingLeft = Math.max(0, offset) + 'px';
+      });
+    }
+
+    alignSubnavs();
+    window.addEventListener('resize', alignSubnavs);
+  </script>
+</body>
+</html>
