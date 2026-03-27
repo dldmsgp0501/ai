@@ -1,0 +1,47 @@
+@charset "utf-8";
+
+body{
+    font-family: "맑은 고딕","malgun gothic","sans-serif";
+}
+table{
+    /* 약식 코딩 */
+    border-top: 1px solid #000; 
+    border-left: 2px dotted #f00;
+    border-right: 5px solid #0f0;
+    border-bottom: 10px solid #000;
+
+    /* 원래대로 코딩 */
+    border-top: 10px;
+    border-style: solid;
+    border-color: #00f;
+
+    /* 테두리선 상하좌우 모두 삽입 */
+    border: 1px solid #000;
+    
+    /* 표의 가로 사이즈 */
+    width: 600px;
+    /* 객체 가운대 정열 */
+    margin: 0 auto;
+    /* 테두리선과 테두리선 사이 여백설정 */
+    border-spacing: 0;
+    /* 테두리선 겹침 방지 */
+    border-collapse: collapse;
+    background: gray;
+}
+td{
+    /* 텍스트, 이미지만 가운데 정렬 */
+    border: 1px solid #000;
+    text-align: center;
+    height: 38px;
+    width: 200px;
+    background: #cdff00;
+}
+th{
+    border: 1px solid #000;
+    height: 38px;
+    background: orange;
+}
+.pf{
+    background: #0cf;
+    color: white;
+}
