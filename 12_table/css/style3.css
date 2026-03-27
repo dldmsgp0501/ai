@@ -1,0 +1,28 @@
+@charset "utf-8";
+body{
+    font-family: "맑은고딕";
+}
+table{
+    border: 1px solid #000;
+    width: 300px;
+    margin: auto;
+    border-spacing: 0;
+    border-collapse: collapse;
+    margin-bottom: 50px;
+}
+th{
+    border: 1px solid #000;
+    height: 50px;
+}
+td{
+    border: 1px solid #000;
+    text-align: center;
+    height: 50px;
+    width: 100px;
+}
+.th2{
+    width: 150px;
+}
+.th3{
+    width: 150px;
+}
