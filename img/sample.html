@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Modern Portfolio</title>
+  <style>
+    :root {
+      --bg: #0f1115;
+      --bg-soft: #171a21;
+      --card: rgba(255, 255, 255, 0.06);
+      --card-border: rgba(255, 255, 255, 0.12);
+      --text: #f5f7fb;
+      --muted: #a8b0c0;
+      --accent: #8fb8ff;
+      --accent-strong: #c5d8ff;
+      --shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+      --radius-lg: 28px;
+      --radius-md: 20px;
+      --radius-sm: 14px;
+      --max-width: 1200px;
+      --transition: 0.35s ease;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(143, 184, 255, 0.18), transparent 35%),
+        radial-gradient(circle at bottom right, rgba(255, 255, 255, 0.08), transparent 30%),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      display: block;
+      width: 100%;
+    }
+
+    section {
+      padding: 100px 20px;
+    }
+
+    .container {
+      width: min(100%, var(--max-width));
+      margin: 0 auto;
+    }
+
+    .section-heading {
+      margin-bottom: 40px;
+    }
+
+    .section-heading .eyebrow {
+      display: inline-block;
+      margin-bottom: 12px;
+      color: var(--accent);
+      font-size: 0.9rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .section-heading h2 {
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      margin-bottom: 12px;
+    }
+
+    .section-heading p {
+      color: var(--muted);
+      max-width: 620px;
+    }
+
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(16px);
+      background: rgba(15, 17, 21, 0.7);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .nav-wrap {
+      width: min(100%, var(--max-width));
+      margin: 0 auto;
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .logo {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+    }
+
+    .logo span {
+      color: var(--accent);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .nav a {
+      position: relative;
+      color: var(--muted);
+      font-size: 0.98rem;
+      transition: color var(--transition);
+    }
+
+    .nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -6px;
+      width: 0;
+      height: 2px;
+      background: var(--accent);
+      transition: width var(--transition);
+    }
+
+    .nav a:hover,
+    .nav a:focus {
+      color: var(--text);
+    }
+
+    .nav a:hover::after,
+    .nav a:focus::after {
+      width: 100%;
+    }
+
+    .menu-toggle {
+      display: none;
+      background: transparent;
+      border: 0;
+      color: var(--text);
+      font-size: 1.6rem;
+      cursor: pointer;
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      padding: 0 20px;
+      background: 
+        linear-gradient(rgba(15,17,21,0.65), rgba(15,17,21,0.75)),
+        url('https://images.unsplash.com/photo-1492724441997-5dc865305da7?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at center, rgba(143,184,255,0.15), transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero-grid {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
+      gap: 20px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .hero-text h1 {
+      font-size: 4rem;
+      line-height: 1.05;
+      margin-bottom: 22px;
+    }
+
+    .hero-text p {
+      font-size: clamp(1rem, 2vw, 1.15rem);
+      color: var(--muted);
+      max-width: 560px;
+      margin-bottom: 32px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 150px;
+      padding: 14px 22px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      font-weight: 700;
+      transition: transform var(--transition), background var(--transition), border-color var(--transition);
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #0d1526;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text);
+      border-color: rgba(255, 255, 255, 0.14);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .hero-visual {
+      position: relative;
+    }
+
+    .hero-card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.09), rgba(255,255,255,0.03));
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-image {
+      aspect-ratio: 4 / 5;
+      border-radius: 22px;
+      overflow: hidden;
+      background:
+        linear-gradient(135deg, rgba(143, 184, 255, 0.6), rgba(17, 21, 31, 0.2)),
+        url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80') center/cover;
+    }
+
+    .hero-badge {
+      position: absolute;
+      right: -10px;
+      bottom: 24px;
+      padding: 14px 18px;
+      border-radius: 18px;
+      background: rgba(15, 17, 21, 0.88);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-badge strong {
+      display: block;
+      font-size: 1rem;
+      margin-bottom: 4px;
+    }
+
+    .hero-badge span {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    /* about section */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .about-text h3 {
+      font-size: 1.8rem;
+      margin-bottom: 16px;
+    }
+
+    .about-text p {
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .about-box {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    @media (max-width: 768px) {
+      .hide-mobile {
+        display: none;
+      }
+      .about-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+    }
+
+    /* skills section (infographic) */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 28px;
+    }
+
+    .skill-bar {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .skill-bar h4 {
+      margin-bottom: 10px;
+      font-size: 1rem;
+    }
+
+    .bar {
+      width: 100%;
+      height: 8px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, var(--accent), var(--accent-strong));
+      border-radius: 999px;
+      transition: width 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .skill-percent {
+      margin-top: 6px;
+      font-size: 0.85rem;
+      color: var(--muted);
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.6s ease 0.2s, transform 0.6s ease 0.2s;
+    }
+
+    .skill-bar.animate .skill-percent {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 768px) {
+      .skills-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* process section */
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+
+    .process-card {
+      position: relative;
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      padding: 28px 22px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transition: transform var(--transition), border-color var(--transition);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      gap: 12px;
+    }
+
+    .process-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(143, 184, 255, 0.4);
+    }
+
+    .process-step {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      margin-bottom: 18px;
+      background: rgba(143, 184, 255, 0.12);
+      color: var(--accent-strong);
+      font-weight: 800;
+      font-size: 0.95rem;
+      border: 1px solid rgba(143, 184, 255, 0.22);
+    }
+
+    .process-card h3 {
+      font-size: 1.2rem;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+
+    .process-card p {
+      color: var(--muted);
+      font-size: 0.96rem;
+      line-height: 1.7;
+    }
+
+    /* process images */
+    .process-images {
+      margin: 40px auto 0;
+      width: min(100%, var(--max-width));
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .process-img {
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      height: 100%;
+      min-height: 220px;
+      background-size: cover;
+      background-position: center;
+      border: 1px solid var(--card-border);
+      box-shadow: var(--shadow);
+      transition: transform var(--transition);
+    }
+
+    .process-img:hover {
+      transform: scale(1.05);
+    }
+
+    @media (max-width: 1024px) {
+      .process-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .process-images {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .process-grid {
+        grid-template-columns: 1fr;
+      }
+      .process-images {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .project-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform var(--transition), border-color var(--transition);
+    }
+
+    .project-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(143, 184, 255, 0.4);
+    }
+
+    .project-thumb {
+      aspect-ratio: 16 / 10;
+    }
+
+    .thumb-1 {
+      background:
+        linear-gradient(135deg, rgba(143, 184, 255, 0.55), rgba(18, 21, 30, 0.35)),
+        url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80') center/cover;
+    }
+
+    .thumb-2 {
+      background:
+        linear-gradient(135deg, rgba(197, 216, 255, 0.35), rgba(18, 21, 30, 0.45)),
+        url('https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80') center/cover;
+    }
+
+    .thumb-3 {
+      background:
+        linear-gradient(135deg, rgba(143, 184, 255, 0.45), rgba(18, 21, 30, 0.4)),
+        url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80') center/cover;
+    }
+
+    .project-body {
+      padding: 24px;
+    }
+
+    .project-tag {
+      display: inline-block;
+      margin-bottom: 14px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(143, 184, 255, 0.12);
+      color: var(--accent-strong);
+      font-size: 0.85rem;
+    }
+
+    .project-body h3 {
+      font-size: 1.4rem;
+      margin-bottom: 10px;
+    }
+
+    .project-body p {
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+
+    .project-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--accent-strong);
+      font-weight: 700;
+    }
+
+    .contact-wrap {
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 28px;
+      align-items: start;
+    }
+
+    .contact-info,
+    .contact-form {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .contact-info h3,
+    .contact-form h3 {
+      font-size: 1.6rem;
+      margin-bottom: 16px;
+    }
+
+    .contact-info p {
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+
+    .contact-list {
+      display: grid;
+      gap: 14px;
+    }
+
+    .contact-item {
+      padding: 14px 16px;
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .contact-item strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .contact-item span {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text);
+      outline: none;
+      transition: border-color var(--transition), background var(--transition);
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: rgba(143, 184, 255, 0.6);
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .form-group textarea {
+      min-height: 160px;
+      resize: vertical;
+    }
+
+    .form-message {
+      margin-top: 14px;
+      color: var(--accent-strong);
+      font-size: 0.95rem;
+      min-height: 24px;
+    }
+
+    .footer {
+      margin-top: 40px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+    }
+
+    .footer-inner {
+      width: min(100%, var(--max-width));
+      margin: 0 auto;
+      padding: 40px 20px 28px;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr 1fr;
+      gap: 24px;
+    }
+
+    .footer-logo {
+      font-weight: 800;
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+
+    .footer-desc {
+      color: var(--muted);
+      font-size: 0.95rem;
+      max-width: 320px;
+    }
+
+    .footer-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer-nav a {
+      color: var(--muted);
+      transition: color var(--transition);
+      font-size: 0.95rem;
+    }
+
+    .footer-nav a:hover {
+      color: var(--text);
+    }
+
+    .footer-social {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .footer-social a {
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      font-size: 0.85rem;
+      color: var(--muted);
+      transition: all var(--transition);
+    }
+
+    .footer-social a:hover {
+      color: var(--text);
+      border-color: var(--accent);
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding: 16px 0 24px;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 768px) {
+      .footer-inner {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .footer-desc {
+        margin: 0 auto;
+      }
+
+      .footer-nav {
+        align-items: center;
+      }
+
+      .footer-social {
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 1024px) {
+      .hero-grid,
+      .contact-wrap {
+        grid-template-columns: 1fr;
+      }
+
+      .projects-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .hero-visual {
+        max-width: 680px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      section {
+        padding: 80px 16px;
+      }
+
+      .nav-wrap {
+        padding: 16px;
+        flex-wrap: wrap;
+      }
+
+      .menu-toggle {
+        display: block;
+      }
+
+      .nav {
+        width: 100%;
+        display: none;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+        padding-top: 14px;
+      }
+
+      .nav.open {
+        display: flex;
+      }
+
+      .hero {
+        min-height: auto;
+        padding-top: 50px;
+      }
+
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-badge {
+        right: 12px;
+        bottom: 12px;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+  
+
+    /* top button */
+    .top-btn {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(15,17,21,0.85);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transition: all var(--transition);
+      z-index: 999;
+      backdrop-filter: blur(10px);
+    }
+
+    .top-btn.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .top-btn:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent);
+    }
+    .logo-img {
+  height: 32px; /* 크기 조절 가능 */
+  width: auto;
+  display: block;
+}
+
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="nav-wrap">
+      <a href="#home" class="logo">
+  <img src="./1/eunhye_white.png" alt="EUNHYE Logo" class="logo-img">
+</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="메뉴 열기">☰</button>
+      <nav class="nav" id="navMenu">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#process">Process</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="container hero-grid">
+        <div class="hero-text">
+          <p class="eyebrow">Creative Designer & Developer</p>
+          <h1>모던한 감각으로<br />경험을 디자인<span class="hide-mobile">합니다</span></h1>
+          <p>
+            심플하고 세련된 인터페이스, 사용자 중심의 구조, 그리고 감각적인 비주얼로
+            브랜드와 프로젝트를 더 매력적으로 보여주는 개인 포트폴리오입니다.
+          </p>
+          <div class="hero-actions">
+            <a href="#projects" class="btn btn-primary">프로젝트 보기</a>
+            <a href="#contact" class="btn btn-secondary">문의하기</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="container">
+        <div class="section-heading">
+          <span class="eyebrow">About Me</span>
+          <h2>소개</h2>
+          <p>저의 디자인 철학과 작업 방향성을 간단하게 소개합니다.</p>
+        </div>
+
+        <div class="about-grid">
+          <div class="about-text">
+            <h3>사용자 경험을 중심으로 디자인합니다</h3>
+            <p>단순히 보기 좋은 디자인이 아닌, 실제로 사용하기 편하고 의미 있는 경험을 만드는 것을 중요하게 생각합니다.</p>
+            <p>웹과 모바일 환경 모두에서 일관된 사용자 경험을 제공하기 위해 구조와 흐름을 설계합니다.</p>
+          </div>
+
+          <div class="about-box">
+            <h3>Core Skills</h3>
+            <p>• UI/UX Design</p>
+            <p>• Web Frontend (HTML, CSS, JS)</p>
+            <p>• Branding & Visual Design</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills">
+      <div class="container">
+        <div class="section-heading">
+          <span class="eyebrow">Skills</span>
+          <h2>기술 스택</h2>
+        </div>
+
+        <div class="skills-grid">
+          <div class="skill-bar">
+            <h4>Photoshop</h4>
+            <div class="bar"><div class="bar-fill" data-width="90%"></div></div>
+            <div class="skill-percent">90%</div>
+          </div>
+
+          <div class="skill-bar">
+            <h4>Illustration</h4>
+            <div class="bar"><div class="bar-fill" data-width="85%"></div></div>
+            <div class="skill-percent">85%</div>
+          </div>
+
+          <div class="skill-bar">
+            <h4>Figma</h4>
+            <div class="bar"><div class="bar-fill" data-width="92%"></div></div>
+            <div class="skill-percent">92%</div>
+          </div>
+
+          <div class="skill-bar">
+            <h4>HTML5</h4>
+            <div class="bar"><div class="bar-fill" data-width="88%"></div></div>
+            <div class="skill-percent">88%</div>
+          </div>
+
+          <div class="skill-bar">
+            <h4>CSS3</h4>
+            <div class="bar"><div class="bar-fill" data-width="87%"></div></div>
+            <div class="skill-percent">87%</div>
+          </div>
+
+          <div class="skill-bar">
+            <h4>JavaScript</h4>
+            <div class="bar"><div class="bar-fill" data-width="80%"></div></div>
+            <div class="skill-percent">80%</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="process">
+      <div class="container">
+        <div class="section-heading">
+          <span class="eyebrow">UI/UX Process</span>
+          <h2>UI/UX 작업과정</h2>
+          <p>문제를 발견하고 해결책을 설계한 뒤, 시각적으로 완성도 높은 결과물로 정리하는 과정을 중요하게 생각합니다.</p>
+        </div>
+
+        <div class="process-grid">
+          <article class="process-card">
+            <div class="process-step">01</div>
+            <h3>Research</h3>
+            <p>사용자 니즈와 프로젝트 목적을 파악하고, 필요한 자료 조사와 레퍼런스 분석을 통해 방향성을 정리합니다.</p>
+          </article>
+
+          <article class="process-card">
+            <div class="process-step">02</div>
+            <h3>Planning</h3>
+            <p>정보 구조와 사용자 흐름을 설계하고, 와이어프레임을 구성해 핵심 기능과 화면 구성을 구체화합니다.</p>
+          </article>
+
+          <article class="process-card">
+            <div class="process-step">03</div>
+            <h3>Design</h3>
+            <p>브랜드 톤과 사용성을 고려해 시각 요소를 정리하고, 일관된 UI 시스템으로 화면을 디자인합니다.</p>
+          </article>
+
+          <article class="process-card">
+            <div class="process-step">04</div>
+            <h3>Prototype</h3>
+            <p>최종 결과물을 인터랙션 중심으로 점검하고, 실제 사용 흐름을 확인하며 디테일을 보완합니다.</p>
+          </article>
+        </div>
+      </div>
+
+        <!-- process images --> 
+        <div class="process-images">
+          <div class="process-img" style="background-image:url('./1/imac-screen-mockup-\(1\).jpg')"></div>
+          <div class="process-img" style="background-image:url('./1/laptop-cover-mockup.jpg')"></div>
+          <div class="process-img" style="background-image:url('./1/imac-screen-mockup.jpg')"></div>
+          <div class="process-img" style="background-image:url('./1/modern-laptop-mockup-with-airpods.jpg')"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects">
+      <div class="container">
+        <div class="section-heading">
+          <span class="eyebrow">Selected Works</span>
+          <h2>Projects</h2>
+          <p>대표 프로젝트 3가지를 카드 형식으로 정리했습니다. 각 카드에는 간단한 소개와 핵심 키워드를 담았습니다.</p>
+        </div>
+
+        <div class="projects-grid">
+          <article class="project-card">
+            <div class="project-thumb thumb-1">
+                <img src="./1/123.jpg" alt="">
+            </div>
+            <div class="project-body">
+              <span class="project-tag">Web Design</span>
+              <h3>Museum Landing Website</h3>
+              <p>박물관 테마의 감성적인 비주얼과 콘텐츠 중심 구조를 설계한 랜딩페이지 웹사이트입니다.</p>
+              <a href="#contact" class="project-link">프로젝트 문의 →</a>
+            </div>
+          </article>
+
+          <article class="project-card">
+            <div class="project-thumb thumb-2">
+                <img src="./1/google-pixelbook-mockup.jpg" alt="">
+            </div>
+            <div class="project-body">
+              <span class="project-tag">App Design</span>
+              <h3>Daily Journal App</h3>
+              <p>사용자의 하루 기록을 쉽고 직관적으로 남길 수 있도록 설계한 감성 중심의 일기 앱입니다.</p>
+              <a href="#contact" class="project-link">프로젝트 문의 →</a>
+            </div>
+          </article>
+
+          <article class="project-card">
+            <div class="project-thumb thumb-3">
+                <img src="./1/notebook-mockup-on-desk.jpg" alt="">
+            </div>
+            <div class="project-body">
+              <span class="project-tag">App Design</span>
+              <h3>Camping Car Rental App</h3>
+              <p>차박 및 캠핑카 대여를 위한 검색, 예약, 정보 탐색 흐름을 중심으로 설계한 모바일 앱입니다.</p>
+              <a href="#contact" class="project-link">프로젝트 문의 →</a>
+            </div>
+          </article>
+
+          <!-- 추가 카드 -->
+          <article class="project-card">
+            <div class="project-thumb thumb-2">
+                <img src="./1/iMac-and-iPhone-Pro-Showcase-Screens-Free-psd-Mockup.jpg" alt="">
+            </div>
+            <div class="project-body">
+              <span class="project-tag">App Design</span>
+              <h3>Jeju Bike Route App</h3>
+              <p>제주 자전거 여행자를 위한 경로 안내와 정보 제공을 중심으로 설계된 여행 앱 프로젝트입니다.</p>
+              <a href="#contact" class="project-link">프로젝트 문의 →</a>
+            </div>
+          </article>
+
+          <article class="project-card">
+            <div class="project-thumb thumb-3">
+                <img src="./1/google-pixelbook-mockup-(1).jpg" alt="">
+            </div>
+            <div class="project-body">
+              <span class="project-tag">Web Design</span>
+              <h3>Corporate Website</h3>
+              <p>기업 브랜드 이미지를 강화하기 위해 구조와 시각 요소를 정돈한 웹사이트 디자인 프로젝트입니다.</p>
+              <a href="#contact" class="project-link">프로젝트 문의 →</a>
+            </div>
+          </article>
+
+          <article class="project-card">
+            <div class="project-thumb thumb-1">
+                <img src="./1/iphone-x-mockup.jpg" alt="">
+            </div>
+            <div class="project-body">
+              <span class="project-tag">App Design</span>
+              <h3>Music Player App</h3>
+              <p>직관적인 플레이어 UI와 감성적인 비주얼을 결합한 모바일 음악 재생 앱 디자인입니다.</p>
+              <a href="#contact" class="project-link">프로젝트 문의 →</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="container">
+        <div class="section-heading">
+          <span class="eyebrow">Get In Touch</span>
+          <h2>Contact</h2>
+          <p>협업 문의나 프로젝트 상담이 필요하시면 아래 폼으로 편하게 메시지를 남겨주세요.</p>
+        </div>
+
+        <div class="contact-wrap">
+          <div class="contact-info">
+            <h3>함께 작업해요</h3>
+            <p>
+              웹사이트 제작, UI/UX 디자인, 포트폴리오 사이트 구축 등 다양한 작업을 진행합니다.
+              프로젝트 성격에 맞는 방향으로 유연하게 대응할 수 있습니다.
+            </p>
+            <div class="contact-list">
+              <div class="contact-item">
+                <strong>Email</strong>
+                <span>dldmsgp030501@naver.com</span>
+              </div>
+              <div class="contact-item">
+                <strong>Location</strong>
+                <span>Seoul, Korea</span>
+              </div>
+              <div class="contact-item">
+                <strong>Working Field</strong>
+                <span>Web Design · Frontend · Visual Branding</span>
+              </div>
+            </div>
+          </div>
+
+          <form class="contact-form" id="contactForm">
+            <h3>문의 남기기</h3>
+            <div class="form-group">
+              <label for="name">이름</label>
+              <input type="text" id="name" name="name" placeholder="이름을 입력해주세요" required />
+            </div>
+            <div class="form-group">
+              <label for="email">이메일</label>
+              <input type="email" id="email" name="email" placeholder="이메일을 입력해주세요" required />
+            </div>
+            <div class="form-group">
+              <label for="message">메시지</label>
+              <textarea id="message" name="message" placeholder="문의 내용을 입력해주세요" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">보내기</button>
+            <p class="form-message" id="formMessage"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div>
+        <div class="footer-logo">EUNHYE <span style="color: var(--accent);">PORTFOLIO</span></div>
+        <p class="footer-desc">모던한 디자인과 사용자 경험을 중심으로 웹을 만드는 포트폴리오입니다.</p>
+      </div>
+
+      <div class="footer-nav">
+        <a href="#home">Home</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+      </div>
+
+      <div class="footer-social">
+        <a href="#">Instagram</a>
+        <a href="#">Behance</a>
+        <a href="#">GitHub</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      © 2026 Modern Portfolio. All Rights Reserved.
+    </div>
+  </footer>
+
+  <!-- top button -->
+  <button class="top-btn" id="topBtn">↑</button>
+
+  <script>
+    const menuToggle = document.getElementById('menuToggle');
+    const navMenu = document.getElementById('navMenu');
+    const navLinks = navMenu.querySelectorAll('a');
+
+    menuToggle.addEventListener('click', () => {
+      navMenu.classList.toggle('open');
+    });
+
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        navMenu.classList.remove('open');
+      });
+    });
+
+    const skillBars = document.querySelectorAll('.skill-bar');
+    const skillSection = document.getElementById('skills');
+
+    const skillObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          skillBars.forEach((bar, index) => {
+            const fill = bar.querySelector('.bar-fill');
+            setTimeout(() => {
+              bar.classList.add('animate');
+              fill.style.width = fill.dataset.width;
+            }, index * 120);
+          });
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.35 });
+
+    skillObserver.observe(skillSection);
+
+    const contactForm = document.getElementById('contactForm');
+    const formMessage = document.getElementById('formMessage');
+
+    contactForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      formMessage.textContent = '메시지가 전송된 것처럼 보이도록 데모 처리되었습니다.';
+      contactForm.reset();
+    });
+  
+
+    // top button
+    const topBtn = document.getElementById('topBtn');
+
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 300) {
+        topBtn.classList.add('show');
+      } else {
+        topBtn.classList.remove('show');
+      }
+    });
+
+    topBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+  </script>
+</body>
+</html>
