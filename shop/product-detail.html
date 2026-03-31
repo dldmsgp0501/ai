@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>상품 상세 - MAUVE</title>
+    <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <h1 class="logo" onclick="location.href='index.html'" style="cursor: pointer;">MAUVE</h1>
+
+            <div class="header-icons">
+                <button class="icon-btn back-header-btn" aria-label="뒤로가기" onclick="history.back()">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                </button>
+
+                <button class="icon-btn cart-header-btn" aria-label="장바구니" onclick="location.href='cart.html'">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="8" cy="21" r="1"></circle>
+                        <circle cx="19" cy="21" r="1"></circle>
+                        <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path>
+                    </svg>
+                    <span class="badge">3</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content detail-page">
+        <div id="productDetailPage"></div>
+    </main>
+
+    <div class="detail-bottom-bar">
+        <button class="detail-cart-btn" id="addToCartBtn">장바구니</button>
+        <button class="detail-buy-btn" id="buyNowBtn">바로구매</button>
+    </div>
+
+    <script src="./script/script.js"></script>
+</body>
+</html>
