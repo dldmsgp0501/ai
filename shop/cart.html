@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>장바구니 - MAUVE</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+    <!-- 헤더 -->
+    <header class="header">
+        <div class="header-content">
+            <h1 class="logo">MAUVE</h1>
+            <div class="header-icons">
+                <button class="icon-btn" aria-label="검색">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                </button>
+                <button class="icon-btn" aria-label="알림">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path>
+                        <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 메인 컨텐츠 -->
+    <main class="main-content">
+        <div class="page-title-wrapper">
+            <h2 class="page-title">장바구니</h2>
+            <p class="page-subtitle">총 3개의 상품</p>
+        </div>
+
+        <!-- 장바구니 아이템 -->
+        <div class="cart-items" id="cartItems">
+            <!-- JavaScript로 동적 생성 -->
+        </div>
+
+        <!-- 주문 요약 -->
+        <div class="order-summary">
+            <h3 class="summary-title">주문 요약</h3>
+            <div class="summary-row">
+                <span>상품 금액</span>
+                <span id="subtotal">146,000원</span>
+            </div>
+            <div class="summary-row">
+                <span>배송비</span>
+                <span>무료</span>
+            </div>
+            <div class="summary-divider"></div>
+            <div class="summary-row total">
+                <span>총 결제금액</span>
+                <span id="total">146,000원</span>
+            </div>
+        </div>
+
+        <!-- 주문 버튼 -->
+        <button class="checkout-btn">
+            <span>주문하기</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="5" x2="19" y1="12" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+        </button>
+    </main>
+
+    <!-- 하단 고정 탭바 -->
+    <nav class="bottom-nav">
+        <button class="nav-item" onclick="location.href='index.html'">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            <span>홈</span>
+        </button>
+        <button class="nav-item" onclick="location.href='category.html'">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="8" x2="21" y1="6" y2="6"></line>
+                <line x1="8" x2="21" y1="12" y2="12"></line>
+                <line x1="8" x2="21" y1="18" y2="18"></line>
+                <line x1="3" x2="3.01" y1="6" y2="6"></line>
+                <line x1="3" x2="3.01" y1="12" y2="12"></line>
+                <line x1="3" x2="3.01" y1="18" y2="18"></line>
+            </svg>
+            <span>카테고리</span>
+        </button>
+        <button class="nav-item active">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="8" cy="21" r="1"></circle>
+                <circle cx="19" cy="21" r="1"></circle>
+                <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path>
+            </svg>
+            <span>장바구니</span>
+        </button>
+        <button class="nav-item" onclick="location.href='mypage.html'">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <span>마이페이지</span>
+        </button>
+    </nav>
+
+    <script src="./script/script.js"></script>
+    <script src="./script/cart.js"></script>
+</body>
+</html>
