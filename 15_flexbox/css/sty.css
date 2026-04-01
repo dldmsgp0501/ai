@@ -16,7 +16,7 @@ section{
 section .boxwrap{
     width: 1280px;
     display: flex;
-    gap: 40px;
+    gap: 40px; 
 }
 section .box .imgbox{
     width: 400px;
