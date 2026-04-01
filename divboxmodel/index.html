@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Card UI Box</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #f5f7fb;
+      font-family: Arial, sans-serif;
+    }
+
+    .card-wrap {
+      display: flex;
+      gap: 30px;
+    }
+
+    .card {
+      width: 430px;
+      background: #ffffff;
+      border-radius: 16px;
+      
+      overflow: hidden;
+    }
+
+    .card-image {
+      width: 100%;
+      height: 260px;
+      overflow: hidden;
+      background: #ddd;
+    }
+
+    .card-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .card-content {
+      padding: 24px 32px;
+      margin-top: 40px;
+      height: 270px;
+      position: relative;
+    }
+
+    .card-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #222;
+      margin-bottom: 12px;
+    }
+
+    .card-text {
+      font-size: 16px;
+      line-height: 1.6;
+      color: #666;
+      margin-bottom: 20px;
+    }
+
+    .card-content p {
+      color: #0FA17D;
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 24px;
+    }
+
+    .card-content h3 {
+      font-size: 24px;
+      color: #111;
+      font-weight: 600;
+      letter-spacing: -1.5px;
+      margin-bottom: 12px;
+    }
+
+    .card-content .tag {
+      font-size: 17px;
+      color: #999;
+      font-weight: 400;
+      margin-bottom: 50px;
+    }
+
+    .card-content h2 {
+      color: #111;
+      text-align: right;
+      position: absolute;
+      right: 32px;
+      bottom: 28px;
+    }
+
+    .card-content h2 span {
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    .card-content h2::first-letter {
+      font-size: 26px;
+      font-weight: 700;
+    }
+
+    .card-content h2 span {
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    .card-button {
+      display: inline-block;
+      padding: 12px 20px;
+      background: #0000fd;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <div class="card-wrap">
+    <div class="card">
+      <div class="card-image">
+        <img src="./img/636844607357281152.jpg" alt="서유럽">
+      </div>
+      <div class="card-content">
+        <p>해외여행</p>
+        <h3>[서유럽 여행] ★런던/프랑스/스위스/이탈리아</h3>
+        <p class="tag">#6월 연휴기간출발 #가족여행추천 #베스트상품</p>
+        <h2>3,199,000<span>원~</span></h2>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-image">
+        <img src="./img/635713457277990389.jpg" alt="대만">
+      </div>
+      <div class="card-content">
+        <p>해외여행</p>
+        <h3>[대만/단수이/예류/스펀/지우펀] 3/4/5일 ★BEST</h3>
+        <p class="tag">#스펀 천등 체험 #센과치히로의행방불명'지우펀' #기암괴석 예류해양공원</p>
+        <h2>529,900<span>원~</span></h2>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-image">
+        <img src="./img/638689081315238278.jpg" alt="시드니">
+      </div>
+      <div class="card-content">
+        <p>해외여행</p>
+        <h3>[시드니] 베스트셀러 6/7일 ★전일정4성</h3>
+        <p class="tag">#블루마운틴 #오페라하우스 #시드니동물병원 #저비스베이 #돌핀크루즈 #하버크루즈</p>
+        <h2>1,149,000<span>원~</span></h2>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
