@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Community</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: #ffffff;
+      font-family: Arial, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      color: #222;
+    }
+
+    .page {
+      width: 100%;
+      min-height: 100vh;
+      padding-top: 109px;
+    }
+
+    .title-wrap {
+      text-align: center;
+    }
+
+    .title-wrap h1 {
+      font-size: 41px;
+      line-height: 1;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: #2c2c2c;
+      margin-bottom: 20px;
+    }
+
+    .title-wrap p {
+      font-size: 18px;
+      line-height: 1.45;
+      color: #2f2f2f;
+      font-weight: 400;
+    }
+
+    .social-list {
+      margin-top: 58px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .social-btn {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: #ddd;
+    }
+
+    .social-btn img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .facebook { background: #3f5fb5; }
+    .instagram { background: #ae7656; }
+    .blog {
+      background: #46d20b;
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+    }
+    .twitter {
+      background: #39c6f4;
+      font-size: 28px;
+      font-weight: 700;
+      transform: translateY(-1px);
+    }
+
+    .community-grid {
+      width: 1159px;
+      margin: 43px auto 0;
+      display: grid;
+      grid-template-columns: 312px 474px 313px;
+      grid-template-rows: 213px 193px 210px;
+      gap: 19px;
+    }
+
+    .panel {
+      border: 1px solid #8e8e8e;
+      background: transparent;
+      position: relative;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    .panel:hover {
+      background: #ff6c00;
+    }
+
+    .panel:hover h2,
+    .panel:hover p {
+      color: #ffffff;
+    }
+
+    .panel.empty {
+      grid-column: 1;
+      grid-row: 1 / span 3;
+      width: 312px;
+      height: 654px;
+      transition: background 0.3s ease;
+    }
+
+    .panel.empty:hover {
+      background: #ff6c00;
+    }
+
+    .panel.video {
+      grid-column: 2;
+      grid-row: 1 / span 2;
+      width: 474px;
+      height: 429px;
+    }
+
+    .panel.share {
+      grid-column: 3;
+      grid-row: 1;
+      width: 313px;
+      height: 213px;
+    }
+
+    .panel.notice {
+      grid-column: 3;
+      grid-row: 2;
+      width: 313px;
+      height: 193px;
+    }
+
+    .panel.inquiry {
+      grid-column: 2;
+      grid-row: 3;
+      width: 474px;
+      height: 209px;
+    }
+
+    .panel.mall {
+      grid-column: 3;
+      grid-row: 3;
+      width: 313px;
+      height: 210px;
+    }
+
+    .panel-content {
+      padding: 24px;
+    }
+
+    .panel h2 {
+      font-size: 26px;
+      line-height: 1.1;
+      font-weight: 800;
+      color: #1f1f1f;
+      letter-spacing: -0.6px;
+      margin-bottom: 16px;
+    }
+
+    .panel p {
+      font-size: 16px;
+      line-height: 1.45;
+      color: #222;
+      letter-spacing: -0.3px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 74px;
+      height: 22px;
+      padding: 0 11px;
+      border-radius: 12px;
+      background: #ff6c00;
+      color: #fff;
+      font-size: 12px;
+      line-height: 1;
+      font-weight: 700;
+      text-decoration: none;
+      margin-top: 22px;
+    }
+
+    
+    .notice p {
+      line-height: 1.35;
+    }
+
+    .mall p,
+    .inquiry p {
+      line-height: 1.45;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="title-wrap">
+      <h1>COMMUNITY</h1>
+      <p>삼양식품은 혁신적인 기술과 포용적인 사고로 여러분과 함께<br />새로운 식문화를 만들어갑니다.</p>
+
+      <div class="social-list">
+        <a href="#" class="social-btn"><img src="./img/ico_facebook.png" alt="facebook"></a>
+        <a href="#" class="social-btn"><img src="./img/ico_insta.png" alt="instagram"></a>
+        <a href="#" class="social-btn"><img src="./img/ico_blog.png" alt="blog"></a>
+        <a href="#" class="social-btn"><img src="./img/ico_twitter.png" alt="twitter"></a>
+      </div>
+    </header>
+
+    <main class="community-grid">
+      <section class="panel empty" aria-hidden="true"></section>
+
+      <section class="panel video">
+        <div class="panel-content">
+          <h2>홍보영상</h2>
+          <p>삼양식품의 다채로운 스토리를<br />영상으로 보여드립니다.</p>
+          <a href="#" class="btn">자세히보기</a>
+        </div>
+      </section>
+
+      <section class="panel share">
+        <div class="panel-content">
+          <h2>맛있는 나눔</h2>
+          <p>모두가 행복한 맛있는 세상</p>
+          <a href="#" class="btn">자세히보기</a>
+        </div>
+      </section>
+
+      <section class="panel inquiry">
+        <div class="panel-content">
+          <h2>고객 문의</h2>
+          <p>삼양식품에게<br />여러분의 다양한 의견을 남겨주세요.</p>
+          <a href="#" class="btn">자세히보기</a>
+        </div>
+      </section>
+
+      <section class="panel notice">
+        <div class="panel-content">
+          <h2>공지사항</h2>
+          <p>삼양식품 개인정보취급방침 개정 안내</p>
+          <a href="#" class="btn">자세히보기</a>
+        </div>
+      </section>
+
+      <section class="panel mall">
+        <div class="panel-content">
+          <h2>삼양식품 공식몰</h2>
+          <p>삼양식품의<br />다양한 제품을 만나보세요.</p>
+          <a href="#" class="btn">자세히보기</a>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
