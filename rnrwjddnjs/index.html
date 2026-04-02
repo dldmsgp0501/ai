@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>메인 페이지 시안</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+    }
+
+    body {
+      font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+      background: #ffffff;
+    }
+
+    .page {
+      width: 100%;
+      min-height: 100vh;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* 배경 이미지 삽입 영역 */
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: #d9d9d9;
+      /* 배경 이미지 넣을 때 사용
+      background-image: url('your-image.jpg');
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+      */
+    }
+
+    .hero-bg::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.08);
+    }
+
+    .content {
+      position: relative;
+      z-index: 2;
+      width: 1280px;
+      margin: 0 auto;
+      padding-top: 290px;
+    }
+
+    .headline {
+      color: #ffffff;
+      font-size: 62px;
+      line-height: 1.28;
+      font-weight: 700;
+      letter-spacing: -2.2px;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.14);
+    }
+
+    .cards {
+      width: 1280px;
+      margin: 92px auto 0;
+      display: flex;
+      gap: 40px;
+    }
+
+    .card {
+      width: 400px;
+      background: #ffffff;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    /* 카드 이미지 삽입 영역 */
+    .card-image {
+      width: 100%;
+      height: 218px;
+      background: #e3e3e3;
+      overflow: hidden;
+      flex-shrink: 0;
+      /* 카드 이미지 넣을 때 사용
+      background-image: url('card-image.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      */
+    }
+
+    .card-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+
+    .card:hover .card-image img {
+      transform: scale(1.2);
+    }
+
+    .card-title {
+      height: 47px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #111111;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.8px;
+      background: #ffffff;
+      position: relative;
+      z-index: 2;
+      flex-shrink: 0;
+    }
+
+    /* 시안 비율 유지를 위한 데스크톱 전용 고정 구성 */
+    @media (max-width: 1300px) {
+      .content {
+        transform: scale(0.9);
+        transform-origin: top center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="hero-bg"><img src="./img/bg_about.jpg" alt=""></div>
+
+    <div class="content">
+      <h1 class="headline">
+        안전하고 평화로운 대한민국을 위해<br />
+        국가정보원이 함께합니다.
+      </h1>
+
+      <div class="cards">
+        <a href="#" class="card">
+          <div class="card-image">
+            <img src="./img/img_about_1.jpg" alt="직무" />
+          </div>
+          <div class="card-title">직무</div>
+        </a>
+
+        <a href="#" class="card">
+          <div class="card-image">
+            <img src="./img/img_about_2.png" alt="국정원 역사" />
+          </div>
+          <div class="card-title">국정원 역사</div>
+        </a>
+
+        <a href="#" class="card">
+          <div class="card-image">
+            <img src="./img/img_about_3.jpg" alt="관련 법령" />
+          </div>
+          <div class="card-title">관련 법령</div>
+        </a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
