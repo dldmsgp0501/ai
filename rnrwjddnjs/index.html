@@ -23,9 +23,12 @@
 
     .page {
       width: 100%;
-      min-height: 100vh;
+      height: 100vh;
       position: relative;
       overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
     }
 
     /* 배경 이미지 삽입 영역 */
@@ -52,8 +55,9 @@
       position: relative;
       z-index: 2;
       width: 1280px;
-      margin: 0 auto;
-      padding-top: 290px;
+      margin: 0;
+      padding-top: 0;
+      padding-bottom: 40px;
     }
 
     .headline {
@@ -67,7 +71,7 @@
 
     .cards {
       width: 1280px;
-      margin: 92px auto 0;
+      margin: 40px auto 0;
       display: flex;
       gap: 40px;
     }
