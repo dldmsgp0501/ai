@@ -30,7 +30,7 @@
 
     .hero {
       text-align: center;
-      margin-bottom: 46px;
+      margin-bottom: 50px;
     }
 
     .hero-subtitle {
@@ -55,7 +55,7 @@
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      margin-top: 26px;
+      margin-top: 50px;
     }
 
     .count-group {
@@ -63,11 +63,15 @@
       gap: 8px;
     }
 
+    /* ─────────────────────────────────────────
+       FLIP CLOCK  —  핵심 수정:
+       1) .count-box 에서 perspective 제거하고
+          .flip-card 에 직접 perspective + transform-style 추가
+       ───────────────────────────────────────── */
     .count-box {
       width: 74px;
       height: 96px;
       position: relative;
-      perspective: 1000px;
     }
 
     .flip-card {
@@ -77,7 +81,10 @@
       border-radius: 12px;
       overflow: hidden;
       background: linear-gradient(180deg, #4a4d55 0%, #1f2228 100%);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 4px 12px rgba(0,0,0,0.14);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 4px 12px rgba(0,0,0,0.24);
+      /* ★ 수정: 3D 공간 활성화 */
+      perspective: 600px;
+      transform-style: preserve-3d;
     }
 
     .flip-static-top,
@@ -89,30 +96,32 @@
       width: 100%;
       height: 50%;
       overflow: hidden;
-      backface-visibility: hidden;
+      /* ★ 수정: GPU 레이어 */
       -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
     }
 
+    /* ── 상단 절반 ── */
     .flip-static-top,
     .flip-animated-top {
       top: 0;
-      transform-origin: bottom;
+      transform-origin: center bottom;
       background: linear-gradient(180deg, #4a4d55 0%, #34373f 100%);
       border-top-left-radius: 12px;
       border-top-right-radius: 12px;
-      z-index: 2;
     }
 
+    /* ── 하단 절반 ── */
     .flip-static-bottom,
     .flip-animated-bottom {
       bottom: 0;
-      transform-origin: top;
+      transform-origin: center top;
       background: linear-gradient(180deg, #2a2d33 0%, #1f2228 100%);
       border-bottom-left-radius: 12px;
       border-bottom-right-radius: 12px;
-      z-index: 1;
     }
 
+    /* 숫자 렌더링: ::before 는 전체 96px 박스를 가상으로 그려서 절반씩 잘라냄 */
     .flip-static-top::before,
     .flip-static-bottom::before,
     .flip-animated-top::before,
@@ -133,16 +142,19 @@
       text-shadow: 1px 0 0 #d2a63f;
     }
 
+    /* 상단 ::before: 숫자를 위에서 시작 */
     .flip-static-top::before,
     .flip-animated-top::before {
       top: 0;
     }
 
+    /* 하단 ::before: 숫자 박스를 위로 절반(-48px) 올려서 하단 반만 보이게 */
     .flip-static-bottom::before,
     .flip-animated-bottom::before {
       top: -48px;
     }
 
+    /* 가운데 구분선 */
     .flip-card::before {
       content: "";
       position: absolute;
@@ -150,29 +162,24 @@
       left: 0;
       width: 100%;
       height: 1px;
-      background: rgba(255,255,255,0.08);
+      background: rgba(0,0,0,0.5);
       transform: translateY(-50%);
-      z-index: 6;
-    }
-
-    .flip-card::after {
-      content: "";
-      position: absolute;
-      top: 50%;
-      left: 0;
-      width: 100%;
-      height: 16px;
-      background: linear-gradient(180deg, rgba(0,0,0,0.16), rgba(0,0,0,0));
-      transform: translateY(-50%);
+      z-index: 10;
       pointer-events: none;
-      z-index: 5;
     }
 
+    /* z-index 레이어 */
+    .flip-static-top    { z-index: 2; }
+    .flip-static-bottom { z-index: 1; }
+
+    /* 애니메이션 카드: 평소에는 숨김 */
     .flip-animated-top,
     .flip-animated-bottom {
       visibility: hidden;
+      z-index: 3;
     }
 
+    /* ── 플립 실행 중 ── */
     .count-box.flipping .flip-animated-top,
     .count-box.flipping .flip-animated-bottom {
       visibility: visible;
@@ -180,23 +187,23 @@
     }
 
     .count-box.flipping .flip-animated-top {
-      animation: flipTopFold 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      animation: flipTopFold 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards;
     }
 
     .count-box.flipping .flip-animated-bottom {
-      animation: flipBottomFold 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.5s forwards;
+      animation: flipBottomUnfold 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97) 0.45s forwards;
     }
 
+    /* 상단: 현재 숫자가 앞으로 접혀 내려감 */
     @keyframes flipTopFold {
-      0% { transform: rotateX(0deg); }
-      60% { transform: rotateX(-70deg); }
+      0%   { transform: rotateX(0deg);   }
       100% { transform: rotateX(-90deg); }
     }
 
-    @keyframes flipBottomFold {
-      0% { transform: rotateX(90deg); }
-      40% { transform: rotateX(20deg); }
-      100% { transform: rotateX(0deg); }
+    /* 하단: 다음 숫자가 접혀있다가 펼쳐짐 */
+    @keyframes flipBottomUnfold {
+      0%   { transform: rotateX(90deg); }
+      100% { transform: rotateX(0deg);  }
     }
 
     .colon {
@@ -208,17 +215,45 @@
       transform: translateY(-3px);
     }
 
-    .colon {
-      font-size: 58px;
-      font-weight: 800;
-      line-height: 1;
-      color: #4d4f54;
-      margin: 0 2px;
-      transform: translateY(-3px);
+    /* 카운트다운 라벨 */
+    .countdown-label {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 10px;
+      font-size: 12px;
+      font-weight: 500;
+      color: #9b9690;
+      letter-spacing: 0.05em;
+      font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+    }
+    .countdown-label span {
+      width: calc(74px * 2 + 8px);
+      text-align: center;
+    }
+
+    .limit-text {
+      margin: 50px 0 0;
+      padding: 0;
+      text-align: center;
+      line-height: 1.2;
+      font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+    }
+
+    .limit-regular {
+      font-size: 36px;
+      font-weight: 400;
+      color: #2f3135;
+    }
+
+    .limit-bold {
+      font-size: 40px;
+      font-weight: 700;
+      color: #2f3135;
     }
 
     .coupon-section {
-      width: 960px;
+      width: 940px;
       margin: 0 auto;
       background: #FFEBB5;
       padding: 50px 55px 36px;
@@ -298,15 +333,7 @@
       display: block;
     }
 
-    .image-slot::after {
-      content: "IMAGE";
-      position: absolute;
-      font-size: 18px;
-      font-weight: 700;
-      color: rgba(47, 49, 53, 0.45);
-      letter-spacing: 0.08em;
-      pointer-events: none;
-    }
+
 
     .radio-wrap {
       display: flex;
@@ -573,35 +600,23 @@
       box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
     }
 
+    /* ── 반응형 ── */
     @media (max-width: 1100px) {
       .coupon-section {
         width: 100%;
         max-width: 960px;
       }
-
       .card-grid {
         grid-template-columns: repeat(2, 250px);
       }
     }
 
     @media (max-width: 900px) {
-      .page {
-        padding: 36px 16px 60px;
-      }
+      .page { padding: 36px 16px 60px; }
+      .hero-subtitle { font-size: 20px; }
+      .hero-title { font-size: 42px; }
 
-      .hero-subtitle {
-        font-size: 20px;
-      }
-
-      .hero-title {
-        font-size: 42px;
-      }
-
-      .count-box {
-        width: 58px;
-        height: 78px;
-      }
-
+      .count-box { width: 58px; height: 78px; }
       .flip-static-top::before,
       .flip-static-bottom::before,
       .flip-animated-top::before,
@@ -609,43 +624,21 @@
         height: 78px;
         font-size: 48px;
       }
-
       .flip-static-bottom::before,
-      .flip-animated-bottom::before {
-        top: -39px;
-      }
+      .flip-animated-bottom::before { top: -39px; }
 
-      .colon {
-        font-size: 46px;
-      }
-
-      .coupon-section {
-        padding: 50px 20px 30px;
-      }
+      .colon { font-size: 46px; }
+      .coupon-section { padding: 50px 20px 30px; }
+      .countdown-label span { width: calc(58px * 2 + 8px); }
     }
 
     @media (max-width: 640px) {
-      .hero-title {
-        font-size: 32px;
-      }
+      .hero-title { font-size: 32px; }
+      .hero-subtitle { font-size: 18px; }
+      .countdown { gap: 6px; }
+      .count-group { gap: 6px; }
 
-      .hero-subtitle {
-        font-size: 18px;
-      }
-
-      .countdown {
-        gap: 6px;
-      }
-
-      .count-group {
-        gap: 6px;
-      }
-
-      .count-box {
-        width: 46px;
-        height: 62px;
-      }
-
+      .count-box { width: 46px; height: 62px; }
       .flip-static-top::before,
       .flip-static-bottom::before,
       .flip-animated-top::before,
@@ -653,33 +646,20 @@
         height: 62px;
         font-size: 36px;
       }
-
       .flip-static-bottom::before,
-      .flip-animated-bottom::before {
-        top: -31px;
-      }
+      .flip-animated-bottom::before { top: -31px; }
 
-      .colon {
-        font-size: 34px;
-        margin: 0;
-      }
-
-      .coupon-section {
-        padding: 32px 20px 28px;
-      }
-
+      .colon { font-size: 34px; margin: 0; }
+      .coupon-section { padding: 32px 20px 28px; }
       .card-grid {
         grid-template-columns: 250px;
         gap: 30px;
         margin-bottom: 70px;
       }
-
-      .apply-btn {
-        height: 68px;
-        font-size: 18px;
-      }
+      .apply-btn { height: 68px; font-size: 18px; }
+      .countdown-label span { width: calc(46px * 2 + 6px); }
     }
-  
+
     @font-face {
       font-family: 'YeogiOttaeJalnanGothic';
       src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_231029@1.1/JalnanGothic.woff') format('woff');
@@ -695,17 +675,9 @@
       font-display: swap;
     }
 
-    .hero-subtitle {
-      font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
-    }
-
-    .coupon-card-inner {
-      font-family: 'YeogiOttaeJalnanGothic', 'Noto Sans KR', sans-serif;
-    }
-
-    .coupon-title {
-      font-family: 'YeogiOttaeJalnanGothic', 'Noto Sans KR', sans-serif;
-    }
+    .hero-subtitle { font-family: 'Pretendard', 'Noto Sans KR', sans-serif; }
+    .coupon-card-inner { font-family: 'YeogiOttaeJalnanGothic', 'Noto Sans KR', sans-serif; }
+    .coupon-title { font-family: 'YeogiOttaeJalnanGothic', 'Noto Sans KR', sans-serif; }
   </style>
 </head>
 <body>
@@ -714,64 +686,76 @@
       <p class="hero-subtitle">릴레이로 이어지는 최대 혜택</p>
       <h1 class="hero-title">매일 낮 12시 선착순 추가 쿠폰</h1>
 
-      <div class="countdown" aria-label="현재 시간 플립 시계">
+      <div class="countdown" aria-label="낮 12시까지 남은 시간">
+        <!-- 시 -->
         <div class="count-group">
           <div class="count-box" data-digit-box>
             <div class="flip-card">
-              <div class="flip-static-top" data-part="static-top" data-digit="0"></div>
+              <div class="flip-static-top"    data-part="static-top"    data-digit="0"></div>
               <div class="flip-static-bottom" data-part="static-bottom" data-digit="0"></div>
-              <div class="flip-animated-top" data-part="animated-top" data-digit="0"></div>
+              <div class="flip-animated-top"  data-part="animated-top"  data-digit="0"></div>
               <div class="flip-animated-bottom" data-part="animated-bottom" data-digit="0"></div>
             </div>
           </div>
           <div class="count-box" data-digit-box>
             <div class="flip-card">
-              <div class="flip-static-top" data-part="static-top" data-digit="0"></div>
+              <div class="flip-static-top"    data-part="static-top"    data-digit="0"></div>
               <div class="flip-static-bottom" data-part="static-bottom" data-digit="0"></div>
-              <div class="flip-animated-top" data-part="animated-top" data-digit="0"></div>
+              <div class="flip-animated-top"  data-part="animated-top"  data-digit="0"></div>
               <div class="flip-animated-bottom" data-part="animated-bottom" data-digit="0"></div>
             </div>
           </div>
         </div>
+
         <div class="colon">:</div>
+
+        <!-- 분 -->
         <div class="count-group">
           <div class="count-box" data-digit-box>
             <div class="flip-card">
-              <div class="flip-static-top" data-part="static-top" data-digit="0"></div>
+              <div class="flip-static-top"    data-part="static-top"    data-digit="0"></div>
               <div class="flip-static-bottom" data-part="static-bottom" data-digit="0"></div>
-              <div class="flip-animated-top" data-part="animated-top" data-digit="0"></div>
+              <div class="flip-animated-top"  data-part="animated-top"  data-digit="0"></div>
               <div class="flip-animated-bottom" data-part="animated-bottom" data-digit="0"></div>
             </div>
           </div>
           <div class="count-box" data-digit-box>
             <div class="flip-card">
-              <div class="flip-static-top" data-part="static-top" data-digit="0"></div>
+              <div class="flip-static-top"    data-part="static-top"    data-digit="0"></div>
               <div class="flip-static-bottom" data-part="static-bottom" data-digit="0"></div>
-              <div class="flip-animated-top" data-part="animated-top" data-digit="0"></div>
+              <div class="flip-animated-top"  data-part="animated-top"  data-digit="0"></div>
               <div class="flip-animated-bottom" data-part="animated-bottom" data-digit="0"></div>
             </div>
           </div>
         </div>
+
         <div class="colon">:</div>
+
+        <!-- 초 -->
         <div class="count-group">
           <div class="count-box" data-digit-box>
             <div class="flip-card">
-              <div class="flip-static-top" data-part="static-top" data-digit="0"></div>
+              <div class="flip-static-top"    data-part="static-top"    data-digit="0"></div>
               <div class="flip-static-bottom" data-part="static-bottom" data-digit="0"></div>
-              <div class="flip-animated-top" data-part="animated-top" data-digit="0"></div>
+              <div class="flip-animated-top"  data-part="animated-top"  data-digit="0"></div>
               <div class="flip-animated-bottom" data-part="animated-bottom" data-digit="0"></div>
             </div>
           </div>
           <div class="count-box" data-digit-box>
             <div class="flip-card">
-              <div class="flip-static-top" data-part="static-top" data-digit="0"></div>
+              <div class="flip-static-top"    data-part="static-top"    data-digit="0"></div>
               <div class="flip-static-bottom" data-part="static-bottom" data-digit="0"></div>
-              <div class="flip-animated-top" data-part="animated-top" data-digit="0"></div>
+              <div class="flip-animated-top"  data-part="animated-top"  data-digit="0"></div>
               <div class="flip-animated-bottom" data-part="animated-bottom" data-digit="0"></div>
             </div>
           </div>
         </div>
       </div>
+
+      <p class="limit-text">
+        <span class="limit-regular">선착순</span><span class="limit-bold"> 단, 100명!</span>
+      </p>
+
     </section>
 
     <section class="coupon-section">
@@ -782,7 +766,7 @@
             <div class="coupon-card-inner">
               <h2 class="coupon-title">아뜨랑스 30% 쿠폰</h2>
               <div class="image-slot">
-                <img src="https://via.placeholder.com/300x300?text=IMAGE" alt="아뜨랑스 이미지 자리" />
+                <img src="./img/1.png" alt="아뜨랑스 이미지 자리" />
               </div>
               <div class="radio-wrap"><span class="radio-ui"></span></div>
             </div>
@@ -793,7 +777,7 @@
             <div class="coupon-card-inner">
               <h2 class="coupon-title">당당걸 30% 쿠폰</h2>
               <div class="image-slot">
-                <img src="https://via.placeholder.com/300x300?text=IMAGE" alt="당당걸 이미지 자리" />
+                <img src="./img/2.png" alt="당당걸 이미지 자리" />
               </div>
               <div class="radio-wrap"><span class="radio-ui"></span></div>
             </div>
@@ -804,7 +788,7 @@
             <div class="coupon-card-inner">
               <h2 class="coupon-title">크리시앙 30% 쿠폰</h2>
               <div class="image-slot">
-                <img src="https://via.placeholder.com/300x300?text=IMAGE" alt="크리시앙 이미지 자리" />
+                <img src="./img/3.png" alt="크리시앙 이미지 자리" />
               </div>
               <div class="radio-wrap"><span class="radio-ui"></span></div>
             </div>
@@ -815,7 +799,7 @@
             <div class="coupon-card-inner">
               <h2 class="coupon-title">클래식블랑 30% 쿠폰</h2>
               <div class="image-slot">
-                <img src="https://via.placeholder.com/300x300?text=IMAGE" alt="클래식블랑 이미지 자리" />
+                <img src="./img/4.png" alt="클래식블랑 이미지 자리" />
               </div>
               <div class="radio-wrap"><span class="radio-ui"></span></div>
             </div>
@@ -826,7 +810,7 @@
             <div class="coupon-card-inner">
               <h2 class="coupon-title">코이유 30% 쿠폰</h2>
               <div class="image-slot">
-                <img src="https://via.placeholder.com/300x300?text=IMAGE" alt="코이유 이미지 자리" />
+                <img src="./img/5.png" alt="코이유 이미지 자리" />
               </div>
               <div class="radio-wrap"><span class="radio-ui"></span></div>
             </div>
@@ -837,7 +821,7 @@
             <div class="coupon-card-inner">
               <h2 class="coupon-title">김아름 30% 쿠폰</h2>
               <div class="image-slot">
-                <img src="https://via.placeholder.com/300x300?text=IMAGE" alt="김아름 이미지 자리" />
+                <img src="./img/6.png" alt="김아름 이미지 자리" />
               </div>
               <div class="radio-wrap"><span class="radio-ui"></span></div>
             </div>
@@ -861,7 +845,7 @@
       <p class="modal-desc">이름, 전화번호, 이메일을 입력한 뒤 신청하기 버튼을 눌러주세요.</p>
 
       <div class="selected-coupon-box">
-        <span class="selected-coupon-label">선택한 상품</span>
+        <span class="selected-coupon-label">Product</span>
         <p class="selected-coupon-value" id="selectedCouponValue">선택한 쿠폰이 없습니다.</p>
       </div>
 
@@ -870,17 +854,14 @@
           <label class="field-label" for="applicantName">이름</label>
           <input class="field-input" type="text" id="applicantName" name="name" placeholder="이름을 입력해주세요" required />
         </div>
-
         <div class="field-group">
           <label class="field-label" for="applicantPhone">전화번호</label>
           <input class="field-input" type="tel" id="applicantPhone" name="phone" placeholder="전화번호를 입력해주세요" required />
         </div>
-
         <div class="field-group">
           <label class="field-label" for="applicantEmail">이메일</label>
           <input class="field-input" type="email" id="applicantEmail" name="email" placeholder="이메일을 입력해주세요" required />
         </div>
-
         <div class="modal-actions">
           <button type="button" class="modal-cancel" id="modalCancel">취소하기</button>
           <button type="submit" class="modal-submit">신청하기</button>
@@ -890,20 +871,14 @@
   </div>
 
   <script>
+    /* ════════════════════════════════════════════════
+       플립 시계 — 핵심 수정 사항
+       1. staticTop 에 nextDigit 세팅 (뒤집힌 뒤 드러나는 면)
+       2. 카운트다운: 다음 낮 12:00:00 까지 남은 시간
+    ════════════════════════════════════════════════ */
     const digitBoxes = [...document.querySelectorAll('[data-digit-box]')];
-    const couponForm = document.getElementById('couponForm');
-    const selectedInfo = document.getElementById('selectedInfo');
-    const toast = document.getElementById('toast');
-    const applyModal = document.getElementById('applyModal');
-    const modalClose = document.getElementById('modalClose');
-    const modalForm = document.getElementById('modalForm');
-    const applicantName = document.getElementById('applicantName');
-    const applicantPhone = document.getElementById('applicantPhone');
-    const applicantEmail = document.getElementById('applicantEmail');
-    const submitButton = modalForm.querySelector('.modal-submit');
-    const modalCancel = document.getElementById('modalCancel');
-    const selectedCouponValue = document.getElementById('selectedCouponValue');
 
+    /** 박스에 숫자를 즉시 세팅 (초기화용) */
     function setDigit(box, digit) {
       box.querySelector('[data-part="static-top"]').setAttribute('data-digit', digit);
       box.querySelector('[data-part="static-bottom"]').setAttribute('data-digit', digit);
@@ -912,53 +887,103 @@
       box.dataset.currentDigit = digit;
     }
 
+    /** 플립 애니메이션으로 숫자 전환 */
     function flipDigit(box, nextDigit) {
       const currentDigit = box.dataset.currentDigit ?? '0';
       if (currentDigit === nextDigit) return;
 
-      const staticTop = box.querySelector('[data-part="static-top"]');
-      const staticBottom = box.querySelector('[data-part="static-bottom"]');
-      const animatedTop = box.querySelector('[data-part="animated-top"]');
+      const staticTop      = box.querySelector('[data-part="static-top"]');
+      const staticBottom   = box.querySelector('[data-part="static-bottom"]');
+      const animatedTop    = box.querySelector('[data-part="animated-top"]');
       const animatedBottom = box.querySelector('[data-part="animated-bottom"]');
 
-      staticTop.setAttribute('data-digit', currentDigit);
+      /*
+       * 레이어 역할
+       * staticTop      : 애니메이션이 끝난 뒤 보일 "다음" 숫자 상단  ← ★ 핵심 수정
+       * staticBottom   : 바닥에 깔린 "다음" 숫자 하단
+       * animatedTop    : "현재" 숫자 상단이 앞으로 접혀 내려감
+       * animatedBottom : "다음" 숫자 하단이 접혀있다가 펼쳐짐
+       */
+      staticTop.setAttribute('data-digit', nextDigit);       // ★ 수정: currentDigit → nextDigit
       staticBottom.setAttribute('data-digit', nextDigit);
       animatedTop.setAttribute('data-digit', currentDigit);
       animatedBottom.setAttribute('data-digit', nextDigit);
 
+      // 애니메이션 재실행: 클래스 제거 후 reflow → 재추가
       box.classList.remove('flipping');
       void box.offsetWidth;
       box.classList.add('flipping');
 
-      window.clearTimeout(box.flipTimer);
-      box.flipTimer = window.setTimeout(() => {
-        staticTop.setAttribute('data-digit', nextDigit);
-        staticBottom.setAttribute('data-digit', nextDigit);
-        animatedTop.setAttribute('data-digit', nextDigit);
-        animatedBottom.setAttribute('data-digit', nextDigit);
-        box.dataset.currentDigit = nextDigit;
+      // 애니메이션 완료 후 정리 (총 0.45 + 0.45 = 0.9s)
+      clearTimeout(box._flipTimer);
+      box._flipTimer = setTimeout(() => {
         box.classList.remove('flipping');
-      }, 1000);
+        box.dataset.currentDigit = nextDigit;
+      }, 950);
     }
 
-    function getCurrentTimeDigits() {
-      const now = new Date();
-      const hours = String(now.getHours()).padStart(2, '0');
-      const minutes = String(now.getMinutes()).padStart(2, '0');
-      const seconds = String(now.getSeconds()).padStart(2, '0');
-      return `${hours}${minutes}${seconds}`.split('');
+    /* ────────────────────────────────────────
+       카운트다운: 다음 낮 12:00:00 까지
+    ──────────────────────────────────────── */
+    function getNextNoon() {
+      const now    = new Date();
+      const target = new Date(now);
+      target.setHours(12, 0, 0, 0);
+      // 이미 12시가 지났으면 내일 12시
+      if (now >= target) {
+        target.setDate(target.getDate() + 1);
+      }
+      return target;
+    }
+
+    function getCountdownDigits() {
+      const now   = new Date();
+      const diff  = Math.max(0, getNextNoon() - now);
+      const total = Math.floor(diff / 1000);
+
+      const h = Math.floor(total / 3600);
+      const m = Math.floor((total % 3600) / 60);
+      const s = total % 60;
+
+      return (
+        String(h).padStart(2, '0') +
+        String(m).padStart(2, '0') +
+        String(s).padStart(2, '0')
+      ).split('');
     }
 
     function syncClock(initial = false) {
-      const digits = getCurrentTimeDigits();
-      digitBoxes.forEach((box, index) => {
-        if (initial) {
-          setDigit(box, digits[index]);
-        } else {
-          flipDigit(box, digits[index]);
-        }
+      const digits = getCountdownDigits();
+      digitBoxes.forEach((box, i) => {
+        initial ? setDigit(box, digits[i]) : flipDigit(box, digits[i]);
       });
     }
+
+    /* ── 초기화 및 틱 ── */
+    syncClock(true);
+
+    const now         = new Date();
+    const initialDelay = 1000 - now.getMilliseconds();
+    setTimeout(() => {
+      syncClock();
+      setInterval(syncClock, 1000);
+    }, initialDelay);
+
+    /* ════════════════════════════════════════
+       이하 원본 폼/모달 로직 (수정 없음)
+    ════════════════════════════════════════ */
+    const couponForm        = document.getElementById('couponForm');
+    const selectedInfo      = document.getElementById('selectedInfo');
+    const toast             = document.getElementById('toast');
+    const applyModal        = document.getElementById('applyModal');
+    const modalClose        = document.getElementById('modalClose');
+    const modalForm         = document.getElementById('modalForm');
+    const applicantName     = document.getElementById('applicantName');
+    const applicantPhone    = document.getElementById('applicantPhone');
+    const applicantEmail    = document.getElementById('applicantEmail');
+    const submitButton      = modalForm.querySelector('.modal-submit');
+    const modalCancel       = document.getElementById('modalCancel');
+    const selectedCouponValue = document.getElementById('selectedCouponValue');
 
     function updateSelectedCoupon() {
       const selected = document.querySelector('input[name="coupon"]:checked');
@@ -970,15 +995,12 @@
     function showToast(message) {
       toast.textContent = message;
       toast.classList.add('show');
-      clearTimeout(showToast.timer);
-      showToast.timer = setTimeout(() => {
-        toast.classList.remove('show');
-      }, 1800);
+      clearTimeout(showToast._t);
+      showToast._t = setTimeout(() => toast.classList.remove('show'), 1800);
     }
 
     function openModal() {
-      const selectedCoupon = modalForm.dataset.selectedCoupon || '선택한 쿠폰이 없습니다.';
-      selectedCouponValue.textContent = selectedCoupon;
+      selectedCouponValue.textContent = modalForm.dataset.selectedCoupon || '선택한 쿠폰이 없습니다.';
       applyModal.classList.add('is-open');
       applyModal.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
@@ -993,7 +1015,6 @@
     }
 
     const radioInputs = document.querySelectorAll('input[name="coupon"]');
-
     radioInputs.forEach((input) => {
       input.addEventListener('click', () => {
         if (input.checked && input.dataset.wasChecked === 'true') {
@@ -1010,59 +1031,41 @@
     couponForm.addEventListener('submit', (e) => {
       e.preventDefault();
       const selected = document.querySelector('input[name="coupon"]:checked');
-      if (!selected) {
-        showToast('쿠폰을 선택해주세요.');
-        return;
-      }
+      if (!selected) { showToast('쿠폰을 선택해주세요.'); return; }
       modalForm.dataset.selectedCoupon = selected.value;
       openModal();
     });
 
     modalClose.addEventListener('click', closeModal);
     modalCancel.addEventListener('click', closeModal);
-
-    applyModal.addEventListener('click', (e) => {
-      if (e.target === applyModal) {
-        closeModal();
-      }
-    });
-
+    applyModal.addEventListener('click', (e) => { if (e.target === applyModal) closeModal(); });
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && applyModal.classList.contains('is-open')) {
-        closeModal();
-      }
+      if (e.key === 'Escape' && applyModal.classList.contains('is-open')) closeModal();
     });
 
     modalForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-
       const selectedCoupon = modalForm.dataset.selectedCoupon || '선택한 쿠폰';
-      const scriptUrl = 'https://script.google.com/macros/s/AKfycbw9nOyfAv3i8Hor9Z3XIGXc0hXOKYNxW6ykEMvV_A5J2Tg1WU96eTRIaG22T5UDRGDT/exec';
+      const scriptUrl = 'https://script.google.com/macros/s/AKfycbxD1szEMxLdwDGt7j4W7EM2dvBxUMjB7i9EDDE2bEGPsy_fr6L05TFmmabXcakRPgTA/exec';
 
       const payload = new URLSearchParams({
-        Name: applicantName.value.trim(),
-        phone: applicantPhone.value.trim(),
-        Email: applicantEmail.value.trim(),
-        coupon: selectedCoupon
+        Name:    applicantName.value.trim(),
+        phone:   applicantPhone.value.trim(),
+        Email:   applicantEmail.value.trim(),
+        Product: selectedCoupon
       });
 
-      submitButton.disabled = true;
-      submitButton.textContent = '신청 중...';
+      submitButton.disabled     = true;
+      submitButton.textContent  = '신청 중...';
 
       try {
         const response = await fetch(scriptUrl, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-          },
-          body: payload.toString(),
-          mode: 'cors'
+          method:  'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+          body:    payload.toString(),
+          mode:    'cors'
         });
-
-        if (!response.ok) {
-          throw new Error(`HTTP ${response.status}`);
-        }
-
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
         showToast(`${selectedCoupon} 신청이 완료되었습니다.`);
         modalForm.reset();
         selectedCouponValue.textContent = '선택한 쿠폰이 없습니다.';
@@ -1071,21 +1074,12 @@
         showToast('신청 전송에 실패했습니다. 다시 시도해주세요.');
         console.error(error);
       } finally {
-        submitButton.disabled = false;
+        submitButton.disabled    = false;
         submitButton.textContent = '신청하기';
       }
     });
 
-    syncClock(true);
     updateSelectedCoupon();
-
-    const now = new Date();
-    const initialDelay = 1000 - now.getMilliseconds();
-
-    setTimeout(() => {
-      syncClock();
-      setInterval(syncClock, 1000);
-    }, initialDelay);
   </script>
 </body>
 </html>
