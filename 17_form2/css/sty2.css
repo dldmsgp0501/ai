@@ -1,0 +1,49 @@
+@charset "utf-8";
+body{
+    font-family: "맑은 고딕";
+    background: #fff;
+    color: #333;
+}
+*{padding: 0;
+    box-sizing: border-box;
+}
+li{
+    background: #eeeeee;
+    list-style: none;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+form legend{
+    color: #B09278;
+}
+form fieldset{
+    padding: 20px;
+    border: 1px solid #CAA76D;
+}
+form .tel{
+    width: 48px;
+    text-align: center;
+}
+.bla{
+    background: #000;
+    color: #fff;
+    width: 100px;
+    text-align: center;
+}
+form{
+    margin-bottom: 30px;
+    width: 780px;
+}
+input{
+    height: 24px;
+}
+.memo{
+    width: 370px;
+    height: 37px;
+}
+.radio{
+    vertical-align: center;
+}
+.nu{
+    text-align: right;
+}
