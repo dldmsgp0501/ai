@@ -41,8 +41,9 @@ input{
     width: 370px;
     height: 37px;
 }
-.radio{
-    vertical-align: center;
+form fieldset ul li .radio{
+    vertical-align: middle;
+
 }
 .nu{
     text-align: right;
