@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>레이아웃 구현</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      min-width: 1200px;
+      background: #e6e6e6;
+      font-family: Arial, sans-serif;
+    }
+
+    .wrap { width: 100%; }
+
+    /* header */
+    header {
+      width: 1200px;
+      height: 150px;
+      margin: 0 auto;
+      background: #f0009a;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0;
+    }
+
+    .header-box {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .h1 {
+      width: 350px;
+      height: 60px;
+      background: #ffb3da;
+    }
+
+    .h2 {
+      width: 350px;
+      height: 70px;
+      background: #ff80c1;
+    }
+
+    .h3 {
+      width: 350px;
+      height: 90px;
+      background: #ff4da8;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: stretch;
+    }
+
+    .h3-child {
+      width: 100%;
+      height: 40px;
+      background: #ff99cc;
+    }
+
+    .h1 { background: #ffb3da; }
+    .h2 { background: #ff80c1; }
+    .h3 { background: #ff4da8; }
+
+    /* banner */
+    .banner {
+      width: 100%;
+      height: 450px;
+      background: #08b287;
+    }
+
+    /* main */
+    main {
+      width: 1200px;
+      min-height: 600px;
+      margin: 0 auto;
+      background: #ffffff;
+    }
+
+    .box1, .box2, .box3, .box4, .box5 { width: 100%; }
+
+    .box1 { height: 1000px; background: #ffe0e0; }
+    .box2 { height: 600px; background: #fff1b8; }
+    .box3 { height: 1000px; background: #d9f7ff; }
+    .box4 { height: 200px; background: #d9ffd6; }
+    .box5 { height: 1000px; background: #eadbff; }
+
+    /* footer */
+    footer {
+      width: 1200px;
+      height: 200px;
+      margin: 0 auto;
+      background: #5b00d6;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-box {
+      height: 125px;
+      background: #7d4dff;
+    }
+
+    footer .footer-box:nth-child(1) {
+      width: 350px;
+    }
+
+    footer .footer-box:nth-child(2) {
+      width: 775px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <header>
+      <div class="header-box h1"></div>
+      <div class="header-box h2"></div>
+      <div class="header-box h3">
+      <div class="h3-child"></div>
+      <div class="h3-child"></div>
+      </div>
+    </header>
+
+    <section class="banner"></section>
+
+    <main>
+      <div class="box1"></div>
+      <div class="box2"></div>
+      <div class="box3"></div>
+      <div class="box4"></div>
+      <div class="box5"></div>
+    </main>
+
+    <footer>
+      <div class="footer-box"></div>
+      <div class="footer-box"></div>
+    </footer>
+
+  </div>
+</body>
+</html>
