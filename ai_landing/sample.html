@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1103, initial-scale=1.0" />
+  <title>커넥츠가 미러리스 밀어줄게</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: "Noto Sans KR", "Apple SD Gothic Neo", Arial, sans-serif;
+      background: #ffffff;
+      color: #222;
+    }
+
+    .page {
+      width: 1103px;
+      margin: 0 auto;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .hero {
+      position: relative;
+      height: 720px;
+      /* animal leather-like texture (organic, uneven grain) */
+      background:
+        radial-gradient(1200px 600px at 50% -10%, rgba(255,255,255,0.08), transparent 60%),
+        radial-gradient(800px 500px at 20% 30%, rgba(255,255,255,0.05), transparent 55%),
+        radial-gradient(900px 600px at 80% 40%, rgba(0,0,0,0.45), transparent 60%),
+        radial-gradient(300px 200px at 30% 70%, rgba(255,255,255,0.06), transparent 70%),
+        radial-gradient(260px 180px at 65% 75%, rgba(0,0,0,0.35), transparent 70%),
+        /* irregular pores */
+        repeating-radial-gradient(circle at 0 0, rgba(255,255,255,0.02) 0 1px, rgba(0,0,0,0.03) 1px 3px),
+        /* base tone */
+        linear-gradient(180deg, #1b1b1d 0%, #121214 45%, #0e0e10 100%);
+      color: #fff;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 14% 16%, rgba(255,255,255,0.07), transparent 28%),
+        radial-gradient(circle at 50% 30%, rgba(255,255,255,0.03), transparent 35%),
+        radial-gradient(circle at 85% 12%, rgba(255,255,255,0.08), transparent 18%);
+      mix-blend-mode: screen;
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      padding: 22px 52px 0;
+      height: 100%;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: rgba(255,255,255,0.88);
+      letter-spacing: -0.2px;
+    }
+
+    .topbar-left, .topbar-right {
+      display: flex;
+      gap: 26px;
+      align-items: center;
+    }
+
+    .brand {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.6px;
+    }
+
+    .hero-copy {
+      text-align: center;
+      margin-top: 112px;
+    }
+
+    .hero-copy .accent {
+      display: block;
+      font-size: 66px;
+      line-height: 1;
+      color: #7a24ff;
+      font-weight: 700;
+      letter-spacing: -2.6px;
+      margin-bottom: 10px;
+    }
+
+    .hero-copy .main {
+      display: block;
+      font-size: 74px;
+      line-height: 1.06;
+      font-weight: 300;
+      letter-spacing: -3px;
+    }
+
+    .hero-copy .sub {
+      margin-top: 18px;
+      font-size: 20px;
+      color: rgba(255,255,255,0.86);
+      letter-spacing: -0.5px;
+    }
+
+    .hero-products {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 80px;
+      width: 820px;
+      height: auto;
+      pointer-events: none;
+      text-align: center;
+    }
+    .hero-products img {
+      width: 100%;
+      height: auto;
+      display: block;
+      filter: drop-shadow(0 30px 40px rgba(0,0,0,0.5));
+    }
+
+    .hero-floor {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 132px;
+      background: #ffffff;
+      z-index: 1;
+    }
+
+    .hero-product-image {
+      position: absolute;
+      left: 50%;
+      top: 538px; /* 검정 영역 경계선 위치 */
+      transform: translate(-50%, -50%);
+      width: 930px;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    .hero-product-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+      filter: drop-shadow(0 28px 36px rgba(0,0,0,0.45));
+    }
+
+    .hero-floor {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 132px;
+      background: #ffffff;
+      z-index: 1;
+    }
+
+    .content-top {
+      position: relative;
+      background: #fff;
+      padding: 72px 0 56px;
+      text-align: center;
+    }
+
+    .content-top h2 {
+      margin: 0;
+      font-size: 36px;
+      font-weight: 400;
+      color: #5d5d5d;
+      letter-spacing: -1.5px;
+    }
+
+    .content-top p.lead {
+      width: 660px;
+      margin: 22px auto 0;
+      font-size: 13px;
+      line-height: 2;
+      color: #979797;
+      letter-spacing: -0.2px;
+    }
+
+    .visual-section {
+      position: relative;
+      background: #ffffff;
+      padding: 0 0 82px;
+      overflow: visible;
+    }
+
+    .visual-section::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      transform: none;
+      top: 254px;
+      bottom: 0;
+      background:
+        linear-gradient(to top right, #a88cd9 0%, #b8dede 25%, #99cccc 55%, #99cccc 100%),
+        radial-gradient(circle at 30% 70%, rgba(255,255,255,0.15), transparent 60%),
+        radial-gradient(circle at 80% 20%, rgba(255,255,255,0.12), transparent 60%);
+      z-index: 0;
+    }
+
+    /* 콘텐츠가 그라디언트 위로 올라오도록 */
+    .visual-wrap,
+    .section-note,
+    .steps,
+    .foot-copy {
+      position: relative;
+      z-index: 2;
+    }
+
+    .visual-top-gap {
+      height: 116px;
+      background: #fff;
+    }
+
+    .visual-wrap {
+      position: relative;
+      width: 800px;
+      margin: -78px auto 0;
+      z-index: 2;
+    }
+
+    .visual-card {
+      width: 100%;
+      position: relative;
+      width: 100%;
+      height: 432px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.08)),
+        linear-gradient(135deg, #9fc4e1 0%, #f0cabc 48%, #88a0be 100%);
+      border: 5px solid rgba(255,255,255,0.78);
+      box-shadow: 0 10px 26px rgba(0,0,0,0.18);
+      overflow: hidden;
+    }
+
+    
+
+    
+    .play-btn::before {
+      content: "";
+      position: absolute;
+      left: 27px;
+      top: 20px;
+      width: 0;
+      height: 0;
+      border-top: 12px solid transparent;
+      border-bottom: 12px solid transparent;
+      border-left: 18px solid rgba(255,255,255,0.92);
+    }
+
+    .side-arrow {
+      position: absolute;
+      top: 50%;
+      width: 34px;
+      height: 34px;
+      border-top: 5px solid rgba(255,255,255,0.82);
+      border-right: 5px solid rgba(255,255,255,0.82);
+      opacity: 0.8;
+      
+    }
+    .side-arrow.left {
+      left: -40px;
+      transform: translateY(-50%) rotate(-135deg);
+    }
+    .side-arrow.right {
+      right: -40px;
+      transform: translateY(-50%) rotate(45deg);
+    }
+
+    .video-label {
+      position: absolute;
+      right: -116px;
+      top: 150px;
+      color: #ff34be;
+      font-size: 22px;
+      font-style: italic;
+      white-space: nowrap;
+    }
+
+    .section-note {
+      width: 800px;
+      margin: 30px auto 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      padding: 0;
+      font-size: 13px;
+      color: rgba(255,255,255,0.88);
+      letter-spacing: 2px;
+      text-align: left;
+      line-height: 1;
+    }
+
+    .section-note::before {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: rgba(255,255,255,0.45);
+    }
+
+    .section-note::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: rgba(255,255,255,0.45);
+      transform: translateY(1px);
+    }
+
+    
+
+    .steps {
+      width: 800px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 200px);
+      background: rgba(66,73,113,0.56);
+      backdrop-filter: blur(2px);
+      color: #fff;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+
+    .step {
+      width: 200px;
+      height: 200px;
+      padding: 22px 18px 24px;
+      position: relative;
+    }
+
+    /* arrow next to STEP text */
+    .step .num {
+      position: relative;
+    }
+
+    .step:not(:last-child) .num::after {
+      content: "";
+      position: absolute;
+      right: -18px;
+      top: 50%;
+      transform: translateY(-50%) rotate(45deg);
+      width: 10px;
+      height: 10px;
+      border-top: 2px solid rgba(255,255,255,0.7);
+      border-right: 2px solid rgba(255,255,255,0.7);
+    }
+
+    .step:last-child { border-right: 0; }
+
+    .step .num {
+      font-size: 27px;
+      color: rgba(255,255,255,0.82);
+      font-weight: 300;
+      margin-bottom: 14px;
+      letter-spacing: -1px;
+    }
+
+    .step .desc {
+      font-size: 16px;
+      font-weight: 300;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.85);
+      letter-spacing: -0.2px;
+    }
+
+    .foot-copy {
+      width: 800px;
+      margin: 26px auto 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 20px;
+    }
+
+    .foot-copy-text {
+      flex: 1;
+    }
+
+    .foot-copy-text h4 {
+      margin: 0 0 8px;
+      font-size: 16px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.9);
+      line-height: 1.6;
+    }
+
+    .foot-copy-text p {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.76);
+      letter-spacing: -0.2px;
+    }
+
+    .action-btn {
+      width: 160px;
+      height: 40px;
+      border: 0;
+      background: #6600ff;
+      color: #fff;
+      font-size: 12px;
+      cursor: pointer;
+      font-weight: 700;
+      border-radius: 4px;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 28px;
+      transform: translateX(-50%) translateY(20px);
+      background: rgba(20,20,24,0.92);
+      color: #fff;
+      padding: 12px 18px;
+      font-size: 14px;
+      border-radius: 999px;
+      opacity: 0;
+      pointer-events: none;
+      transition: 0.25s ease;
+      z-index: 30;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <section class="hero">
+      <div class="hero-inner">
+        <div class="topbar">
+          <div class="topbar-left">
+            <span>광고주센터</span>
+            <span>공지사항</span>
+            <span>고객센터</span>
+          </div>
+          <div class="brand">Conects</div>
+          <div class="topbar-right">
+            <span>로그인 / 회원가입</span>
+            <span>⌕</span>
+          </div>
+        </div>
+
+        <div class="hero-copy">
+          <span class="accent">커넥츠가</span>
+          <span class="main">미러리스를밀어줄게</span>
+          <div class="sub">매일 밤 10시, 선착순 100% 증정</div>
+        </div>
+
+        <div class="hero-product-image">
+          <img src="./img/image (4).png" alt="바나나맛 우유, 도서, 카메라, 숙박권 상품 이미지" />
+        </div>
+      </div>
+      <div class="hero-floor"></div>
+    </section>
+
+    <section class="content-top">
+      <h2>소중한 경험을 공유하는 여러분을 커넥츠가 응원합니다.</h2>
+      <p class="lead">
+        프레임과 감성으로 좋은 세상을 기록하고 공유하기 위해 시작된 작은 이벤트입니다.<br/>
+        커뮤니티 글과 공유를 통해 새로운 사람을 만나고 일상을 기록하는 그 설렘까지 함께 담아보세요.<br/>
+        함께 남긴 기록이 또 다른 누군가에게 작은 영감이 될 수 있는 프로젝트입니다.
+      </p>
+    </section>
+
+    <section class="visual-section">
+      <div class="visual-top-gap"></div>
+      <div class="visual-wrap">
+        <div class="side-arrow left"></div>
+        <div class="side-arrow right"></div>
+                <div class="visual-card">
+          <iframe width="100%" height="100%" src="https://www.youtube.com/embed/ucEsz3isqk8?si=JVM6WgCNOtDKW1wq" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+      </div>
+
+      <div class="section-note">이벤트 참여방법</div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="num">STEP 1</div>
+          <div class="desc">로그인을 해주세요.<br/>(비회원일 경우<br/>회원가입을 해주세요)</div>
+        </div>
+        <div class="step">
+          <div class="num">STEP 2</div>
+          <div class="desc">매일 밤 9시 50분에 <br/>공개되는 문제를 검색!<br/>정답을 찾아주세요.</div>
+        </div>
+        <div class="step">
+          <div class="num">STEP 3</div>
+          <div class="desc">밤 10시 정각,<br/>원하는 상품을 고른 후<br/>정답을 빠르게 제출!</div>
+        </div>
+        <div class="step">
+          <div class="num">STEP 4</div>
+          <div class="desc">10시 30분에 공지사항<br/>당첨자 발표 게시판을 <br/>확인해주세요.</div>
+        </div>
+      </div>
+
+      <div class="foot-copy">
+        <div class="foot-copy-text">
+          <h4>단, 미러리스의 경우 평론가 등급의 회원에게만 증정됩니다. <br/></h4>
+          <p>리뷰를 하는 데에 있어 도움이 될 수 있는 분들에게 드리기 위하여 선착순안에 참여하셔도,<br/>평론가 등급이 아닐 경우 당첨에 제외됩니다.</p>
+        </div>
+        <button class="action-btn" id="applyBtn">평론가 신청</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="toast" id="toast">버튼 동작 예시입니다. 원하는 링크나 모달로 연결해 수정할 수 있어요.</div>
+
+  <script>
+    const toast = document.getElementById('toast');
+    const showToast = (message) => {
+      toast.textContent = message;
+      toast.classList.add('show');
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(() => toast.classList.remove('show'), 2000);
+    };
+
+    
+    });
+
+    document.getElementById('applyBtn').addEventListener('click', () => {
+      showToast('신청 버튼 클릭 완료. 원하는 폼이나 페이지로 연결 가능합니다.');
+    });
+  </script>
+</body>
+</html>
