@@ -1,0 +1,43 @@
+@charset "utf-8";
+body{
+    font-family: "맑은 고딕";
+}
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.imgbox{
+    width: 400px;
+    height: 400px;
+}
+img{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+.movie_wrap{
+    width: 1216px;
+    height: 1016px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin: 0;
+}
+.movie{
+    width: 600px;
+    height: 500px;
+}
+video{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+.yotube{
+    width: 800px;
+    height: 600px;
+}
+.yotube{
+    width: 100%;
+    height: 100%;
+}
