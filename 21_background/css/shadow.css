@@ -1,0 +1,25 @@
+@charset "utf-8";
+body{
+
+}
+h1{
+    text-shadow: 4px 4px 5px gray;
+}
+h2{
+    font-size: 90px;
+    color: #fff;
+    text-shadow: 0 0 2px red, 0 0 6px blue, 0 0 10px green;
+}
+div .box{
+    width: 200px;
+    height: 200px;
+    background-color: gold;
+    box-shadow: 10px 10px 3px gray;
+    border-radius: 200px;
+}
+.gra1{
+    width: 600px;
+    height: 200px;
+    background-image: linear-gradient( to right, red,yellow,blue);
+    background-image: radial-gradient( to right, red,yellow,blue);
+}

@@ -1,0 +1,28 @@
+@charset "utf-8";
+.box{
+    width: 1000px;
+    height: 600px;
+    border: 10px solid red;
+    margin: 0;
+    background-image: url(../img/icon\ \(1\)\ \(1\).png);
+    background-repeat: repeat-x;
+    background-repeat: repeat-y;
+    background-repeat: no-repeat;
+    /* 배경을 원하는 위치에 배치 */
+    background-position: 50px 100px;
+    background-position: 50% 50%;
+    background-position: right bottom;
+    /* 배경으로 이미지 삽입시 크기 조절시  */
+    background-size: 64px 64px;
+    background-color: green;
+}
+
+/* 배경이미지 삽입은 css로 */
+.box1{
+    width: 1000px;
+    height: 600px;
+    border: 10px solid red;
+    margin: 0;
+    background: green url("../img/icon\ \(1\)\ \(1\).png") no-repeat right;
+    background-size: 64px 64px;
+}
