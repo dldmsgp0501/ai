@@ -1,0 +1,22 @@
+@charset "utf-8";
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+div{
+    width: 540px;
+    height: 260px;
+    background: #fff;
+    margin: auto;
+    padding: 36px;
+    display: flex;
+    justify-content: space-between;
+}
+div h3{
+    font-size: 15px;
+    width: 334px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
