@@ -133,8 +133,8 @@
     }
 
     .icon {
-      width: 19px;
-      height: 19px;
+      width: 17px;
+      height: 17px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -148,7 +148,7 @@
     }
 
     .icon.phone { border-radius: 50%; }
-    .icon.brand { background: #ddd; }
+    .icon.brand { background: #ffffff; }
     .icon.menu { background: #bbb; }
     .icon.cart { border-radius: 3px; }
 
@@ -166,7 +166,14 @@
     .banner {
       width: 100%;
       height: 450px;
-      background: #08b287;
+      overflow: hidden;
+    }
+
+    .banner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
 
     /* main */
@@ -191,9 +198,134 @@
       padding: 40px 0;
       margin-top: 0;
     }
-    .box3 { height: 1000px; background: #d9f7ff; }
-    .box4 { height: 200px; background: #d9ffd6; }
-    .box5 { height: 1000px; background: #eadbff; }
+    .box3 {
+      height: auto; /* 콘텐츠에 맞게 */
+      padding-bottom: 50px; /* 아래 50px 여백 */
+      background: #ffffff;
+    }
+
+    .box3 .content-box {
+      padding: 0;
+    }
+    .box4 {
+      height: auto;
+      background: transparent;
+      padding: 40px 0;
+    }
+
+    .box4 .content-box {
+      padding: 0; /* 좌우 패딩 제거 → 끝까지 붙이기 */
+    }
+
+    .banner-list {
+      display: flex;
+      gap: 16px;
+    }
+
+    .banner-item {
+      width: calc((100% - 32px) / 3);
+      height: 150px;
+      flex: 0 0 calc((100% - 32px) / 3);
+    }
+    .box5 {
+      height: auto;
+      background: transparent;
+      padding: 40px 0 0;
+    }
+
+    .box5 .content-box {
+      padding: 0 16px;
+    }
+
+    .md-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin: 28px 0 36px;
+      flex-wrap: wrap;
+    }
+
+    .md-tab {
+      height: 48px;
+      padding: 0 24px;
+      border: none;
+      border-radius: 999px;
+      background: #f1f1f1;
+      color: #333;
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .md-tab.active {
+      background: #0b5d1e;
+      color: #fff;
+    }
+
+    .md-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px 16px;
+    }
+
+    .md-card {
+      width: 280px;
+      flex: 0 0 280px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .md-thumb {
+      width: 280px;
+      height: 364px;
+      overflow: hidden;
+      background: #ffffff;
+    }
+
+    .md-info {
+      padding-top: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .md-badge-row {
+      min-height: 21px;
+      display: flex;
+      gap: 6px;
+    }
+
+    .md-name {
+      font-size: 16px;
+      line-height: 1.2;
+      font-weight: 700;
+      color: #111;
+    }
+
+    .md-desc {
+      font-size: 14px;
+      line-height: 1.2;
+      color: #7a746f;
+    }
+
+    .md-price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+    }
+
+    .md-discount {
+      color: #df2c2c;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .md-price {
+      color: #111;
+      font-size: 16px;
+      font-weight: 600;
+    }
 
     .content-box {
       width: 1200px;
@@ -247,7 +379,7 @@
       position: relative;
       width: 280px;
       height: 380px;
-      background: #f3f0eb;
+      background: #ffffff;
       overflow: hidden;
     }
 
@@ -311,7 +443,7 @@
       object-fit: cover;
       object-position: center;
       display: block;
-      background: #f3f0eb;
+      background: #ffffff;
     }
 
     .thumb-placeholder {
@@ -398,7 +530,7 @@
 
     .card-name {
       font-size: 16px;
-      line-height: 1.2;
+      line-height: 1.1;
       font-weight: 700;
       margin-bottom: 0;
       color: #111;
@@ -407,7 +539,7 @@
 
     .card-desc {
       font-size: 14px;
-      line-height: 1.2;
+      line-height: 1.1;
       color: #7a746f;
       margin-bottom: 0;
       min-height: 0;
@@ -439,11 +571,209 @@
       margin-top: -2px;
     }
 
+    /* box3 recommend */
+    .img-placeholder {
+      width: 100%;
+      height: 100%;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #aaa;
+      font-size: 14px;
+    }
+
+    .img-placeholder.small {
+      font-size: 12px;
+    }
+    .recommend-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin: 24px 0 32px;
+    }
+
+    .tab {
+      padding: 10px 18px;
+      border-radius: 999px;
+      border: none;
+      background: #F5F5F5;
+      font-size: 14px;
+      cursor: pointer;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .tab.active {
+      background: #0b5d1e;
+      color: #fff;
+    }
+
+    .recommend-wrap {
+      display: flex;
+      gap: 16px;
+    }
+
+    .recommend-left {
+      width: 470px;
+      height: 489px;
+      flex: 0 0 470px;
+      position: relative;
+    }
+
+    
+    
+
+    
+    .recommend-left img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .recommend-right {
+      width: 714px;
+      flex: 0 0 714px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .recommend-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #F5F5F5;
+      padding: 0 16px;
+      width: 714px;
+      height: 147px;
+    }
+
+    .recommend-top h3 {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .recommend-top p {
+      font-size: 14px;
+      color: #666;
+      line-height: 1.4;
+    }
+
+    .recommend-illust {
+      width: 192px;
+      height: 147px;
+      background: #ffffff;
+    }
+
+    .recommend-items {
+      display: flex;
+      gap: 13px;
+    }
+
+    .recommend-item {
+      width: 132px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .mini-card-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 23px;
+      padding: 0 8px;
+      margin: 16px 0 10px;
+      border-radius: 4px;
+      background: #fde8be;
+      color: #f29a1f;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1;
+      width: fit-content;
+    }
+
+    .mini-card-title {
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.2;
+      color: #111;
+      margin-bottom: 8px;
+      white-space: nowrap;
+    }
+
+    .mini-card-desc {
+      font-size: 14px;
+      line-height: 1.2;
+      color: #7a746f;
+      margin-bottom: 10px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .mini-card-price {
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.1;
+      color: #111;
+    }
+
+    .mini-card {
+      width: 130px;
+      height: 130px;
+      background: #ffffff;
+      position: relative;
+    }
+
+    .mini-card::after {
+      content: "";
+      position: absolute;
+      right: 8px;
+      bottom: 8px;
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: rgba(95,95,95,0.9) url("data:image/svg+xml;utf8,\
+        <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'>\
+          <path d='M6 9h12l-1 10H7L6 9Z' stroke='white' stroke-width='2'/>\
+          <path d='M9 9V7a3 3 0 1 1 6 0v2' stroke='white' stroke-width='2'/>\
+        </svg>") center/24px 24px no-repeat;
+    }
+
+    
+
+    .mini-card .bag-handle {
+      position: absolute;
+      right: 16px;
+      bottom: 22px;
+      width: 10px;
+      height: 6px;
+      border: 2px solid #fff;
+      border-bottom: 0;
+      border-radius: 6px 6px 0 0;
+      z-index: 2;
+    }
+
+    .recommend-btn {
+      margin-top: auto;
+      width: 318px;
+      height: 48px;
+      border: 1px solid #0b5d1e;
+      background: #fff;
+      color: #0b5d1e;
+      border-radius: 6px;
+      cursor: pointer;
+      align-self: center;
+    }
+
     /* footer */
     footer {
+      margin-top: 20px;
       width: 1200px;
       min-height: 200px;
-      margin: 0 auto;
+      margin-left: auto;
+      margin-right: auto;
       background: #ffffff;
       display: flex;
       justify-content: space-between;
@@ -458,6 +788,9 @@
 
     .footer-right {
       width: 760px;
+      display: flex;
+      flex-direction: column;
+      gap: 0; /* 전체 간격 촘촘하게 */
     }
 
     .footer-title {
@@ -465,7 +798,7 @@
       line-height: 1.4;
       font-weight: 700;
       color: #111;
-      margin-bottom: 4px;
+      margin-bottom: 0;
     }
 
     .footer-phone {
@@ -473,16 +806,16 @@
       line-height: 1;
       font-weight: 700;
       color: #111;
-      margin-bottom: 4px;
+      margin-bottom: 0;
       letter-spacing: -0.5px;
     }
 
     .footer-email {
       font-size: 13px;
-      line-height: 1.2;
+      line-height: 1.4;
       font-weight: 700;
       color: #111;
-      margin-bottom: 10px;
+      margin-bottom: 24px;
     }
 
     .footer-time,
@@ -492,29 +825,34 @@
     .footer-links,
     .footer-copy {
       font-size: 12px;
-      line-height: 1.2;
+      line-height: 1.1; /* 줄간격 줄임 */
       font-weight: 600;
       color: #7f7f7f;
     }
 
     .footer-company-name {
       font-size: 13px;
-      line-height: 1.2;
+      line-height: 1.1;
       font-weight: 700;
       color: #8c8c8c;
-      margin-bottom: 14px;
+      margin-bottom: 18px; /* 간격 줄임 */
     }
 
     .footer-company-info {
       color: #555;
-      margin-bottom: 10px;
+      margin-bottom: 0;
       word-break: keep-all;
+    }
+
+    .footer-contact {
+      margin-bottom: 20px;
     }
 
     .footer-links {
       display: flex;
       gap: 6px;
-      margin-bottom: 2px;
+      margin-top: 0;
+      margin-bottom: 0;
       color: #b1b1b1;
     }
 
@@ -562,7 +900,9 @@
       </div>
     </header>
 
-    <section class="banner"></section>
+    <section class="banner">
+      <img src="./img/imgi_34_banner_e2141b90313ecebe50b44307aaff9170.jpg" alt="배너">
+    </section>
 
     <main>
       <div class="box1">
@@ -575,7 +915,7 @@
           <div class="card-list">
             <article class="card">
               <div class="card-thumb">
-                <img src="./img/imgi_237_ZIP_P_0214_A.png" class="thumb-img" alt="상품 이미지">
+                <img src="./img/1/imgi_237_ZIP_P_0214_A.png" class="thumb-img" alt="상품 이미지">
               </div>
               <div class="card-info">
                 <div class="badge-row"><span class="badge red">신제품</span></div>
@@ -588,7 +928,7 @@
 
             <article class="card">
               <div class="card-thumb">
-                <img src="./img/imgi_238_ZIP_P_0213_A.png" class="thumb-img" alt="상품 이미지">
+                <img src="./img/1/imgi_238_ZIP_P_0213_A.png" class="thumb-img" alt="상품 이미지">
               </div>
               <div class="card-info">
                 <div class="badge-row"><span class="badge red">신제품</span></div>
@@ -601,7 +941,7 @@
 
             <article class="card">
               <div class="card-thumb">
-                <img src="./img/imgi_239_main_5.jpg" class="thumb-img" alt="상품 이미지">
+                <img src="./img/1/imgi_239_main_5.jpg" class="thumb-img" alt="상품 이미지">
               </div>
               <div class="card-info">
                 <div class="badge-row"><span class="badge popular">인기</span><span class="badge yellow">맵지않음</span></div>
@@ -613,7 +953,7 @@
 
             <article class="card">
               <div class="card-thumb">
-                <img src="./img/imgi_240_main_37.jpg" class="thumb-img" alt="상품 이미지">
+                <img src="./img/1/imgi_240_main_37.jpg" class="thumb-img" alt="상품 이미지">
               </div>
               <div class="card-info">
                 <h3 class="card-name">한끼 한돈제육_완조리</h3>
@@ -624,7 +964,7 @@
 
             <article class="card">
               <div class="card-thumb">
-                <img src="./img/imgi_241_ZIP_P_8073_A.jpg" class="thumb-img" alt="상품 이미지">
+                <img src="./img/1/imgi_241_ZIP_P_8073_A.jpg" class="thumb-img" alt="상품 이미지">
               </div>
               <div class="card-info">
                 <div class="badge-row"><span class="badge red">신제품</span><span class="badge yellow">맵지않음</span></div>
@@ -636,7 +976,7 @@
 
             <article class="card">
               <div class="card-thumb">
-                <img src="./img/imgi_242_ZIP_P_8075_A.jpg" class="thumb-img" alt="상품 이미지">
+                <img src="./img/1/imgi_242_ZIP_P_8075_A.jpg" class="thumb-img" alt="상품 이미지">
               </div>
               <div class="card-info">
                 <div class="badge-row"><span class="badge red">신제품</span><span class="badge yellow">맵지않음</span></div>
@@ -648,7 +988,7 @@
 
             <article class="card">
               <div class="card-thumb">
-                <img src="./img/imgi_243_ZIP_P_8067_A.jpg" class="thumb-img" alt="상품 이미지">
+                <img src="./img/1/imgi_243_ZIP_P_8067_A.jpg" class="thumb-img" alt="상품 이미지">
               </div>
               <div class="card-info">
                 <div class="badge-row"><span class="badge red">신제품</span><span class="badge yellow">맵지않음</span></div>
@@ -660,7 +1000,7 @@
 
             <article class="card">
               <div class="card-thumb">
-                <img src="./img/imgi_244_ZIP_P_8066_A.jpg" class="thumb-img" alt="상품 이미지">
+                <img src="./img/1/imgi_244_ZIP_P_8066_A.jpg" class="thumb-img" alt="상품 이미지">
               </div>
               <div class="card-info">
                 <div class="badge-row"><span class="badge red">신제품</span><span class="badge yellow">맵지않음</span></div>
@@ -684,7 +1024,7 @@
             <article class="card">
               <div class="card-thumb">
                 <div class="thumb-circle">11%</div>
-                <img src="./img/imgi_183_1339_ZIP_P_0088_T.jpg" class="thumb-img" alt="상품 이미지">
+                <img src="./img/2/imgi_183_1339_ZIP_P_0088_T.jpg" class="thumb-img" alt="상품 이미지">
                 <div class="thumb-bag"></div>
               </div>
               <div class="card-info">
@@ -704,7 +1044,7 @@
             <article class="card">
               <div class="card-thumb">
                 <div class="thumb-circle">11%</div>
-                <img src="./img/imgi_184_1379_ZIP_P_1049_T_RE.jpg" class="thumb-img" alt="상품 이미지">
+                <img src="./img/2/imgi_184_1379_ZIP_P_1049_T_RE.jpg" class="thumb-img" alt="상품 이미지">
                 <div class="thumb-bag"></div>
               </div>
               <div class="card-info">
@@ -724,7 +1064,7 @@
             <article class="card">
               <div class="card-thumb">
                 <div class="thumb-circle">11%</div>
-                <img src="./img/imgi_185_1337_ZIP_P_0090_T.jpg" class="thumb-img" alt="상품 이미지">
+                <img src="./img/2/imgi_185_1337_ZIP_P_0090_T.jpg" class="thumb-img" alt="상품 이미지">
                 <div class="thumb-bag"></div>
               </div>
               <div class="card-info">
@@ -745,7 +1085,7 @@
             <article class="card">
               <div class="card-thumb">
                 <div class="thumb-circle">11%</div>
-                <img src="./img/imgi_186_1352_ZIP_P_0106_T_RE.jpg" class="thumb-img" alt="상품 이미지">
+                <img src="./img/2/imgi_186_1352_ZIP_P_0106_T_RE.jpg" class="thumb-img" alt="상품 이미지">
                 <div class="thumb-bag"></div>
               </div>
               <div class="card-info">
@@ -763,9 +1103,187 @@
         </div>
       </div>
 
-      <div class="box3"></div>
-      <div class="box4"></div>
-      <div class="box5"></div>
+      <div class="box3">
+        <div class="content-box">
+          <div class="section-title">
+            <h2>고객이 추천하는 찐 추천 반찬</h2>
+          </div>
+
+          <div class="recommend-tabs">
+            <button class="tab active">고*수님 추천</button>
+            <button class="tab">김*혜님 추천</button>
+            <button class="tab">장*영님 추천</button>
+            <button class="tab">원*미님 추천</button>
+          </div>
+
+          <div class="recommend-wrap">
+            <div class="recommend-left">
+              <img src="./img/3/cp_image_1.png" class="thumb-img" alt="">
+            </div>
+
+            <div class="recommend-right">
+              <div class="recommend-top">
+                <div>
+                  <h3>고*수님의 장바구니</h3>
+                  <p>매일 아침 차리는게 정말 일이었는데<br>금방 금방 준비해서<br>건강하게 먹을 수 있었어요!</p>
+                </div>
+                <div class="recommend-illust">
+                <img src="./img/3/imgi_58_cate_3.png" class="thumb-img" alt="">
+              </div>
+              </div>
+
+              <div class="recommend-items">
+                <div class="recommend-item">
+                  <div class="mini-card"><img src="./img/3/723_ZIP_P_5068_T.jpg" class="thumb-img" alt=""></div>
+                  <span class="mini-card-badge">맵지않음</span>
+                  <p class="mini-card-title">옥수수 버무리</p>
+                  <p class="mini-card-desc">믿고 먹일 수 있는 유...</p>
+                  <p class="mini-card-price">4,700원</p>
+                </div>
+                <div class="recommend-item">
+                  <div class="mini-card"><img src="./img/3/1422_ZIP_P_5150_T.jpg" class="thumb-img" alt=""></div>
+                  <span class="mini-card-badge">맵지않음</span>
+                  <p class="mini-card-title">새콤 오이무생채</p>
+                  <p class="mini-card-desc">아이들이 먹기 좋은 새...</p>
+                  <p class="mini-card-price">4,700원</p>
+                </div>
+                <div class="recommend-item">
+                  <div class="mini-card"><img src="./img/3/36_ZIP_P_5003_T.jpg" class="thumb-img" alt=""></div>
+                  <span class="mini-card-badge">맵지않음</span>
+                  <p class="mini-card-title">숙주나물무침</p>
+                  <p class="mini-card-desc">참기름으로 든든배하...</p>
+                  <p class="mini-card-price">4,700원</p>
+                </div>
+                <div class="recommend-item">
+                  <div class="mini-card"><img src="./img/3/31_ZIP_P_5001_T.jpg" class="thumb-img" alt=""></div>
+                  <span class="mini-card-badge">맵지않음</span>
+                  <p class="mini-card-title">시금치나물</p>
+                  <p class="mini-card-desc">향긋하게 무쳐 깊은 맛...</p>
+                  <p class="mini-card-price">4,700원</p>
+                </div>
+                <div class="recommend-item">
+                  <div class="mini-card"><img src="./img/3/71_ZIP_P_6001_T.jpg" class="thumb-img" alt=""></div>
+                  <span class="mini-card-badge">맵지않음</span>
+                  <p class="mini-card-title">감자채볶음</p>
+                  <p class="mini-card-desc">고소하면서 담백한 감...</p>
+                  <p class="mini-card-price">4,700원</p>
+                </div>
+              </div>
+
+              <button class="recommend-btn">장바구니에 한번에 담기</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="box4">
+        <div class="content-box">
+          <div class="banner-list">
+            <div class="banner-item"><img src="./img/4/imgi_16_pc_15.png" class="thumb-img" alt=""></div>
+            <div class="banner-item"><img src="./img/4/imgi_17_pc_wonder.png" class="thumb-img" alt=""></div>
+            <div class="banner-item"><img src="./img/4/imgi_18_pc_brand.jpg" class="thumb-img" alt=""></div>
+          </div>
+        </div>
+      </div>
+      <div class="box5">
+        <div class="content-box">
+          <div class="section-title">
+            <h2>MD추천반찬</h2>
+            <p>이번 주 가장 추천하는 제품만 골라드려요.</p>
+          </div>
+
+          <div class="md-tabs">
+            <button class="md-tab active">비빔밥</button>
+            <button class="md-tab">국 / 찌개 / 탕</button>
+            <button class="md-tab">어린이 반찬</button>
+            <button class="md-tab">볶음</button>
+            <button class="md-tab">무침</button>
+            <button class="md-tab">메인요리</button>
+            <button class="md-tab">조림</button>
+          </div>
+
+          <div class="md-grid">
+            <article class="md-card">
+              <div class="md-thumb"><img src="./img/5/imgi_245_muchim_8.jpg" class="thumb-img" alt=""></div>
+              <div class="md-info">
+                <div class="md-badge-row"><span class="badge red">신제품</span></div>
+                <h3 class="md-name">매콤 콩나물 무침</h3>
+                <p class="md-desc">참깨기름으로 아삭하게</p>
+                <div class="md-price-row"><span class="md-price">3,200원</span></div>
+              </div>
+            </article>
+
+            <article class="md-card">
+              <div class="md-thumb"><img src="./img/5/imgi_247_muchim_9.jpg" class="thumb-img" alt=""></div>
+              <div class="md-info">
+                <div class="md-badge-row"><span class="badge red">신제품</span></div>
+                <h3 class="md-name">새콤달콤 도라지 무침</h3>
+                <p class="md-desc">달큰한 도라지와 오이를 새콤하게</p>
+                <div class="md-price-row"><span class="md-price">5,800원</span></div>
+              </div>
+            </article>
+
+            <article class="md-card">
+              <div class="md-thumb"><img src="./img/5/imgi_250_fry_1.jpg" class="thumb-img" alt=""></div>
+              <div class="md-info">
+                <div class="md-badge-row"><span class="badge popular">인기</span></div>
+                <h3 class="md-name">미역줄기볶음</h3>
+                <p class="md-desc">바다의 채소 미역줄기</p>
+                <div class="md-price-row"><span class="md-price">2,800원</span></div>
+              </div>
+            </article>
+
+            <article class="md-card">
+              <div class="md-thumb"><img src="./img/5/imgi_255_208_ZIP_P_4020_A.jpg" class="thumb-img" alt=""></div>
+              <div class="md-info">
+                <div class="md-badge-row"></div>
+                <h3 class="md-name">알감자조림</h3>
+                <p class="md-desc">한입에 쏙 맛있는 알감자조림</p>
+                <div class="md-price-row"><span class="md-price">5,800원</span></div>
+              </div>
+            </article>
+
+            <article class="md-card">
+              <div class="md-thumb"><img src="./img/5/imgi_261_1833_ZIP_P_9396_A.jpg" class="thumb-img" alt=""></div>
+              <div class="md-info">
+                <div class="md-badge-row"><span class="badge red">신제품</span></div>
+                <h3 class="md-name">아이들 한우 비빔밥</h3>
+                <p class="md-desc">아이들도 맛있게 먹는 비빔밥 출시!</p>
+                <div class="md-price-row"><span class="md-discount">13%</span><span class="md-price">12,800원</span></div>
+              </div>
+            </article>
+
+            <article class="md-card">
+              <div class="md-thumb"><img src="./img/5/imgi_262_1830_ZIP_P_9393_A.jpg" class="thumb-img" alt=""></div>
+              <div class="md-info">
+                <div class="md-badge-row"><span class="badge red">신제품</span></div>
+                <h3 class="md-name">나물 비빔밥</h3>
+                <p class="md-desc">가심비 가득, 정성 가득 비빔밥</p>
+                <div class="md-price-row"><span class="md-price">10,800원</span></div>
+              </div>
+            </article>
+
+            <article class="md-card">
+              <div class="md-thumb"><img src="./img/5/imgi_263_2068_ZIP_P_9473_A.jpg" class="thumb-img" alt=""></div>
+              <div class="md-info">
+                <div class="md-badge-row"></div>
+                <h3 class="md-name">한우 비빔밥</h3>
+                <p class="md-desc">고기를 더해 더 맛스러워진</p>
+                <div class="md-price-row"><span class="md-price">12,800원</span></div>
+              </div>
+            </article>
+
+            <article class="md-card">
+              <div class="md-thumb"><img src="./img/5/imgi_264_2100_ZIP_P_9474_A.jpg" class="thumb-img" alt=""></div>
+              <div class="md-info">
+                <div class="md-badge-row"></div>
+                <h3 class="md-name">양념꼬막 비빔밥</h3>
+                <p class="md-desc">꼬막이 왔꼬막</p>
+                <div class="md-price-row"><span class="md-price">13,800원</span></div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
     </main>
 
     <footer>
@@ -782,7 +1300,7 @@
         <p class="footer-company-name">집반찬연구소</p>
         <p class="footer-company-info">인천광역시 서구 가석로 26(가좌동) 집반찬연구소&nbsp;&nbsp;&nbsp;대표자 : 박종철</p>
         <p class="footer-company-info">사업자등록번호 : 121-86-17743&nbsp;&nbsp;&nbsp;통신판매업 신고번호 : 제 2023-인천서구-3834 호&nbsp;&nbsp;&nbsp;개인정보보호책임자 : 정문채</p>
-        <p class="footer-company-info">제휴 문의 : zipbanchan@sannamchon.co.kr</p>
+        <p class="footer-company-info footer-contact">제휴 문의 : zipbanchan@sannamchon.co.kr</p>
         <div class="footer-links">
           <a href="#">집반찬연구소 소개</a>
           <span>|</span>
