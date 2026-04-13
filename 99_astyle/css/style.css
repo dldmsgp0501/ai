@@ -1,0 +1,123 @@
+@charset "utf-8";
+body{
+    font-family: "맑은 고딕","malgun gothic", sans-serif;
+}
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+li{
+    list-style: none;
+}
+a{
+    text-decoration: none;
+}
+header{
+    width: 1200px;
+    height: 100px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+header .gnb{
+    width: 600px;
+    height: 100px;
+}
+header .gnb>ul{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100px;
+}
+header .gnb >ul >li{
+    width: 100%;
+    border: 1px solid #333333;
+    text-align: center;
+    height: 50px;
+    line-height: 50px;
+    position: relative;
+}
+header .gnb >ul >li:hover{
+    background: #333;
+}
+header .gnb >ul >li:hover >a{
+    color: #fff;
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+header .gnb >ul >li >a{
+    color: #333333;
+}
+.gnb>ul>li>.depth2{
+    position: absolute;
+    width: 100%;
+    background: #fff;
+    left: 0;
+    top: 50;
+    text-align: center;
+    display: none;
+    border: 1px solid #333;
+}
+.gnb>ul>li>.depth2>li>a{
+    color: #333;
+}
+.gnb>ul>li:hover>.depth2{
+    display: flex;
+    flex-direction: column;
+}
+.gnb>ul>li>.depth2>li:hover{
+    background: #333;
+}
+header .gnb>ul>li>.depth2>li:hover >a{
+    color: #fff;
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+.slide{
+    width: 1200px;
+    height: 300px;
+    margin: auto;
+    background: forestgreen;
+}
+.contents{
+    width: 1200px;
+    height: 200px;
+    margin: auto;
+    background: darkcyan;
+    display: flex;
+}
+.contents .notice{
+    width: 400px;
+    height: 200px;
+}
+.contents .banner{
+    width: 400px;
+    height: 200px;
+}
+.contents .go{
+    width: 400px;
+    height: 200px;
+}
+footer{
+    width: 1200px;
+    height: 100px;
+    margin: auto;
+    background: darkblue;
+    display: flex;
+}
+footer .logo{
+    width: 200px;
+    height: 100px;
+}
+footer .copy{
+    width: 800px;
+    height: 100px;
+}
+footer .sns{
+    width: 200px;
+    height: 100px;
+}
