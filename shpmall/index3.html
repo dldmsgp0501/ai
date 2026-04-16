@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="./css/reset.css">
   <link rel="stylesheet" href="./css/common.css">
   <link rel="stylesheet" href="./css/main.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
   
 </head>
 <body>
@@ -99,9 +100,31 @@
 
 <div class="mobile-drawer-overlay"></div>
 
-    <section class="banner">
+    <!-- <section class="banner">
       <img src="./img/imgi_34_banner_e2141b90313ecebe50b44307aaff9170.jpg" alt="배너">
-    </section>
+    </section> -->
+    <div class="main-visual">
+    <div class="swiper mySwiper">
+      <div class="swiper-wrapper">
+
+        <!-- 슬라이드 5개 (이미지 교체해서 사용) -->
+        <div class="swiper-slide"><img src="./img/banner1.png"></div>
+        <div class="swiper-slide"><img src="./img/banner2 (2).png"></div>
+        <div class="swiper-slide"><img src="./img/banner3.png"></div>
+        <div class="swiper-slide"><img src="./img/banner4.png"></div>
+        <div class="swiper-slide"><img src="./img/banner5.png"></div>
+
+      </div>
+
+      <!-- 버튼 -->
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+
+      <!-- 페이지 -->
+      <div class="custom-pagination" id="pageCounter">1 / 5</div>
+
+    </div>
+  </div>
 
     <main>
       <div class="box1">
@@ -514,6 +537,29 @@
     </footer>
 
   </div>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script>
+    const swiper = new Swiper(".mySwiper", {
+      loop: true,
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+      },
+      on: {
+        slideChange: function () {
+          updatePagination(this);
+        }
+      }
+    });
+
+    function updatePagination(swiper) {
+      const total = 5;
+      let current = swiper.realIndex + 1;
+      document.getElementById("pageCounter").innerText = current + " / " + total;
+    }
+
+    updatePagination(swiper);
+  </script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
   function enableDragScroll(selector) {
