@@ -272,8 +272,8 @@ header {
 }
 
 .swiper-button-next {
-  left:408px !important;
-  right:auto !important;
+  left: 412px !important;
+  right: auto !important;
 }
 
 /* main */
@@ -293,15 +293,73 @@ main {
   margin-bottom: 0;
 }
 
-.box2 {
-  min-height: 600px;
-  background: transparent;
-  padding: 40px 0;
-  margin-top: 0;
+.box2 .cardBannerSwiper {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
 }
 
+.box2 .cardBannerSwiper .swiper-wrapper {
+  align-items: flex-start;
+}
+
+.box2 .cardBannerSwiper .swiper-slide {
+  width: calc((100% - 48px) / 4) !important;
+  height: auto !important;
+  flex-shrink: 0;
+}
+
+.box2 .cardBannerSwiper .card {
+  width: 100%;
+  flex: none;
+}
+
+.box2 .card-banner-prev,
+.box2 .card-banner-next {
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.9);
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.06);
+  top: 190px !important;
+  margin-top: 0 !important;
+  color: transparent !important;
+  z-index: 20 !important;
+}
+
+.box2 .card-banner-prev {
+  left: 8px !important;
+  right: auto !important;
+}
+
+.box2 .card-banner-next {
+  right: 8px !important;
+  left: auto !important;
+}
+
+.box2 .card-banner-prev::after,
+.box2 .card-banner-next::after {
+  font-size: 0 !important;
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-top: 2px solid #888;
+  border-right: 2px solid #888;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+
+.box2 .card-banner-prev::after {
+  transform: translate(-35%, -50%) rotate(-135deg);
+}
+
+.box2 .card-banner-next::after {
+  transform: translate(-65%, -50%) rotate(45deg);
+}
 .box3 {
   height: auto;
+  padding-top: 40px;
   padding-bottom: 50px;
   background: #ffffff;
 }
@@ -1102,6 +1160,34 @@ footer {
     min-width: 0;
   }
 
+  .main-visual {
+  height: 200px !important;
+}
+
+  .box2 .cardBannerSwiper {
+    overflow: visible;
+  }
+
+  .box2 .cardBannerSwiper .swiper-wrapper {
+    align-items: flex-start;
+  }
+
+  .box2 .cardBannerSwiper .swiper-slide {
+    width: auto !important;
+    height: auto !important;
+    display: flex;
+  }
+
+  .box2 .cardBannerSwiper .card {
+    width: 168px;
+    flex: 0 0 168px;
+    min-width: 168px;
+  }
+.swiper,
+.swiper-slide,
+.swiper-slide img {
+  height: 100% !important;
+}
   .logo-placeholder {
     width: 112px;
     height: 46px;
