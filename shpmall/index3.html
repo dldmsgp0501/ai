@@ -27,21 +27,77 @@
         <a href="./index3.html"><img src="./img/logo/imgi_13_logo_pc.svg" alt="로고"></a>
       </div>
       </div>
+<div class="header-right">
+  <div class="top-links">
+    <span>로그인</span>
+    <span>회원가입</span>
+    <span>내정보</span>
+  </div>
 
-      <div class="header-right">
-        <div class="top-links">
-          <span>로그인</span>
-          <span>회원가입</span>
-          <span>내정보</span>
-        </div>
-        <div class="menu-links">
-          <div class="menu-item"><span class="icon"><img src="./img/logo/imgi_28_icon-tel2.svg" alt="전화"></span><span>전화주문</span></div>
-          <div class="menu-item"><span class="icon"><img src="./img/logo/imgi_29_icon-document-d4d4d4-28.svg" alt="브랜드"></span><span>브랜드</span></div>
-          <div class="menu-item"><span class="icon"><img src="./img/logo/imgi_30_icon-list-d4d4d4-28.svg" alt="반찬보기"></span><span>반찬보기</span></div>
-          <div class="menu-item"><span class="icon"><img src="./img/logo/imgi_31_icon-cart-d4d4d4-28.svg" alt="장바구니"></span><span>장바구니</span></div>
-        </div>
-      </div>
+  <div class="menu-links">
+    <div class="menu-item">
+      <span class="icon"><img src="./img/logo/imgi_28_icon-tel2.svg" alt="전화"></span>
+      <span>전화주문</span>
+    </div>
+    <div class="menu-item">
+      <span class="icon"><img src="./img/logo/imgi_29_icon-document-d4d4d4-28.svg" alt="브랜드"></span>
+      <span>브랜드</span>
+    </div>
+    <div class="menu-item">
+      <span class="icon"><img src="./img/logo/imgi_30_icon-list-d4d4d4-28.svg" alt="반찬보기"></span>
+      <span>반찬보기</span>
+    </div>
+    <div class="menu-item">
+      <span class="icon"><img src="./img/logo/imgi_31_icon-cart-d4d4d4-28.svg" alt="장바구니"></span>
+      <span>장바구니</span>
+    </div>
+  </div>
+
+  <button class="mobile-menu-btn" type="button" aria-label="메뉴 열기">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+</div>
+<div class="mobile-drawer">
+  <div class="mobile-drawer-head">
+    <strong>MENU</strong>
+    <button class="mobile-drawer-close" type="button" aria-label="메뉴 닫기">×</button>
+  </div>
+
+  <div class="mobile-drawer-menu">
+    <a href="#">로그인</a>
+    <a href="#">회원가입</a>
+    <a href="#">내정보</a>
+    <a href="#">전화주문</a>
+    <a href="#">브랜드</a>
+    <a href="#">반찬보기</a>
+    <a href="#">장바구니</a>
+  </div>
+</div>
+
+<div class="mobile-drawer-overlay"></div>
+    
     </header>
+    <div class="mobile-drawer">
+  <div class="mobile-drawer-head">
+    <strong>MENU</strong>
+    <button class="mobile-drawer-close" type="button" aria-label="메뉴 닫기">×</button>
+  </div>
+  
+
+  <div class="mobile-drawer-menu">
+    <a href="#">로그인</a>
+    <a href="#">회원가입</a>
+    <a href="#">내정보</a>
+    <a href="#">전화주문</a>
+    <a href="#">브랜드</a>
+    <a href="#">반찬보기</a>
+    <a href="#">장바구니</a>
+  </div>
+</div>
+
+<div class="mobile-drawer-overlay"></div>
 
     <section class="banner">
       <img src="./img/imgi_34_banner_e2141b90313ecebe50b44307aaff9170.jpg" alt="배너">
@@ -458,5 +514,46 @@
     </footer>
 
   </div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  function enableDragScroll(selector) {
+    const sliders = document.querySelectorAll(selector);
+
+    sliders.forEach(function (slider) {
+      let isDown = false;
+      let startX = 0;
+      let scrollLeft = 0;
+
+      slider.addEventListener('mousedown', function (e) {
+        isDown = true;
+        slider.classList.add('dragging');
+        startX = e.pageX;
+        scrollLeft = slider.scrollLeft;
+      });
+
+      slider.addEventListener('mouseleave', function () {
+        isDown = false;
+        slider.classList.remove('dragging');
+      });
+
+      slider.addEventListener('mouseup', function () {
+        isDown = false;
+        slider.classList.remove('dragging');
+      });
+
+      slider.addEventListener('mousemove', function (e) {
+        if (!isDown) return;
+        e.preventDefault();
+        const walk = (e.pageX - startX) * 1.2;
+        slider.scrollLeft = scrollLeft - walk;
+      });
+    });
+  }
+
+  enableDragScroll('.card-list');
+  enableDragScroll('.recommend-items');
+  enableDragScroll('.md-grid');
+});
+</script>
 </body>
 </html>
