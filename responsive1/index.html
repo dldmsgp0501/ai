@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nature Skin Responsive</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    ul,
+    ol {
+      list-style: none;
+    }
+
+    body {
+      background: #d8c2b0;
+      color: #111;
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.65;
+    }
+
+    .wrap {
+      width: 100%;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 960px;
+      margin: 0 auto;
+      background: #f3f3f3;
+    }
+
+    .hero {
+      position: relative;
+      aspect-ratio: 960 / 420; /* PC에서 세로 영역 확장 */
+      background: url("./img/main_img02.png") center center / cover no-repeat;
+      overflow: visible; /* gnb가 잘리지 않도록 수정 */
+    }
+
+    .hero-logo {
+      position: absolute;
+      top: 50%;
+      right: 45px; /* 오른쪽에서 45px */
+      transform: translateY(-50%);
+      font-size: 33px;
+      line-height: 1;
+      font-style: italic;
+      font-weight: 500;
+      color: #111;
+      white-space: nowrap;
+    }
+
+    .gnb {
+      position: absolute;
+      left: 0;
+      bottom: 0; /* 헤더 내부에 완전히 붙이기 */
+      width: 100%;
+      background: rgba(206, 36, 34, 0.65);
+      z-index: 10;
+    }
+
+    .gnb-list {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 42px;
+    }
+
+    .gnb-list li {
+      flex: 1;
+    }
+
+    .gnb-list a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      color: #fff7e6;
+      font-size: 14px;
+      font-weight: 600;
+      text-align: center;
+      transition: background 0.3s;
+    }
+
+    .gnb-list li:hover a {
+      background: rgba(206, 36, 34, 1); /* 호버시 불투명 */
+    }
+
+    .content {
+      margin-top: 0;
+      padding: 10px 10px 22px;
+      background: #f3f3f3;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 28px;
+      line-height: 1.2;
+      font-style: italic;
+      margin-bottom: 10px;
+      color: #111;
+    }
+
+    .intro-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 236px;
+      column-gap: 18px;
+      align-items: start;
+    }
+
+    .text-box h2 {
+      font-size: 22px;
+      line-height: 1.2;
+      font-style: italic;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .text-box p {
+      font-size: 14px;
+      color: #222;
+      margin-bottom: 22px;
+    }
+
+    .text-box p:last-child {
+      margin-bottom: 0;
+    }
+
+    .side-images {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .side-images figure,
+    .gallery figure {
+      overflow: hidden;
+      background: #b6aa95;
+    }
+
+    .side-images figure {
+      aspect-ratio: 236 / 156;
+    }
+
+    .side-images img,
+    .gallery img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(100%);
+      transition: filter 0.3s;
+    }
+
+    .side-images figure:hover img,
+    .gallery figure:hover img {
+      filter: saturate(1.5);
+    }
+
+    .gallery {
+      display: none;
+    }
+
+    .gallery figure {
+      aspect-ratio: 276 / 184;
+    }
+
+    .footer {
+      background: #303038;
+      color: #ffffff; /* 텍스트 화이트로 변경 */
+      text-align: center;
+      font-size: 14px;
+      padding: 11px 16px 12px;
+    }
+
+    @media (max-width: 1024px) {
+      .container {
+        max-width: none;
+        width: calc(100% - 48px);
+      }
+
+      .hero {
+        aspect-ratio: 912 / 340; /* 태블릿에서 세로 영역 확장 */ /* 태블릿에서 다시 비율 기반으로 복구 */
+      }
+
+      .hero-logo {
+        top: 50%;
+        right: 45px;
+        font-size: 34px;
+      }
+
+      .gnb {
+        left: 0;
+        bottom: 0;
+        width: 100%;
+      }
+
+      .gnb-list {
+        min-height: 50px;
+      }
+
+      .gnb-list a {
+        min-height: 50px;
+        font-size: 19px;
+      }
+
+      .content {
+        padding: 24px 30px 24px;
+      }
+
+      .section-title {
+        font-size: 30px;
+        margin-bottom: 16px;
+      }
+
+      .intro-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+
+      .text-box h2 {
+        font-size: 21px;
+        margin-bottom: 10px;
+      }
+
+      .text-box p {
+        font-size: 16px;
+        margin-bottom: 24px;
+      }
+
+      .side-images {
+        flex-direction: row;
+        gap: 24px;
+      }
+
+      .side-images figure {
+        flex: 1;
+      }
+
+      .gallery {
+        display: none;
+      }
+
+      .footer {
+        font-size: 15px;
+        padding: 13px 16px;
+      }
+    }
+
+    @media (max-width: 767px) {
+      .hero {
+        height: auto; /* 태블릿에서 고정된 높이 초기화 */
+      }
+      .side-images {
+        flex-direction: column;
+      }
+
+      .container {
+        width: calc(100% - 32px);
+      }
+
+      .hero {
+        aspect-ratio: 493 / 587;
+        background-position: left center;
+      }
+
+      .hero-logo {
+        top: 23px;
+        right: 36px;
+        left: auto;
+        transform: none;
+        font-size: 32px;
+      }
+
+      .gnb {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: calc(100% - 80px);
+        transform: translate(-50%, -50%);
+        background: transparent;
+        padding: 0;
+      }
+
+      .gnb-list {
+        flex-direction: column;
+        gap: 10px;
+        min-height: auto;
+      }
+
+      .gnb-list li {
+        width: 100%;
+      }
+
+      .gnb-list a {
+        min-height: 42px;
+        border-radius: 10px;
+        background: rgba(206, 36, 34, 0.78);
+        font-size: 18px;
+      }
+
+      .content {
+        margin-top: 0;
+        padding: 16px 14px 28px;
+      }
+
+      .section-title {
+        font-size: 29px;
+        margin-bottom: 18px;
+      }
+
+      .text-box h2 {
+        font-size: 20px;
+        margin-bottom: 10px;
+      }
+
+      .text-box p {
+        font-size: 14px;
+        margin-bottom: 22px;
+      }
+
+      .gallery {
+        grid-template-columns: 1fr;
+        gap: 24px;
+        margin-top: 26px;
+        padding: 0;
+      }
+
+      .gallery figure {
+        aspect-ratio: 1 / 0.69;
+      }
+
+      .footer {
+        font-size: 13px;
+        padding: 14px 16px;
+      }
+    }
+
+    @media (max-width: 540px) {
+      .gnb {
+        width: calc(100% - 64px);
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 0;
+      }
+
+      .hero-logo {
+        right: 28px;
+        font-size: 29px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="container">
+      <header class="hero">
+        <h1 class="hero-logo">Nature Skin</h1>
+        <nav class="gnb">
+          <ul class="gnb-list">
+            <li><a href="#">Nature Skin</a></li>
+            <li><a href="#">Guide Info</a></li>
+            <li><a href="#">Reservation</a></li>
+            <li><a href="#">Custom</a></li>
+          </ul>
+        </nav>
+      </header>
+
+      <main class="content">
+        <h2 class="section-title">About Nature Skin</h2>
+
+        <section class="intro-grid">
+          <div class="text-box">
+            <h2>What is Aromatherapy</h2>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ratione dolor veniam cum sunt
+              ipsam, esse asperiores quas, sed eveniet, delectus ad! Rerum commodi assumenda iure
+              reiciendis distinctio laborum, quod odit.
+            </p>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita obcaecati, repellendus
+              incidunt voluptate, esse aque dolor ducimus ab pariatur architecto distinctio! Autem quia
+              labore necessitatibus aperiam accusamus. Repudiandae, iusto, accusantium.
+            </p>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit mollitia itaque eum libero ab
+              dignissimos nostrum facere illum necessitatibus! Deleniti illum quibusdam dignissimos
+              dolore earum fugiat pariatur, tempora nam sunt.
+            </p>
+          </div>
+
+          <div class="side-images">
+            <figure><img src="./img/subimg01.png" alt="아로마 오브제 이미지" /></figure>
+            <figure><img src="./img/subimg02.png" alt="꽃 이미지" /></figure>
+            <figure><img src="./img/subimg03.png" alt="플라워 오브제 이미지" /></figure>
+          </div>
+        </section>
+
+        <section class="gallery">
+          <figure><img src="./img/subimg01.png" alt="아로마 오브제 이미지" /></figure>
+          <figure><img src="./img/subimg02.png" alt="꽃 이미지" /></figure>
+          <figure><img src="./img/subimg03.png" alt="플라워 오브제 이미지" /></figure>
+        </section>
+      </main>
+
+      <footer class="footer">© Nature Skin.</footer>
+    </div>
+  </div>
+</body>
+</html>
