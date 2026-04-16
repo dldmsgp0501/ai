@@ -293,9 +293,12 @@ main {
   margin-bottom: 0;
 }
 
+.card-slider-wrap {
+  position: relative;
+}
 .box2 .cardBannerSwiper {
   width: 100%;
-  overflow: hidden;
+  overflow: hidden !important;
   position: relative;
 }
 
@@ -328,12 +331,12 @@ main {
 }
 
 .box2 .card-banner-prev {
-  left: 8px !important;
+  left: -20px !important;
   right: auto !important;
 }
 
 .box2 .card-banner-next {
-  right: 8px !important;
+  right: -20px !important;
   left: auto !important;
 }
 
