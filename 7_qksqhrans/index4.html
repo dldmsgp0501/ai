@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <label for="">출생월</label>
+    <select name="" id="">
+        <option value="">1월</option>
+        <option value="">2월</option>
+        <option value="">3월</option>
+        <option value="">4월</option>
+        <option value="">5월</option>
+        <option value="">6월</option>
+        <option value="">7월</option>
+        <option value="">8월</option>
+        <option value="">9월</option>
+    </select>
+    <label for="">출생일</label>
+    <select name="" id="">
+        <option value="">1일</option>
+        <option value="">1일</option>
+        <option value="">1일</option>
+        <option value="">1일</option>
+        <option value="">1일</option>
+        <option value="">1일</option>
+        <option value="">1일</option>
+        <option value="">1일</option>
+        <option value="">1일</option>
+        <option value="">1일</option>
+        <option value="">1일</option>
+        <option value="">1일</option>
+        <option value="">1일</option>
+        <option value="">1일</option>
+    </select>
+    <label for="">출생년도</label>
+    <select name="" id="">
+        <option value="">1900</option>
+        <option value="">2000</option>
+        <option value="">2000</option>
+        <option value="">2000</option>
+        <option value="">2000</option>
+        <option value="">2000</option>
+        <option value="">2000</option>
+        <option value="">2000</option>
+        <option value="">2000</option>
+        <option value="">2000</option>
+    </select>
+    <hr>
+    <label for="">출생월</label>
+    <script>
+        let output="<select>";
+            for(let i = 1; i <= 12; i++){
+                output = output + "<option>" + i + "월" +"</option>";
+            }
+            output = output + "</select>";
+            document.write(output);
+            </script>
+    <label for="">출생일</label>
+    <script>
+        let output2="<select>";
+            for(let i = 1; i <= 31; i++){
+                output2 = output2 + "<option>" + i + "일" +"</option>";
+            }
+            output2 = output2 + "</select>";
+            document.write(output2);
+        
+    </script>
+    <label for="">출생년도</label>
+    <script>
+        let output3="<select>";
+            for(let i = 1900; i <= 2026; i++){
+                output3 = output3 + "<option>" + i + "년도" +"</option>";
+            }
+            output3 = output3 + "</select>";
+            document.write(output3);
+        
+    </script>
+</body>
+</html>
