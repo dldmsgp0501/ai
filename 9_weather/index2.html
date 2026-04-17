@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>자전거 길</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #e8e8e8;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 24px 16px;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+  .phone-wrap {
+    width: 375px;
+    background: #fff;
+    border-radius: 48px;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.22), 0 0 0 10px #1a1a1a, 0 0 0 12px #333;
+    overflow: hidden;
+    position: relative;
+  }
+  .status-bar {
+    padding: 14px 24px 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+  }
+  .status-bar .time { font-size: 15px; font-weight: 600; color: #fff; }
+  .status-bar .icons { display: flex; gap: 6px; align-items: center; }
+  .status-bar .icons svg { fill: #fff; }
+  .scroll-area {
+    height: 780px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .scroll-area::-webkit-scrollbar { display: none; }
+
+  /* Hero 375x375 */
+  .hero {
+    position: relative;
+    width: 375px;
+    height: 375px;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: linear-gradient(140deg, #3eb8d6 0%, #52c9a4 45%, #2aa0c5 100%);
+  }
+  .hero > img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%; object-fit: cover;
+    display: block;
+  }
+  .hero-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.3) 100%);
+  }
+  .hero-text {
+    position: absolute;
+    left: 24px;
+    top: 50px;
+    z-index: 2;
+  }
+  .hero-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: #FF9500;
+    line-height: 1.5;
+    text-shadow: 0 1px 6px rgba(0,0,0,0.2);
+  }
+  .hero-sub {
+    font-size: 15px;
+    font-weight: 500;
+    color: #FF9500;
+    line-height: 1.5;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.15);
+  }
+  .hero-deco1 {
+    position: absolute; top: 28px; right: 28px;
+    width: 90px; height: 90px;
+    background: rgba(255,255,255,0.1); border-radius: 50%;
+  }
+  .hero-deco2 {
+    position: absolute; top: 68px; right: 68px;
+    width: 44px; height: 44px;
+    background: rgba(255,255,255,0.07); border-radius: 50%;
+  }
+
+  /* Info Panel */
+  .info-panel {
+    background: #f5f6f8;
+    padding: 14px 16px;
+    display: flex;
+    gap: 10px;
+    align-items: stretch;
+    border-bottom: 1px solid #eee;
+  }
+  .info-box {
+    flex: 1;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 4px 4px rgba(0,0,0,0.08);
+    padding: 12px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    min-height: 74px;
+  }
+  .info-box-icon { font-size: 20px; line-height: 1; }
+  .info-box-label { font-size: 11px; color: #999; font-weight: 500; white-space: nowrap; text-align: center; }
+  .info-box-value { font-size: 21px; font-weight: 800; color: #111; line-height: 1.1; }
+  .info-box-value span { font-size: 12px; font-weight: 400; color: #888; }
+  .info-box-sub { font-size: 11px; color: #777; text-align: center; line-height: 1.3; }
+
+  /* Section Title */
+  .section-title {
+    font-size: 15px; font-weight: 700; color: #111;
+    padding: 16px 20px 10px;
+  }
+
+  /* Horizontal Drag Scroll — 150x180 */
+  .h-scroll-outer { padding: 0 20px 16px; }
+  .h-scroll-wrap {
+    display: flex;
+    gap: 10px;
+    cursor: grab;
+    user-select: none;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 2px;
+  }
+  .h-scroll-wrap::-webkit-scrollbar { display: none; }
+  .h-scroll-wrap.dragging { cursor: grabbing; }
+  .h-card {
+    flex-shrink: 0;
+    width: 150px;
+    height: 180px;
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+  }
+  .h-card-inner {
+    width: 100%; height: 100%;
+    display: flex; flex-direction: column;
+    justify-content: flex-end; padding: 12px;
+  }
+  .h-card-label {
+    font-size: 12px; font-weight: 600; color: #fff;
+    background: rgba(0,0,0,0.38); padding: 4px 9px;
+    border-radius: 10px; backdrop-filter: blur(3px);
+    display: inline-block; line-height: 1.4;
+  }
+
+  /* Vertical Cards — 327x370 */
+  .v-cards {
+    padding: 8px 24px 100px;
+    display: flex; flex-direction: column;
+    gap: 14px; align-items: center;
+  }
+  .v-card {
+    width: 327px; height: 370px;
+    border-radius: 20px; overflow: hidden;
+    position: relative; flex-shrink: 0; cursor: pointer;
+  }
+  .v-card-placeholder { width: 100%; height: 100%; display: block; }
+  .v-card-overlay {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 24px 20px 22px;
+    background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 100%);
+  }
+  .v-card-tag { font-size: 12px; color: rgba(255,255,255,0.8); margin-bottom: 5px; }
+  .v-card-title { font-size: 15px; font-weight: 700; color: #fff; line-height: 1.4; }
+
+  /* Bottom Nav */
+  .bottom-nav {
+    position: sticky; bottom: 0;
+    background: #fff; border-top: 1px solid #f0f0f0;
+    display: flex; justify-content: space-around;
+    padding: 10px 0 18px; z-index: 99;
+  }
+  .nav-item {
+    display: flex; flex-direction: column;
+    align-items: center; gap: 4px; cursor: pointer;
+    padding: 4px 10px; border-radius: 10px;
+    transition: background 0.12s;
+  }
+  .nav-item:active { background: #f5f5f5; }
+  .nav-item svg { width: 22px; height: 22px; }
+  .nav-label { font-size: 10px; color: #aaa; font-weight: 500; }
+</style>
+</head>
+<body>
+<div class="phone-wrap">
+
+  <div class="status-bar">
+    <span class="time" id="clockTime">9:41</span>
+    <div class="icons">
+      <svg width="16" height="12" viewBox="0 0 16 12">
+        <rect x="0" y="4" width="3" height="8" rx="1"/>
+        <rect x="4.5" y="2.5" width="3" height="9.5" rx="1"/>
+        <rect x="9" y="0.5" width="3" height="11.5" rx="1"/>
+        <rect x="13.5" y="0" width="2.5" height="12" rx="1" opacity="0.3"/>
+      </svg>
+      <svg width="16" height="12" viewBox="0 0 16 12">
+        <path d="M8 2.5C10.5 2.5 12.7 3.6 14.2 5.3L15.5 4C13.6 1.9 10.9 0.5 8 0.5 5.1 0.5 2.4 1.9.5 4L1.8 5.3C3.3 3.6 5.5 2.5 8 2.5Z" opacity="0.4"/>
+        <path d="M8 5.5C9.8 5.5 11.4 6.3 12.5 7.5L13.8 6.2C12.3 4.7 10.3 3.8 8 3.8 5.7 3.8 3.7 4.7 2.2 6.2L3.5 7.5C4.6 6.3 6.2 5.5 8 5.5Z" opacity="0.7"/>
+        <path d="M8 8.5C9.1 8.5 10.1 9 10.8 9.8L12.1 8.5C11 7.4 9.6 6.7 8 6.7 6.4 6.7 5 7.4 3.9 8.5L5.2 9.8C5.9 9 6.9 8.5 8 8.5Z"/>
+        <circle cx="8" cy="11.5" r="1.5"/>
+      </svg>
+      <svg width="25" height="12" viewBox="0 0 25 12">
+        <rect x="0" y="1" width="22" height="10" rx="3" stroke="#fff" stroke-width="1.2" fill="none"/>
+        <rect x="1.5" y="2.5" width="17" height="7" rx="1.5" fill="#fff"/>
+        <rect x="23" y="3.5" width="2" height="5" rx="1" fill="#fff" opacity="0.5"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="scroll-area">
+
+    <!-- Hero 375x375 -->
+    <div class="hero">
+      <!-- 이미지 교체: <img src="YOUR_IMAGE.jpg"> 추가 -->
+      <div class="hero-deco1"></div>
+      <div class="hero-deco2"></div>
+      <div style="position:absolute;bottom:0;left:0;right:0;height:100px;background:linear-gradient(to top,rgba(40,50,60,0.28),transparent);"></div>
+      <div class="hero-overlay"><img src="./imges/main1.jpg" alt=""></div>
+      <div class="hero-text">
+        <div class="hero-name">이은혜님 안녕하세요</div>
+        <div class="hero-sub">즐거운 자전거 여행 되세요.</div>
+      </div>
+    </div>
+
+    <!-- Info Panel -->
+    <div class="info-panel">
+      <div class="info-box">
+        <div class="info-box-icon" id="weatherIcon">☀️</div>
+        <div class="info-box-label" id="weatherLocation">제주시</div>
+        <div class="info-box-value" id="weatherTemp" style="font-size:19px;">22°</div>
+        <div class="info-box-sub" id="weatherDesc">맑음</div>
+      </div>
+      <div class="info-box">
+        <div class="info-box-label">완주코스</div>
+        <div class="info-box-value">1<span>/10</span></div>
+      </div>
+      <div class="info-box">
+        <div class="info-box-label">이동거리</div>
+        <div class="info-box-value">15<span>km</span></div>
+      </div>
+    </div>
+
+    <!-- Horizontal Scroll -->
+    <div class="section-title">제주도 자전거 여행정보 가이드</div>
+    <div class="h-scroll-outer">
+      <div class="h-scroll-wrap" id="hScroll">
+        <div class="h-card"><img src="./imges/sub1.jpg" alt="">
+          <div class="h-card-inner" style="background:linear-gradient(160deg,#2d6a4f,#52b788);">
+            <span class="h-card-label">🌳 사려니숲길</span>
+          </div>
+        </div>
+        <div class="h-card"><img src="./imges/sub2.jpg" alt="">
+          <div class="h-card-inner" style="background:linear-gradient(160deg,#1a6fa4,#48cae4);">
+            <span class="h-card-label">🌊 협재해변</span>
+          </div>
+        </div>
+        <div class="h-card"><img src="./imges/sub3.jpg" alt="">
+          <div class="h-card-inner" style="background:linear-gradient(160deg,#1a5276,#2e86c1);">
+            <span class="h-card-label">💧 천지연폭포</span>
+          </div>
+        </div>
+        <div class="h-card"><img src="./imges/sub4.jpg" alt="">
+          <div class="h-card-inner" style="background:linear-gradient(160deg,#4a4a4a,#7a7a7a);">
+            <span class="h-card-label">🪨 주상절리</span>
+          </div>
+        </div>
+        <div class="h-card"><img src="./imges/sub5.jpg" alt="">
+          <div class="h-card-inner" style="background:linear-gradient(160deg,#b5870a,#e9c045);">
+            <span class="h-card-label">🌼 유채꽃밭</span>
+          </div>
+        </div>
+        <div class="h-card"><img src="./imges/sub6.jpg" alt="">
+          <div class="h-card-inner" style="background:linear-gradient(160deg,#2c3e50,#4a6fa5);">
+            <span class="h-card-label">🌅 성산일출봉</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Vertical Cards 327x370 -->
+    <div class="v-cards">
+      <div class="v-card"><img src="./imges/card1.jpg" alt="">
+        <div class="v-card-placeholder" style="background:linear-gradient(160deg,#c8620a,#e07b30,#f5a251,#b34a00);"></div>
+        <div class="v-card-overlay">
+          <!-- <div class="v-card-tag">제주도 자전거 여행 패키지</div>
+          <div class="v-card-title">첫번째 코스 이야기</div> -->
+        </div>
+      </div>
+      <div class="v-card"><img src="./imges/card2.jpg" alt="">
+        <div class="v-card-placeholder" style="background:linear-gradient(160deg,#d4870d,#f0a830,#ffcb6b,#c4740a);"></div>
+        <div class="v-card-overlay">
+          <!-- <div class="v-card-tag">제주도 자전거 여행 패키지</div>
+          <div class="v-card-title">두번째 코스 이야기</div> -->
+        </div>
+      </div>
+      <div class="v-card"><img src="./imges/card3.jpg" alt="">
+        <div class="v-card-placeholder" style="background:linear-gradient(160deg,#2d6a4f,#52b788,#95d5b2,#1b4332);"></div>
+        <div class="v-card-overlay">
+          <!-- <div class="v-card-tag">제주도 자전거 여행 패키지</div>
+          <div class="v-card-title">세번째 코스 이야기</div> -->
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom Nav -->
+  <div class="bottom-nav">
+    <div class="nav-item active" id="tab-home">
+      <svg viewBox="0 0 24 24" fill="none">
+        <path d="M3 9.5L12 3L21 9.5V21H15V15H9V21H3V9.5Z" fill="#FF6B2B"/>
+      </svg>
+      <span class="nav-label" style="color:#FF6B2B;">홈</span>
+    </div>
+    <div class="nav-item" id="tab-community">
+      <svg viewBox="0 0 24 24" fill="none">
+        <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke="#bbb" stroke-width="1.8" stroke-linejoin="round"/>
+      </svg>
+      <span class="nav-label">커뮤니티</span>
+    </div>
+    <div class="nav-item" id="tab-course">
+      <svg viewBox="0 0 24 24" fill="none">
+        <path d="M3 17L9 11L13 15L17 10L21 14" stroke="#bbb" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="5" cy="19" r="1.5" fill="#bbb"/>
+        <circle cx="19" cy="7" r="1.5" fill="#bbb"/>
+      </svg>
+      <span class="nav-label">코스</span>
+    </div>
+    <div class="nav-item" id="tab-ranking">
+      <svg viewBox="0 0 24 24" fill="none">
+        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01L12 2z" stroke="#bbb" stroke-width="1.8" stroke-linejoin="round"/>
+      </svg>
+      <span class="nav-label">랭킹</span>
+    </div>
+    <div class="nav-item" id="tab-my">
+      <svg viewBox="0 0 24 24" fill="none">
+        <circle cx="12" cy="7" r="4" stroke="#bbb" stroke-width="1.8"/>
+        <path d="M4 21v-1a8 8 0 0116 0v1" stroke="#bbb" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+      <span class="nav-label">마이</span>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ════════════════════════════════
+   날씨 API
+   YOUR_API_KEY 를 실제 키로 교체하세요
+   https://openweathermap.org/api
+════════════════════════════════ */
+const WEATHER_API_KEY = '8e888afe250816d2d73ee42d6262ae5c';
+
+const W_EMOJI = {
+  Clear:'☀️', Clouds:'⛅', Rain:'🌧️',
+  Drizzle:'🌦️', Thunderstorm:'⛈️',
+  Snow:'❄️', Mist:'🌫️', Fog:'🌫️', Haze:'🌫️'
+};
+
+async function fetchWeather(lat, lon) {
+  try {
+    const r = await fetch(
+      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}&units=metric&lang=kr`
+    );
+    const d = await r.json();
+    if (d.cod !== 200) throw new Error(d.message);
+    document.getElementById('weatherIcon').textContent     = W_EMOJI[d.weather[0].main] || '🌤️';
+    document.getElementById('weatherLocation').textContent = d.name || '내 위치';
+    document.getElementById('weatherTemp').textContent     = Math.round(d.main.temp) + '°';
+    document.getElementById('weatherDesc').textContent     = d.weather[0].description;
+  } catch(e) {
+    document.getElementById('weatherLocation').textContent = '오류';
+    document.getElementById('weatherDesc').textContent     = 'API 키 확인';
+  }
+}
+
+if (WEATHER_API_KEY !== 'YOUR_API_KEY') {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      p => fetchWeather(p.coords.latitude, p.coords.longitude),
+      () => { document.getElementById('weatherLocation').textContent = '위치 권한 필요'; },
+      { timeout: 8000 }
+    );
+  }
+}
+
+/* 시계 */
+function tick() {
+  const n = new Date();
+  document.getElementById('clockTime').textContent =
+    String(n.getHours()).padStart(2,'0') + ':' + String(n.getMinutes()).padStart(2,'0');
+}
+tick(); setInterval(tick, 15000);
+
+/* 드래그 스크롤 */
+(function() {
+  const el = document.getElementById('hScroll');
+  let down = false, sx = 0, sl = 0;
+  el.addEventListener('mousedown', e => {
+    down = true; el.classList.add('dragging');
+    sx = e.pageX - el.offsetLeft; sl = el.scrollLeft;
+    e.preventDefault();
+  });
+  document.addEventListener('mouseup', () => { down = false; el.classList.remove('dragging'); });
+  document.addEventListener('mousemove', e => {
+    if (!down) return;
+    el.scrollLeft = sl - (e.pageX - el.offsetLeft - sx) * 1.2;
+  });
+  el.addEventListener('touchstart', e => {
+    sx = e.touches[0].pageX - el.offsetLeft; sl = el.scrollLeft;
+  }, { passive: true });
+  el.addEventListener('touchmove', e => {
+    el.scrollLeft = sl - (e.touches[0].pageX - el.offsetLeft - sx);
+  }, { passive: true });
+})();
+
+/* 탭 전환 */
+document.querySelectorAll('.nav-item').forEach(item => {
+  item.addEventListener('click', () => {
+    document.querySelectorAll('.nav-item').forEach(i => {
+      i.classList.remove('active');
+      i.querySelector('.nav-label').style.color = '';
+      i.querySelectorAll('[fill]:not([fill="none"])').forEach(el => el.setAttribute('fill','#bbb'));
+      i.querySelectorAll('[stroke]:not([stroke="none"])').forEach(el => el.setAttribute('stroke','#bbb'));
+    });
+    item.classList.add('active');
+    item.querySelector('.nav-label').style.color = '#FF6B2B';
+    item.querySelectorAll('[fill]:not([fill="none"])').forEach(el => el.setAttribute('fill','#FF6B2B'));
+    item.querySelectorAll('[stroke]:not([stroke="none"])').forEach(el => el.setAttribute('stroke','#FF6B2B'));
+  });
+});
+</script>
+</body>
+</html>
