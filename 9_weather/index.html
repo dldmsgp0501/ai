@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>전 세계 날씨</title>
+  <link rel="stylesheet" href="./css/sty.css">
+</head>
+<body>
+  <main class="app">
+    <section class="header">
+      <div class="header-left">
+        <h1>전 세계 날씨</h1>
+        <p>현재 위치 + 도시 검색으로 전세계 날씨 조회</p>
+      </div>
+      <button type="button" class="location-btn" id="locationBtn">내위치</button>
+    </section>
+
+    <section class="search-card">
+      <form class="search-form" id="searchForm">
+        <div class="input-wrap">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M21 21L16.65 16.65" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <input
+            type="text"
+            id="cityInput"
+            class="city-input"
+            placeholder="도시명을 입력하세요 (예: Seoul, Gimpo)"
+            autocomplete="off"
+          />
+        </div>
+        <button type="submit" class="search-btn">검색</button>
+      </form>
+      <p class="status" id="statusText">도시명을 입력하거나 내 위치 버튼을 눌러주세요.</p>
+    </section>
+
+    <section class="weather-card" id="weatherCard">
+      <div class="weather-top">
+        <div>
+          <h2 class="city-name" id="cityName">도시명</h2>
+          <p class="weather-desc" id="weatherDesc">날씨 정보가 여기에 표시됩니다.</p>
+        </div>
+        <div class="temp" id="temp">--°</div>
+      </div>
+
+      <div class="info-grid">
+        <article class="info-box">
+          <p class="label">풍속</p>
+          <p class="value" id="windSpeed">-- <span class="unit">m/s</span></p>
+        </article>
+
+        <article class="info-box">
+          <p class="label">습도</p>
+          <p class="value" id="humidity">-- <span class="unit">%</span></p>
+        </article>
+
+        <article class="info-box">
+          <p class="label">체감 / 기온</p>
+          <p class="value" id="feelsLike">-- <span class="unit">°C</span></p>
+        </article>
+
+        <article class="info-box">
+          <p class="label">오존(O₃)</p>
+          <p class="value" id="ozone">-- <span class="unit">ug/m2</span></p>
+        </article>
+      </div>
+    </section>
+  </main>
+<script src="./script/weather.js"></script>
+  
+</body>
+</html>
