@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>부산 맛집 서비스</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f5f5f5;
+      --surface: #ffffff;
+      --text: #222222;
+      --muted: #777777;
+      --line: #e7e7e7;
+      --chip: #3e3e3e;
+      --shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+      --radius-lg: 16px;
+      --radius-md: 12px;
+      --radius-sm: 10px;
+      --bottom-height: 74px;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Noto Sans KR', sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+    }
+
+    button, input {
+      font: inherit;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 430px;
+      min-height: 100vh;
+      margin: 0 auto;
+      background: var(--bg);
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    .screen {
+      display: none;
+      min-height: 100vh;
+      padding: 18px 16px calc(var(--bottom-height) + 20px);
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .title-wrap h1 {
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.3;
+      font-weight: 800;
+      letter-spacing: -0.4px;
+    }
+
+    .title-wrap p {
+      margin: 4px 0 0;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-top: 3px;
+    }
+
+    .icon-btn {
+      border: 0;
+      background: transparent;
+      width: 28px;
+      height: 28px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #202020;
+      padding: 0;
+    }
+
+    .icon-btn svg,
+    .list-icon-btn svg {
+      width: 24px;
+      height: 24px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .search-box {
+      width: 100%;
+      height: 46px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 14px;
+      box-shadow: var(--shadow);
+      margin-bottom: 18px;
+    }
+
+    .search-box svg {
+      width: 22px;
+      height: 22px;
+      stroke: #444;
+      fill: none;
+      stroke-width: 2;
+      flex-shrink: 0;
+    }
+
+    .search-box input {
+      width: 100%;
+      border: 0;
+      outline: none;
+      background: transparent;
+      color: var(--text);
+      font-size: 15px;
+    }
+
+    .search-box input::placeholder {
+      color: #c0c0c0;
+    }
+
+    .list-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px 16px;
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: var(--shadow);
+    }
+
+    .card-body {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .card-title {
+      margin: 0 0 12px;
+      font-size: 18px;
+      line-height: 1.35;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+    }
+
+    .card-meta {
+      margin: 0;
+      font-size: 13px;
+      color: #4b4b4b;
+      line-height: 1.6;
+      word-break: keep-all;
+    }
+
+    .card-meta strong {
+      color: #222;
+      font-weight: 800;
+    }
+
+    .card-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+      margin-left: 4px;
+    }
+
+    .list-icon-btn {
+      width: 34px;
+      height: 34px;
+      border: 0;
+      background: transparent;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #353535;
+    }
+
+    .favorite.active svg {
+      fill: #1f1f1f;
+      stroke: #1f1f1f;
+    }
+
+    .empty,
+    .loading,
+    .error,
+    .list-end {
+      text-align: center;
+      font-size: 14px;
+      color: var(--muted);
+      padding: 22px 10px;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 0;
+      width: 100%;
+      max-width: 430px;
+      height: var(--bottom-height);
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(8px);
+      border-top: 1px solid var(--line);
+      display: flex;
+      z-index: 50;
+    }
+
+    .nav-btn {
+      flex: 1;
+      border: 0;
+      background: transparent;
+      font-size: 17px;
+      font-weight: 700;
+      color: #9a9a9a;
+      cursor: pointer;
+    }
+
+    .nav-btn.active {
+      color: #2d2d2d;
+      background: #ffffff;
+    }
+
+    .detail-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .back-btn {
+      width: 34px;
+      height: 34px;
+      border: 0;
+      border-radius: 50%;
+      background: #ffffff;
+      box-shadow: var(--shadow);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .back-btn svg {
+      width: 20px;
+      height: 20px;
+      stroke: #222;
+      fill: none;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .detail-title-top {
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+    }
+
+    .hero {
+      width: 100%;
+      height: 245px;
+      border-radius: 18px;
+      overflow: hidden;
+      background: #dfdfdf;
+      box-shadow: var(--shadow);
+      margin-bottom: 16px;
+    }
+
+    .hero img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .detail-content {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .detail-section {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .section-chip {
+      align-self: flex-start;
+      min-width: 50px;
+      padding: 10px 12px;
+      border-radius: 4px;
+      background: var(--chip);
+      color: #fff;
+      font-size: 17px;
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.3px;
+    }
+
+    .section-text {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #3b3b3b;
+      word-break: keep-all;
+    }
+
+    .section-text.large {
+      font-size: 16px;
+    }
+
+    #map {
+      width: 100%;
+      height: 210px;
+      border-radius: 18px;
+      overflow: hidden;
+      background: #e8e8e8;
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .skeleton {
+      overflow: hidden;
+      position: relative;
+      background: #fff;
+    }
+
+    .skeleton::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      transform: translateX(-100%);
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.75), transparent);
+      animation: shimmer 1.3s infinite;
+    }
+
+    @keyframes shimmer {
+      100% { transform: translateX(100%); }
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      bottom: 92px;
+      max-width: calc(100% - 32px);
+      background: rgba(34, 34, 34, 0.92);
+      color: #fff;
+      padding: 12px 16px;
+      border-radius: 999px;
+      font-size: 14px;
+      z-index: 100;
+      opacity: 0;
+      pointer-events: none;
+      transition: 0.25s ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    @media (max-width: 360px) {
+      .card-title {
+        font-size: 17px;
+      }
+
+      .section-chip {
+        font-size: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <main id="homeScreen" class="screen active">
+      <div class="topbar">
+        <div class="title-wrap">
+          <h1>부산 맛집 서비스</h1>
+          <p id="totalCountLabel">전체: 0건</p>
+        </div>
+        <div class="top-actions">
+          <button class="icon-btn" id="refreshBtn" type="button" aria-label="새로고침">
+            <svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36" /><path d="M21 3v6h-6" /></svg>
+          </button>
+          <button class="icon-btn favorite" id="topFavoriteBtn" type="button" aria-label="즐겨찾기 보기">
+            <svg viewBox="0 0 24 24"><path d="M12 21s-6.7-4.35-9.33-8.28C.9 10.08 1.7 6.5 4.74 5.1c2.23-1.03 4.32-.22 5.46 1.38C11.34 4.88 13.43 4.07 15.66 5.1c3.04 1.4 3.84 4.98 2.07 7.62C18.7 16.65 12 21 12 21z" /></svg>
+          </button>
+        </div>
+      </div>
+
+      <label class="search-box" for="searchInput">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4.2-4.2"></path></svg>
+        <input id="searchInput" type="text" placeholder="가게명/주소/메뉴로 검색" autocomplete="off" />
+      </label>
+
+      <section id="listWrap" class="list-wrap"></section>
+      <div id="listMessage" class="loading">데이터를 불러오는 중입니다.</div>
+    </main>
+
+    <main id="detailScreen" class="screen">
+      <div class="detail-header">
+        <button id="backBtn" class="back-btn" type="button" aria-label="뒤로가기">
+          <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" /></svg>
+        </button>
+        <div class="detail-title-top">상세보기</div>
+      </div>
+
+      <div class="hero">
+        <img id="detailImage" src="" alt="맛집 이미지" />
+      </div>
+
+      <div class="detail-content">
+        <section class="detail-section">
+          <div class="section-chip">상호명</div>
+          <p id="detailName" class="section-text large">-</p>
+        </section>
+
+        <section class="detail-section">
+          <div class="section-chip">주소</div>
+          <p id="detailAddress" class="section-text large">-</p>
+        </section>
+
+        <section class="detail-section">
+          <div class="section-chip">소개</div>
+          <p id="detailIntro" class="section-text">-</p>
+        </section>
+
+        <section class="detail-section">
+          <div class="section-chip">대표메뉴</div>
+          <p id="detailMenu" class="section-text large">-</p>
+        </section>
+
+        <section class="detail-section">
+          <div class="section-chip">연락처</div>
+          <p id="detailTel" class="section-text large">-</p>
+        </section>
+
+        <section class="detail-section">
+          <div class="section-chip">운영시간</div>
+          <p id="detailTime" class="section-text large">-</p>
+        </section>
+
+        <div id="map"></div>
+      </div>
+    </main>
+
+    <nav class="bottom-nav">
+      <button id="homeTabBtn" class="nav-btn active" type="button">맛집</button>
+      <button id="favoriteTabBtn" class="nav-btn" type="button">즐겨찾기</button>
+    </nav>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    /* =============================
+       사용자 설정 영역
+    ============================== */
+    const SERVICE_KEY = 'd068d461869dd6a271d7a1a09011ca55762944e59ac201d01f519cf187fb460d';
+    const KAKAO_MAP_APP_KEY = '250f514839b135c174de55e8360c1593';
+    const API_BASE_URL = 'https://apis.data.go.kr/6260000/FoodService/getFoodKr';
+    const DEFAULT_ROWS = 30;
+    const BUSAN_TOUR_IMAGE_BASE = 'https://www.visitbusan.net';
+
+    /* =============================
+       전역 상태
+    ============================== */
+    const state = {
+      allItems: [],
+      filteredItems: [],
+      pageNo: 1,
+      totalCount: 0,
+      isLoading: false,
+      isEnd: false,
+      query: '',
+      activeTab: 'home',
+      currentDetail: null,
+      favorites: new Set(JSON.parse(localStorage.getItem('busan-food-favorites') || '[]'))
+    };
+
+    const homeScreen = document.getElementById('homeScreen');
+    const detailScreen = document.getElementById('detailScreen');
+    const listWrap = document.getElementById('listWrap');
+    const listMessage = document.getElementById('listMessage');
+    const totalCountLabel = document.getElementById('totalCountLabel');
+    const searchInput = document.getElementById('searchInput');
+    const refreshBtn = document.getElementById('refreshBtn');
+    const topFavoriteBtn = document.getElementById('topFavoriteBtn');
+    const homeTabBtn = document.getElementById('homeTabBtn');
+    const favoriteTabBtn = document.getElementById('favoriteTabBtn');
+    const backBtn = document.getElementById('backBtn');
+    const toastEl = document.getElementById('toast');
+
+    const detailImage = document.getElementById('detailImage');
+    const detailName = document.getElementById('detailName');
+    const detailAddress = document.getElementById('detailAddress');
+    const detailIntro = document.getElementById('detailIntro');
+    const detailMenu = document.getElementById('detailMenu');
+    const detailTel = document.getElementById('detailTel');
+    const detailTime = document.getElementById('detailTime');
+
+    let mapInstance = null;
+    let mapMarker = null;
+    let mapScriptLoading = false;
+    let mapScriptLoaded = false;
+
+    function saveFavorites() {
+      localStorage.setItem('busan-food-favorites', JSON.stringify([...state.favorites]));
+    }
+
+    function showToast(message) {
+      toastEl.textContent = message;
+      toastEl.classList.add('show');
+      clearTimeout(showToast.timer);
+      showToast.timer = setTimeout(() => {
+        toastEl.classList.remove('show');
+      }, 1800);
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function getItemId(item) {
+      return String(item.UC_SEQ || item.MAIN_TITLE || item.PLACE || Math.random());
+    }
+
+    function normalizeImage(url) {
+      if (!url) return 'https://placehold.co/800x500/e9e9e9/8a8a8a?text=No+Image';
+      if (/^https?:\/\//i.test(url)) return url;
+      return `${BUSAN_TOUR_IMAGE_BASE}${url}`;
+    }
+
+    function getDisplayName(item) {
+      return item.MAIN_TITLE || item.PLACE || '상호 정보 없음';
+    }
+
+    function getDisplayAddress(item) {
+      return [item.ADDR1, item.ADDR2].filter(Boolean).join(' ').trim() || '주소 정보 없음';
+    }
+
+    function getDisplayMenu(item) {
+      return item.RPRSNTV_MENU || '대표메뉴 정보 없음';
+    }
+
+    function getDisplayIntro(item) {
+      return item.ITEMCNTNTS || item.TITLE || item.SUBTITLE || '소개 정보가 없습니다.';
+    }
+
+    function getDisplayTel(item) {
+      return item.CNTCT_TEL || '연락처 정보 없음';
+    }
+
+    function getDisplayTime(item) {
+      return item.USAGE_DAY_WEEK_AND_TIME || '운영시간 정보 없음';
+    }
+
+    function updateTotalLabel(count) {
+      totalCountLabel.textContent = `전체:${count}건`;
+    }
+
+    function setTab(tab) {
+      state.activeTab = tab;
+      homeTabBtn.classList.toggle('active', tab === 'home');
+      favoriteTabBtn.classList.toggle('active', tab === 'favorites');
+      topFavoriteBtn.classList.toggle('active', tab === 'favorites');
+      applyFilter();
+      showHome();
+    }
+
+    function showHome() {
+      homeScreen.classList.add('active');
+      detailScreen.classList.remove('active');
+    }
+
+    function showDetail(item) {
+      state.currentDetail = item;
+      homeScreen.classList.remove('active');
+      detailScreen.classList.add('active');
+
+      detailImage.src = normalizeImage(item.MAIN_IMG_NORMAL || item.MAIN_IMG_THUMB);
+      detailImage.alt = `${getDisplayName(item)} 이미지`;
+      detailName.textContent = getDisplayName(item);
+      detailAddress.textContent = getDisplayAddress(item);
+      detailIntro.textContent = getDisplayIntro(item);
+      detailMenu.textContent = getDisplayMenu(item);
+      detailTel.textContent = getDisplayTel(item);
+      detailTime.textContent = getDisplayTime(item);
+
+      renderMap(item);
+    }
+
+    function createCard(item) {
+      const itemId = getItemId(item);
+      const isFavorite = state.favorites.has(itemId);
+      const card = document.createElement('article');
+      card.className = 'card';
+      card.innerHTML = `
+        <div class="card-body" data-role="detail-trigger">
+          <h3 class="card-title">${escapeHtml(getDisplayName(item))}</h3>
+          <p class="card-meta"><strong>주소:</strong> ${escapeHtml(getDisplayAddress(item))}</p>
+          <p class="card-meta"><strong>메뉴:</strong> ${escapeHtml(getDisplayMenu(item))}</p>
+        </div>
+        <div class="card-actions">
+          <button class="list-icon-btn" type="button" aria-label="상세 보기" data-role="detail-trigger">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4.2-4.2"></path></svg>
+          </button>
+          <button class="list-icon-btn favorite ${isFavorite ? 'active' : ''}" type="button" aria-label="즐겨찾기" data-role="favorite-toggle">
+            <svg viewBox="0 0 24 24"><path d="M12 21s-6.7-4.35-9.33-8.28C.9 10.08 1.7 6.5 4.74 5.1c2.23-1.03 4.32-.22 5.46 1.38C11.34 4.88 13.43 4.07 15.66 5.1c3.04 1.4 3.84 4.98 2.07 7.62C18.7 16.65 12 21 12 21z" /></svg>
+          </button>
+        </div>
+      `;
+
+      card.addEventListener('click', (event) => {
+        const role = event.target.closest('[data-role]')?.dataset.role;
+        if (role === 'favorite-toggle') {
+          toggleFavorite(item, card.querySelector('.favorite'));
+          event.stopPropagation();
+          return;
+        }
+        showDetail(item);
+      });
+
+      return card;
+    }
+
+    function toggleFavorite(item, buttonEl) {
+      const itemId = getItemId(item);
+      if (state.favorites.has(itemId)) {
+        state.favorites.delete(itemId);
+        showToast('즐겨찾기에서 제거했습니다.');
+      } else {
+        state.favorites.add(itemId);
+        showToast('즐겨찾기에 추가했습니다.');
+      }
+      saveFavorites();
+      if (buttonEl) {
+        buttonEl.classList.toggle('active', state.favorites.has(itemId));
+      }
+      applyFilter(false);
+    }
+
+    function applyFilter(resetScroll = true) {
+      const keyword = state.query.trim().toLowerCase();
+      let baseItems = state.activeTab === 'favorites'
+        ? state.allItems.filter((item) => state.favorites.has(getItemId(item)))
+        : [...state.allItems];
+
+      if (keyword) {
+        baseItems = baseItems.filter((item) => {
+          const bag = [
+            getDisplayName(item),
+            getDisplayAddress(item),
+            getDisplayMenu(item),
+            item.GUGUN_NM,
+            getDisplayIntro(item)
+          ].join(' ').toLowerCase();
+          return bag.includes(keyword);
+        });
+      }
+
+      state.filteredItems = baseItems;
+      updateTotalLabel(state.activeTab === 'favorites' ? baseItems.length : state.totalCount || baseItems.length);
+      renderList();
+
+      if (resetScroll) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    function renderList() {
+      listWrap.innerHTML = '';
+
+      if (!state.filteredItems.length) {
+        listMessage.className = 'empty';
+        listMessage.textContent = state.activeTab === 'favorites'
+          ? '즐겨찾기한 맛집이 없습니다.'
+          : '검색 결과가 없습니다.';
+        return;
+      }
+
+      const fragment = document.createDocumentFragment();
+      state.filteredItems.forEach((item) => fragment.appendChild(createCard(item)));
+      listWrap.appendChild(fragment);
+
+      if (state.activeTab === 'favorites' || state.isEnd) {
+        listMessage.className = 'list-end';
+        listMessage.textContent = state.activeTab === 'favorites'
+          ? '즐겨찾기 목록입니다.'
+          : '모든 데이터를 불러왔습니다.';
+      } else {
+        listMessage.className = 'loading';
+        listMessage.textContent = '아래로 스크롤하면 더 불러옵니다.';
+      }
+    }
+
+    function setLoadingMessage(message = '데이터를 불러오는 중입니다.') {
+      listMessage.className = 'loading';
+      listMessage.textContent = message;
+    }
+
+    function setErrorMessage(message) {
+      listMessage.className = 'error';
+      listMessage.textContent = message;
+    }
+
+    async function fetchFoodPage(pageNo = 1) {
+      const url = new URL(API_BASE_URL);
+      url.searchParams.set('serviceKey', SERVICE_KEY);
+      url.searchParams.set('pageNo', pageNo);
+      url.searchParams.set('numOfRows', DEFAULT_ROWS);
+      url.searchParams.set('resultType', 'json');
+
+      const response = await fetch(url.toString());
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+
+      const data = await response.json();
+      const root = data.getFoodKr || data;
+      const header = root.header || {};
+      const body = root.body || {};
+      const items = Array.isArray(body.items?.item)
+        ? body.items.item
+        : body.items?.item
+          ? [body.items.item]
+          : [];
+
+      if (header.resultCode && header.resultCode !== '00') {
+        throw new Error(header.resultMsg || 'API 응답 오류');
+      }
+
+      return {
+        totalCount: Number(body.totalCount || 0),
+        items
+      };
+    }
+
+    async function loadInitialData() {
+      state.pageNo = 1;
+      state.totalCount = 0;
+      state.isEnd = false;
+      state.allItems = [];
+      setLoadingMessage();
+      listWrap.innerHTML = '';
+      await loadMoreData(true);
+    }
+
+    async function loadMoreData(isInitial = false) {
+      if (state.isLoading || state.isEnd || state.activeTab === 'favorites') return;
+      state.isLoading = true;
+      if (!isInitial) setLoadingMessage('추가 데이터를 불러오는 중입니다.');
+
+      try {
+        const result = await fetchFoodPage(state.pageNo);
+        state.totalCount = result.totalCount;
+        state.allItems = [...state.allItems, ...result.items];
+        state.pageNo += 1;
+        state.isEnd = state.allItems.length >= state.totalCount || result.items.length === 0;
+        applyFilter(false);
+      } catch (error) {
+        console.error(error);
+        setErrorMessage('데이터를 불러오지 못했습니다. 서비스키와 CORS 설정을 확인해주세요.');
+      } finally {
+        state.isLoading = false;
+      }
+    }
+
+    function handleSearch() {
+      state.query = searchInput.value;
+      applyFilter();
+    }
+
+    function handleScroll() {
+      if (detailScreen.classList.contains('active')) return;
+      const threshold = 220;
+      const reachedBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - threshold;
+      if (reachedBottom) {
+        loadMoreData();
+      }
+    }
+
+    function ensureKakaoMapScript() {
+      return new Promise((resolve, reject) => {
+        if (mapScriptLoaded && window.kakao?.maps) {
+          resolve();
+          return;
+        }
+
+        if (mapScriptLoading) {
+          const timer = setInterval(() => {
+            if (window.kakao?.maps) {
+              clearInterval(timer);
+              mapScriptLoaded = true;
+              resolve();
+            }
+          }, 100);
+          setTimeout(() => {
+            clearInterval(timer);
+            if (!window.kakao?.maps) reject(new Error('Kakao Maps load timeout'));
+          }, 8000);
+          return;
+        }
+
+        mapScriptLoading = true;
+        const script = document.createElement('script');
+        script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_MAP_APP_KEY}&autoload=false`;
+        script.onload = () => {
+          if (!window.kakao?.maps) {
+            reject(new Error('Kakao object missing'));
+            return;
+          }
+          window.kakao.maps.load(() => {
+            mapScriptLoaded = true;
+            resolve();
+          });
+        };
+        script.onerror = () => reject(new Error('Kakao Maps script load failed'));
+        document.head.appendChild(script);
+      });
+    }
+
+    async function renderMap(item) {
+      const lat = Number(item.LAT);
+      const lng = Number(item.LNG);
+      const mapContainer = document.getElementById('map');
+
+      if (!lat || !lng) {
+        mapContainer.innerHTML = '<div style="height:100%;display:flex;align-items:center;justify-content:center;color:#777;font-size:14px;">좌표 정보가 없습니다.</div>';
+        return;
+      }
+
+      mapContainer.innerHTML = '';
+
+      try {
+        await ensureKakaoMapScript();
+
+        const center = new kakao.maps.LatLng(lat, lng);
+        const options = {
+          center,
+          level: 3
+        };
+
+        mapInstance = new kakao.maps.Map(mapContainer, options);
+        mapMarker = new kakao.maps.Marker({
+          position: center
+        });
+        mapMarker.setMap(mapInstance);
+      } catch (error) {
+        console.error(error);
+        mapContainer.innerHTML = '<div style="height:100%;display:flex;align-items:center;justify-content:center;color:#777;font-size:14px;padding:0 18px;text-align:center;">카카오맵을 불러오지 못했습니다. 앱 키를 확인해주세요.</div>';
+      }
+    }
+
+    refreshBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      state.query = '';
+      setTab('home');
+      loadInitialData();
+      showToast('목록을 새로고침했습니다.');
+    });
+
+    topFavoriteBtn.addEventListener('click', () => {
+      setTab(state.activeTab === 'favorites' ? 'home' : 'favorites');
+    });
+
+    homeTabBtn.addEventListener('click', () => setTab('home'));
+    favoriteTabBtn.addEventListener('click', () => setTab('favorites'));
+    backBtn.addEventListener('click', showHome);
+    searchInput.addEventListener('input', handleSearch);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    detailImage.addEventListener('error', () => {
+      detailImage.src = 'https://placehold.co/800x500/e9e9e9/8a8a8a?text=No+Image';
+    });
+
+    loadInitialData();
+  </script>
+</body>
+</html>
