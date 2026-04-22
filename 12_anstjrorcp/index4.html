@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="box">
+        <h1>큰제목</h1>
+        <h1>큰제목</h1>
+        <h1>큰제목</h1>
+    </div>
+
+    <h1>큰제목</h1>
+    <h1>큰제목</h1>
+
+    <script>
+        let tit = document.querySelector(".box h1")
+        tit.style.border="5px solid red"
+
+        let tit2 =document.querySelectorAll(".box h1")
+        tit2[0].style.border="5px solid blue"
+        tit2[1].style.border="5px solid blue"
+        tit2[2].style.border="5px solid blue"
+        tit2[3].style.border="5px solid blue"
+    </script>
+</body>
+</html>
