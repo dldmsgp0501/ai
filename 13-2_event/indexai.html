@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>버튼 클릭 효과 데모</title>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 8px;
+      background: #ffffff;
+      font-family: Arial, "Malgun Gothic", sans-serif;
+      color: #111;
+      font-size: 14px;
+    }
+
+    .button-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #bfbfbf;
+    }
+
+    button {
+      height: 28px;
+      padding: 0 10px;
+      border: 1px solid #8a8a8a;
+      background: #f7f7f7;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    button:hover {
+      background: #ececec;
+    }
+
+    .group {
+      width: 608px;
+      height: 194px;
+      border: 4px solid #c7c7c7;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: stretch;
+      gap: 18px;
+      padding: 0;
+      overflow: visible;
+      background: #ffffff;
+    }
+
+    .box {
+      width: 186px;
+      height: 186px;
+      padding: 6px;
+      font-size: 15px;
+      color: #000;
+      flex: 0 0 auto;
+    }
+
+    .red { background: #ff0d0d; }
+    .green { background: #008f00; }
+    .orange { background: #ffa500; }
+    .lime { background: #c8ff00; }
+    .sky { background: #1db9df; }
+    .purple { background: linear-gradient(180deg, #9d33ff, #8f2ce0); }
+    .gold { background: gold; }
+
+    .ani-target {
+      position: relative;
+    }
+
+    .active-style {
+    }
+
+    @media (max-width: 760px) {
+      .group {
+        width: 100%;
+        height: auto;
+        flex-wrap: wrap;
+        padding: 12px;
+      }
+
+      .box {
+        width: calc(50% - 9px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="button-bar">
+    <button id="btnFadeOut">부드럽게 사라지기</button>
+    <button id="btnFadeIn">부드럽게 보이기</button>
+    <button id="btnFadeToggle">보이기/숨기기</button>
+    <button id="btnSlideUp">높이0</button>
+    <button id="btnSlideDown">높이를 요소크기만큼</button>
+    <button id="btnSlideToggle">높이0/요소크기만큼</button>
+    <button id="btnAnimate1">애니메이션1</button>
+    <button id="btnAnimate2">애니메이션2</button>
+    <button id="btnAddClass">class추가</button>
+    <button id="btnRemoveClass">class삭제</button>
+  </div>
+
+  <div class="group">
+    <div class="box red" id="fadeBox">fadein/fadeout</div>
+    <div class="box green" id="fadeToggleBox">fadetoggle</div>
+  </div>
+
+  <div class="group">
+    <div class="box orange" id="slideBox">slideup/down</div>
+    <div class="box lime" id="slideToggleBox">slidetoggle</div>
+    <div class="box sky ani-target" id="animateBox">animation</div>
+  </div>
+
+  <div class="group">
+    <div class="box" id="addClassBox">class추가(addclass())</div>
+    <div class="box purple" id="removeClassBox">class삭제(removeclass())</div>
+  </div>
+
+  <script>
+  const speed = 500;
+
+  $("#btnFadeOut").on("click", function () {
+    $("#fadeBox").stop(true, true).fadeOut(speed);
+  });
+
+  $("#btnFadeIn").on("click", function () {
+    $("#fadeBox").stop(true, true).fadeIn(speed);
+  });
+
+  $("#btnFadeToggle").on("click", function () {
+    $("#fadeToggleBox").stop(true, true).fadeToggle(speed);
+  });
+
+  $("#btnSlideUp").on("click", function () {
+    $("#slideBox").stop(true, true).slideUp(speed);
+  });
+
+  $("#btnSlideDown").on("click", function () {
+    $("#slideBox").stop(true, true).slideDown(speed);
+  });
+
+  $("#btnSlideToggle").on("click", function () {
+    $("#slideToggleBox").stop(true, true).slideToggle(speed);
+  });
+
+  $("#btnAnimate1").on("click", function () {
+    $("#animateBox")
+      .stop(true, true)
+      .animate({ left: "500px" }, 600);
+  });
+
+  $("#btnAnimate2").on("click", function () {
+    $("#animateBox")
+      .stop(true, true)
+      .animate({ left: "0px" }, 600);
+  });
+
+  $("#btnAddClass").on("click", function () {
+    $("#addClassBox").addClass("active-style gold");
+  });
+
+  $("#btnRemoveClass").on("click", function () {
+    $("#removeClassBox").removeClass("purple active-style");
+  });
+</script>
+</body>
+</html>
