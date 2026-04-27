@@ -1,0 +1,1890 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OneDay App</title>
+
+  <style>
+    @font-face {
+      font-family: "Pretendard";
+      src: local("Pretendard");
+      font-weight: 100 900;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      font-family: "Pretendard", sans-serif;
+      background: #FFEFE7;
+      color: #0E3D5D;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    button,
+    input,
+    textarea {
+      font-family: inherit;
+      border: none;
+      outline: none;
+    }
+
+    button {
+      cursor: pointer;
+      background: none;
+      color: inherit;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center; /* 중앙 기준으로 꽉 채워 위아래 균형 */
+    }
+
+    .app {
+      width: 100%;
+      height: 100vh;
+      margin: 0;
+      background: #FFEFE7;
+      position: relative;
+      overflow: hidden;
+      border-radius: 0;
+    }
+
+    .screen {
+      display: none;
+      width: 100%;
+      height: 100%;
+      padding: 0;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    .screen.onboarding.active {
+      display: flex;
+    }
+
+    .full {
+      padding: 0;
+    }
+
+    .title {
+      font-size: 24px;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 5px;
+    }
+
+    .sub {
+      font-size: 15px;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      height: 48px;
+      border-radius: 16px;
+      background: #4EA3D0;
+      color: #FFEFE7;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .top h2 {
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .back {
+      font-size: 24px;
+      color: #4EA3D0;
+    }
+
+    .chip-wrap {
+      display: flex;
+      gap: 8px;
+    }
+
+    .chip {
+      padding: 8px 14px;
+      border-radius: 20px;
+      background: #FFEFE7;
+      color: #0E3D5D;
+      font-size: 12px;
+      border: 1px solid #A9DEF0;
+    }
+
+    .chip.on {
+      background: #4EA3D0;
+      color: #FFEFE7;
+    }
+
+    .image-box {
+      background: transparent;
+      border-radius: 18px;
+      overflow: hidden;
+    }
+
+    .card {
+      background: #FFEFE7;
+      border: 1px solid #A9DEF0;
+      border-radius: 14px;
+      padding: 14px;
+      box-shadow: 0 4px 10px rgba(14, 61, 93, 0.08);
+    }
+
+    .bottom-nav {
+      width: 100%;
+      height: 80px;
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      background: #FFFBF9;
+      border-top: none;
+      border-radius: 8px 8px 0 0;
+      display: none;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 10;
+    }
+
+    .bottom-nav.show {
+      display: flex;
+    }
+
+    .nav-btn {
+      width: 20%;
+      font-size: 15px;
+      font-weight: 400;
+      color: #4EA3D0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .nav-icon {
+      width: 28px;
+      height: 28px;
+      display: block;
+    }
+
+    /* 홈, 커뮤니티만 크게 */
+    .bottom-nav .nav-btn:nth-child(1) .nav-icon,
+    .bottom-nav .nav-btn:nth-child(4) .nav-icon {
+      width: 32px;
+      height: 32px;
+    }
+
+    .nav-btn.on {
+      color: #0E3D5D;
+      font-weight: 800;
+    }
+
+    /* splash */
+    .splash {
+      position: relative;
+      text-align: center;
+      padding: 0;
+    }
+
+    .splash h1 {
+      position: relative;
+      z-index: 2;
+      font-size: 56px;
+      padding-top: 60px;
+      margin-bottom: 40px;
+      font-weight: 900;
+    }
+
+    .splash-img {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      border-radius: 0;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .splash-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+      background: #FFEFE7;
+    }
+
+    /* onboarding */
+    .onboarding {
+      position: relative;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      height: 100%;
+      padding: 0 24px 24px; /* 좌우 24px 적용 */
+    }
+
+    .onboarding .title,
+    .onboarding .sub,
+    .onboarding .btn {
+      position: relative;
+      z-index: 2;
+    }
+
+    .onboarding .title {
+      padding-top: 60px;
+    }
+
+    .onboarding-img {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      border-radius: 0;
+      z-index: 1;
+    }
+
+    .onboarding .btn {
+      display: block;
+      width: 100%;
+      max-width: none;
+      flex-shrink: 0;
+      height: 48px;
+      padding: 0 24px;
+      border-radius: 16px;
+      margin-top: auto;
+    }
+
+    /* login */
+    .login {
+      padding: 0 22px;
+      background: #FFEFE7;
+    }
+
+    .login h1 {
+      text-align: center;
+      font-size: 56px;
+      line-height: 1;
+      margin: 158px 0 74px;
+      font-weight: 900;
+      color: #0E3D5D;
+    }
+
+    .login input {
+      width: 100%;
+      height: 48px;
+      border-radius: 16px;
+      margin-bottom: 16px;
+      padding: 0 12px;
+      background: #fff;
+      border: 1px solid #FFC6B3;
+      color: #0E3D5D;
+      font-size: 12px;
+    }
+
+    .login input::placeholder {
+      color: #FFC6B3;
+    }
+
+    .login .login-option {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+      margin: 0 0 18px;
+      color: #FFC6B3;
+      font-size: 12px;
+    }
+
+    .login .login-option label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    .login .login-option input {
+      width: 16px;
+      height: 16px;
+      margin: 0;
+      padding: 0;
+      border-radius: 50%;
+      appearance: none;
+      background: transparent;
+      border: 1px solid #FFC6B3;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .login .login-option input:checked {
+      background: #4EA3D0;
+      border-color: #4EA3D0;
+    }
+
+    .login .login-option input:checked::after {
+      content: "";
+      position: absolute;
+      left: 4px;
+      top: 1px;
+      width: 5px;
+      height: 8px;
+      border: 2px solid #fff;
+      border-top: none;
+      border-left: none;
+      transform: rotate(45deg);
+    }
+
+    .login .btn {
+      height: 48px;
+      border-radius: 16px;
+      font-size: 15px;
+      margin-bottom: 18px;
+      color: #ffffff;
+    }
+
+    .login .find {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 22px;
+      font-size: 12px;
+      margin: 0 0 34px;
+      color: #FFC6B3;
+    }
+
+    .login .find span:not(:last-child)::after {
+      content: "";
+      display: inline-block;
+      width: 1px;
+      height: 18px;
+      background: #FFC6B3;
+      margin-left: 22px;
+      vertical-align: middle;
+    }
+
+    .login .or-line {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 34px;
+      color: #FFC6B3;
+      font-size: 12px;
+    }
+
+    .login .or-line::before,
+    .login .or-line::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: #FFC6B3;
+    }
+
+    .sns {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+    }
+
+    .sns button {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+    }
+
+    .sns button img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* main */
+    #home {
+      background: #FFEFE7;
+      padding: 0 0 100px;
+      overflow-y: auto;
+      scrollbar-width: none;
+    }
+
+    #home::-webkit-scrollbar {
+      display: none;
+    }
+
+    .home-header {
+      position: relative;
+      height: 72px;
+      background: #FFEFE7;
+      display: flex;
+      align-items: center;
+      justify-content: center; /* 중앙 정렬 */
+      padding: 0 24px;
+    }
+
+    .home-head {
+      position: relative;
+      height: 300px;
+      background: #B7E5F5;
+      overflow: hidden;
+    }
+
+    .banner-slider {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.8s ease;
+    }
+
+    .banner-slide {
+      min-width: 100%;
+      width: 100%;
+      flex-shrink: 0;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .banner-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+    }
+
+    /* 배너 배경색 */
+    .banner-slide:nth-child(1) { background: #A9DEF0; }
+    .banner-slide:nth-child(2) { background: #FFF3DB; }
+    .banner-slide:nth-child(3) { background: #EDEDED; }
+    .banner-slide:nth-child(4) { background: #A9DEF0; }
+
+    
+
+    .home-chip-area {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: center; /* 가운데 */
+    }
+
+    .home-back {
+      position: absolute;
+      left: 24px; /* 좌측 고정 */
+      width: 12px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #4EA3D0;
+      font-size: 24px;
+      line-height: 1;
+    }
+
+    .home-chip {
+      border-radius: 18px;
+      background: #fff;
+      color: #0E3D5D;
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 1.15;
+      box-shadow: 0 2px 6px rgba(14, 61, 93, 0.08);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+    }
+
+    .home-chip:first-child {
+      width: 116px;
+      height: 48px;
+    }
+
+    .home-chip:last-child {
+      width: 183px;
+      height: 48px;
+    }
+
+    .home-chip small {
+      display: block;
+      margin-top: 2px;
+      font-size: 11px;
+      color: #4EA3D0;
+      font-weight: 400;
+    }
+
+    .home-hero-img {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: 210px;
+      height: 205px;
+      z-index: 2;
+    }
+
+    .home-sparkle {
+      position: absolute;
+      left: 142px;
+      top: 104px;
+      z-index: 3;
+      font-size: 18px;
+      color: #F9A23A;
+    }
+
+    .home-hero-text {
+      position: absolute;
+      left: 28px;
+      top: 128px;
+      z-index: 3;
+      color: #0E3D5D;
+    }
+
+    .home-hero-text h2 {
+      font-size: 17px;
+      line-height: 1.25;
+      font-weight: 900;
+      margin-bottom: 14px;
+    }
+
+    .home-hero-text p {
+      font-size: 10px;
+      line-height: 1.6;
+      font-weight: 700;
+    }
+
+    .home-content {
+      padding: 24px 24px 0;
+    }
+
+    .home-record-btn {
+      height: 48px;
+      border-radius: 16px;
+      background: #fff;
+      border: 1px solid #FFC6B3;
+      color: #0E3D5D;
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .home-section-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: #0E3D5D;
+    }
+
+    .my-record-card {
+      position: relative;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      background: #fff;
+      border-radius: 16px;
+      padding: 9px 36px 9px 9px;
+      margin-bottom: 16px;
+      box-shadow: 0 3px 8px rgba(14, 61, 93, 0.18);
+      height: 104px;
+    }
+
+    .my-record-card .thumb {
+      width: 80px;
+      height: 80px;
+      border-radius: 12px;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: #FFC6B3;
+    }
+
+    .my-record-card .thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .my-record-card h3 {
+      font-size: 15px;
+      font-weight: 400;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .my-record-card h3 span {
+      font-size: 24px;
+      line-height: 1;
+    }
+
+    .my-record-card p {
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 1.4;
+      color: #0E3D5D;
+    }
+
+    .my-record-card p small {
+      display: block;
+      font-size: 11px;
+      font-weight: 400;
+      color: #4EA3D0;
+      margin-top: 4px;
+    }
+
+    .send-icon {
+      position: absolute;
+      right: 12px;
+      top: 12px;
+      width: 24px;
+      height: 24px;
+      transform: rotate(0deg);
+    }
+
+    .send-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .community-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .home-post-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #fff;
+      border-radius: 16px;
+      padding: 8px;
+      box-shadow: 0 3px 8px rgba(14, 61, 93, 0.18);
+      height: 96px;
+    }
+
+    .home-post-card .thumb {
+      width: 80px;
+      height: 80px;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #FFC6B3;
+      flex-shrink: 0;
+    }
+
+    .home-post-card .thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .home-post-info {
+      min-width: 0;
+    }
+
+    .home-post-info h3 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 9px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .home-post-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .home-post-meta span {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 13px;
+      font-weight: 400;
+      color: #F29B86;
+    }
+
+    .home-post-meta img {
+      width: 24px;
+      height: 24px;
+    }
+
+    /* record */
+    #record1 {
+      background: #FFEFE7;
+      padding: 0 0 100px;
+      overflow-y: auto;
+      scrollbar-width: none;
+    }
+
+    #record1::-webkit-scrollbar {
+      display: none;
+    }
+
+    .record-header {
+      position: relative;
+      height: 72px;
+      background: #FFEFE7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 24px;
+      margin-bottom: 0;
+    }
+
+    .record-back {
+      position: absolute;
+      left: 24px;
+      width: 12px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #4EA3D0;
+      font-size: 24px;
+      line-height: 1;
+    }
+
+    .record-chip-area {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .record-chip {
+      height: 48px;
+      border-radius: 18px;
+      background: #fff;
+      color: #0E3D5D;
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 1.15;
+      box-shadow: 0 2px 6px rgba(14, 61, 93, 0.08);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+    }
+
+    .record-chip:first-child {
+      width: 116px;
+    }
+
+    .record-chip:last-child {
+      width: 183px;
+    }
+
+    .record-chip small {
+      display: block;
+      margin-top: 2px;
+      font-size: 11px;
+      color: #4EA3D0;
+      font-weight: 400;
+    }
+
+    .record-upload-box {
+      width: 100%;
+      height: 250px;
+      border-radius: 16px;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+
+    .record-upload-icon {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 18px;
+      position: relative;
+    }
+
+    .record-upload-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .record-upload-plus {
+      position: absolute;
+      right: -5px;
+      bottom: -2px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #48A85D;
+      color: #fff;
+      font-size: 16px;
+      line-height: 18px;
+      font-weight: 800;
+    }
+
+    .record-upload-box p {
+      font-size: 16px;
+      font-weight: 400;
+      color: #0E3D5D;
+    }
+
+    .record-section-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #0E3D5D;
+      margin-bottom: 16px;
+    }
+
+    .record-mood-list {
+      height: 71px;
+      border: 1px solid #FFC6B3;
+      border-radius: 16px;
+      background: #fff;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      margin-bottom: 16px;
+      padding: 0 8px;
+    }
+
+    .record-mood {
+      width: 42px;
+      height: 58px;
+      border-radius: 22px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: 400;
+      color: #4EA3D0;
+      transition: 0.2s;
+    }
+
+    .record-mood.on {
+      background: #4EA3D0;
+      color: #fff;
+    }
+
+    .record-mood span {
+      font-size: 24px;
+      line-height: 1;
+    }
+
+    .record-textarea {
+      width: 100%;
+      height: 80px;
+      resize: none;
+      border-radius: 16px;
+      background: #fff;
+      border: 1px solid #FFC6B3;
+      padding: 12px;
+      color: #0E3D5D;
+      font-size: 13px;
+      margin-bottom: 16px;
+    }
+
+    .record-textarea::placeholder {
+      color: #4EA3D0;
+    }
+
+    .record-upload-btn {
+      display: block;
+      width: 96px;
+      height: 39px;
+      margin: 0 auto 16px;
+      border-radius: 24px;
+      background: #fff;
+      border: 1px solid #FFC6B3;
+      color: #0E3D5D;
+      font-size: 16px;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .mood-list {
+      display: flex;
+      justify-content: space-between;
+      margin: 16px 0;
+    }
+
+    .mood {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #FFC6B3;
+      color: #0E3D5D;
+      font-size: 16px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 120px;
+      resize: none;
+      border-radius: 14px;
+      background: #FFEFE7;
+      border: 1px solid #A9DEF0;
+      padding: 14px;
+      color: #0E3D5D;
+      margin-bottom: 20px;
+    }
+
+    .upload-box {
+      height: 260px;
+      border-radius: 18px;
+      background: #FFC6B3;
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+
+    /* calendar */
+    .calendar-card {
+      padding: 22px;
+    }
+
+    .calendar-title {
+      text-align: center;
+      font-size: 20px;
+      font-weight: 900;
+      margin-bottom: 20px;
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 14px;
+      text-align: center;
+      font-size: 13px;
+    }
+
+    .day-name {
+      font-weight: 800;
+      color: #4EA3D0;
+    }
+
+    .day {
+      height: 28px;
+      line-height: 28px;
+      border-radius: 50%;
+    }
+
+    .day.on {
+      background: #4EA3D0;
+      color: #FFEFE7;
+    }
+
+    .day.hot {
+      background: #FFC6B3;
+    }
+
+    /* community */
+    .community-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .post-img {
+      height: 180px;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #FFC6B3;
+      margin: 10px 0;
+    }
+
+    .post h3 {
+      font-size: 15px;
+      margin-bottom: 6px;
+    }
+
+    .post p {
+      font-size: 12px;
+      line-height: 1.5;
+      color: #0E3D5D;
+    }
+
+    .write-fixed {
+      position: absolute;
+      right: 22px;
+      bottom: 95px;
+      width: 68px;
+      height: 34px;
+      border-radius: 20px;
+      background: #4EA3D0;
+      color: #FFEFE7;
+      font-size: 13px;
+      z-index: 20;
+    }
+
+    /* write page */
+    .write textarea {
+      height: 520px;
+    }
+
+    /* profile */
+    .profile-card {
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .profile-img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      margin: 0 auto 20px;
+      background: #FFC6B3;
+      overflow: hidden;
+    }
+  /* 공유 팝업 */
+.share-overlay {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.share-overlay.show {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.share-popup {
+  width: 300px;
+  height: 182px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 16px;
+  transform: scale(0.8);
+  opacity: 0;
+  transition: transform 0.35s ease;
+}
+
+.share-overlay.show .share-popup {
+  transform: scale(1);
+  opacity: 1;
+  transition: all 0.25s ease;
+}
+
+.share-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.share-row {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 16px;
+}
+
+.share-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 400;
+}
+
+.share-item img {
+  width: 32px;
+  height: 32px;
+}
+
+.share-link {
+  border-top: 1px solid #A9DEF0;
+  padding-top: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  font-weight: 400;
+}
+
+.share-link img {
+  width: 32px;
+  height: 32px;
+}
+</style>
+</head>
+
+<body>
+  <main class="app">
+
+    <!-- 스플래쉬 -->
+    <section class="screen full splash active" id="splash">
+      <h1>OneDay</h1>
+      <div class="image-box splash-img">
+        <img src="./images/#" alt="스플래쉬 이미지">
+      </div>
+    </section>
+
+    <!-- 온보딩1 -->
+    <section class="screen full onboarding" id="onboarding1">
+      <h2 class="title">하루 한 장 기록</h2>
+      <p class="sub">오늘의 순간을 남겨보세요</p>
+      <div class="image-box onboarding-img">
+        <img src="./images/#" alt="온보딩 이미지1">
+      </div>
+      <button class="btn next-onboarding" data-next="onboarding2">시작하기</button>
+    </section>
+
+    <!-- 온보딩2 -->
+    <section class="screen full onboarding" id="onboarding2">
+      <h2 class="title">사진으로 남기는 하루</h2>
+      <p class="sub">기억하고 싶은 순간을 기록하세요</p>
+      <div class="image-box onboarding-img">
+        <img src="./images/#" alt="온보딩 이미지2">
+      </div>
+      <button class="btn next-onboarding" data-next="onboarding3">시작하기</button>
+    </section>
+
+    <!-- 온보딩3 -->
+    <section class="screen full onboarding" id="onboarding3">
+      <h2 class="title">시간이 지나면 추억이 됩니다</h2>
+      <p class="sub">나만의 하루를 기록해보세요</p>
+      <div class="image-box onboarding-img">
+        <img src="./images/#" alt="온보딩 이미지3">
+      </div>
+      <button class="btn next-onboarding" data-next="login">시작하기</button>
+    </section>
+
+    <!-- 로그인 -->
+    <section class="screen full login" id="login">
+      <h1>OneDay</h1>
+      <input type="text" placeholder="아이디 또는 이메일을 입력해주세요.">
+      <input type="password" placeholder="비밀번호를 입력해주세요.">
+
+      <div class="login-option">
+        <label><input type="checkbox"> 자동 로그인</label>
+        <label><input type="checkbox"> 아이디 저장</label>
+      </div>
+
+      <button class="btn" id="loginBtn">로그인</button>
+
+      <div class="find">
+        <span>아이디 찾기</span>
+        <span>비밀번호찾기</span>
+        <span>회원가입</span>
+      </div>
+
+      <div class="or-line">OR</div>
+
+      <div class="sns">
+        <button><img src="./images/#" alt="카카오"></button>
+        <button><img src="./images/#" alt="네이버"></button>
+        <button><img src="./images/#" alt="페이스북"></button>
+      </div>
+    </section>
+
+    <!-- 메인 -->
+    <section class="screen" id="home">
+      <div class="home-header">
+        <button class="home-back">‹</button>
+
+        <div class="home-chip-area">
+          <button class="home-chip">
+            오늘 날짜
+            <small>2026.03.16 월</small>
+          </button>
+          <button class="home-chip">연속 7일 기록중 🔥</button>
+        </div>
+      </div>
+
+      <div class="home-head">
+        <div class="banner-slider" id="bannerSlider">
+          <div class="banner-slide">
+            <img src="./images/#" alt="배너1">
+          </div>
+          <div class="banner-slide">
+            <img src="./images/#" alt="배너2">
+          </div>
+          <div class="banner-slide">
+            <img src="./images/#" alt="배너3">
+          </div>
+          <div class="banner-slide">
+            <img src="./images/#" alt="배너1 복제">
+          </div>
+        </div>
+      </div>
+
+      <div class="home-content">
+        <button class="btn home-record-btn" id="goRecordBtn">오늘 기록하기 📷</button>
+
+        <h3 class="home-section-title">오늘의 내 기록</h3>
+        <article class="my-record-card">
+          <div class="thumb">
+            <img src="./images/#" alt="내 기록 이미지">
+          </div>
+          <div>
+            <h3>오늘의 감정: <span>😊</span></h3>
+            <p>놀이공원 다녀온날<small>2026-03-16 | PM 6:10</small></p>
+          </div>
+          <span class="send-icon"><img src="./images/mynaui_send-solid.svg" alt="공유"></span>
+        </article>
+
+        <h3 class="home-section-title">커뮤니티 HOT 글</h3>
+        <div class="community-cards">
+          <article class="home-post-card">
+            <div class="thumb">
+              <img src="./images/#" alt="커뮤니티 이미지">
+            </div>
+            <div class="home-post-info">
+              <h3>우리집 고양이 귀엽죠?</h3>
+              <div class="home-post-meta">
+                <span><img src="./images/icon-park-solid_like.png">120</span>
+                <span><img src="./images/ri_message-2-fill.png">42</span>
+                <span><img src="./images/mdi_eye.png">650</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="home-post-card">
+            <div class="thumb">
+              <img src="./images/#" alt="커뮤니티 이미지">
+            </div>
+            <div class="home-post-info">
+              <h3>내가 찍은 꽃 사진이야</h3>
+              <div class="home-post-meta">
+                <span><img src="./images/icon-park-solid_like.png">233</span>
+                <span><img src="./images/ri_message-2-fill.png">43</span>
+                <span><img src="./images/mdi_eye.png">500</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="home-post-card">
+            <div class="thumb">
+              <img src="./images/#" alt="커뮤니티 이미지">
+            </div>
+            <div class="home-post-info">
+              <h3>내가 진짜 맛집 찾아</h3>
+              <div class="home-post-meta">
+                <span><img src="./images/icon-park-solid_like.png">545</span>
+                <span><img src="./images/ri_message-2-fill.png">19</span>
+                <span><img src="./images/mdi_eye.png">1K</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="home-post-card">
+            <div class="thumb">
+              <img src="./images/#" alt="커뮤니티 이미지">
+            </div>
+            <div class="home-post-info">
+              <h3>이제 버터떡이 유행이라며?</h3>
+              <div class="home-post-meta">
+                <span><img src="./images/icon-park-solid_like.png">155</span>
+                <span><img src="./images/ri_message-2-fill.png">37</span>
+                <span><img src="./images/mdi_eye.png">400</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="home-post-card">
+            <div class="thumb">
+              <img src="./images/#" alt="커뮤니티 이미지">
+            </div>
+            <div class="home-post-info">
+              <h3>여기 어디지 아는사람?</h3>
+              <div class="home-post-meta">
+                <span><img src="./images/icon-park-solid_like.png">143</span>
+                <span><img src="./images/ri_message-2-fill.png">21</span>
+                <span><img src="./images/mdi_eye.png">540</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 기록1 -->
+    <section class="screen" id="record1">
+      <div class="home-header">
+        <button class="home-back back" data-page="home">‹</button>
+
+        <div class="home-chip-area">
+          <button class="home-chip">
+            오늘 날짜
+            <small>2026.03.16 월</small>
+          </button>
+          <button class="home-chip">연속 7일 기록중 🔥</button>
+        </div>
+      </div>
+
+      <div class="home-content">
+        <button class="btn home-record-btn" id="goRecord2">오늘 기록하기 📷</button>
+
+        <h3 class="home-section-title">내 기록</h3>
+
+        <article class="my-record-card">
+          <div class="thumb">
+            <img src="./images/#" alt="기록 이미지">
+          </div>
+          <div>
+            <h3>오늘의 감정: <span>😊</span></h3>
+            <p>놀이공원 다녀온날<small>2026-03-16 | PM 6:10</small></p>
+          </div>
+          <span class="send-icon"><img src="./images/mynaui_send-solid.svg" alt="공유"></span>
+        </article>
+
+        <article class="my-record-card">
+          <div class="thumb">
+            <img src="./images/#" alt="기록 이미지">
+          </div>
+          <div>
+            <h3>오늘의 감정: <span>😢</span></h3>
+            <p>공부하기 진짜 싫다.<small>2026-03-15 | PM 1:30</small></p>
+          </div>
+          <span class="send-icon"><img src="./images/mynaui_send-solid.svg" alt="공유"></span>
+        </article>
+
+        <article class="my-record-card">
+          <div class="thumb">
+            <img src="./images/#" alt="기록 이미지">
+          </div>
+          <div>
+            <h3>오늘의 감정: <span>😴</span></h3>
+            <p>하루종일 피곤해서 아무것도 못했다<small>2026-03-14 | PM 4:20</small></p>
+          </div>
+          <span class="send-icon"><img src="./images/mynaui_send-solid.svg" alt="공유"></span>
+        </article>
+
+        <article class="my-record-card">
+          <div class="thumb">
+            <img src="./images/#" alt="기록 이미지">
+          </div>
+          <div>
+            <h3>오늘의 감정: <span>😊</span></h3>
+            <p>맛있는거 먹었더니 오늘 하루 기분이 좋다 ㅎㅎ<small>2026-03-13 | AM 10:11</small></p>
+          </div>
+          <span class="send-icon"><img src="./images/mynaui_send-solid.svg" alt="공유"></span>
+        </article>
+
+        <article class="my-record-card">
+          <div class="thumb">
+            <img src="./images/#" alt="기록 이미지">
+          </div>
+          <div>
+            <h3>오늘의 감정: <span>😊</span></h3>
+            <p>아호 영화가 싫어 진짜<small>2026-03-11 | PM 11:42</small></p>
+          </div>
+          <span class="send-icon"><img src="./images/mynaui_send-solid.svg" alt="공유"></span>
+        </article>
+
+        <article class="my-record-card">
+          <div class="thumb">
+            <img src="./images/#" alt="기록 이미지">
+          </div>
+          <div>
+            <h3>오늘의 감정: <span>😌</span></h3>
+            <p>카페에서 여유롭게 보낸 하루<small>2026-03-10 | PM 2:05</small></p>
+          </div>
+          <span class="send-icon"><img src="./images/mynaui_send-solid.svg" alt="공유"></span>
+        </article>
+
+        <article class="my-record-card">
+          <div class="thumb">
+            <img src="./images/#" alt="기록 이미지">
+          </div>
+          <div>
+            <h3>오늘의 감정: <span>😡</span></h3>
+            <p>지하철에서 너무 붐벼서 힘들었다<small>2026-03-09 | AM 8:40</small></p>
+          </div>
+          <span class="send-icon"><img src="./images/mynaui_send-solid.svg" alt="공유"></span>
+        </article>
+      </div>
+    </section>
+
+    <!-- 기록3 -->
+    <section class="screen" id="record3">
+      <div class="record-header">
+        <button class="home-back back" data-page="home">‹</button>
+
+        <div class="record-chip-area">
+          <button class="record-chip">
+            오늘 날짜
+            <small>2026.03.16 월</small>
+          </button>
+          <button class="record-chip">연속 7일 기록중 🔥</button>
+        </div>
+      </div>
+
+      <div class="record-upload-box">
+        <div class="record-upload-icon">
+          <img src="./images/#" alt="이미지 업로드 아이콘">
+          
+        </div>
+        <p>이미지를 업로드 하세요</p>
+      </div>
+
+      <h3 class="record-section-title">오늘의 감정은?</h3>
+      <div class="record-mood-list">
+        <button class="record-mood"><span>😊</span>행복</button>
+        <button class="record-mood"><span>😌</span>평온</button>
+        <button class="record-mood"><span>😡</span>화남</button>
+        <button class="record-mood"><span>😢</span>우울</button>
+        <button class="record-mood"><span>😭</span>슬픔</button>
+        <button class="record-mood"><span>😫</span>힘듬</button>
+        <button class="record-mood"><span>😨</span>당황</button>
+        <button class="record-mood"><span>😴</span>피곤</button>
+      </div>
+
+      <h3 class="record-section-title">기록 하기</h3>
+      <textarea class="record-textarea" placeholder="오늘 하루는 어떠셨나요?&#10;오늘 하루를 짧은 한줄로 남겨주세요."></textarea>
+
+      <button class="record-upload-btn" id="recordNextBtn">업로드 하기</button>
+    </section>
+
+    <!-- 캘린더 -->
+    <section class="screen" id="calendar">
+      <div class="top">
+        <button class="back" data-page="home">‹</button>
+        <h2>캘린더</h2>
+        <span></span>
+      </div>
+
+      <section class="card calendar-card">
+        <h3 class="calendar-title">🔥연속 7일 달성!</h3>
+
+        <div class="calendar-grid">
+          <div class="day-name">일</div>
+          <div class="day-name">월</div>
+          <div class="day-name">화</div>
+          <div class="day-name">수</div>
+          <div class="day-name">목</div>
+          <div class="day-name">금</div>
+          <div class="day-name">토</div>
+
+          <div class="day">1</div>
+          <div class="day">2</div>
+          <div class="day">3</div>
+          <div class="day">4</div>
+          <div class="day">5</div>
+          <div class="day">6</div>
+          <div class="day">7</div>
+
+          <div class="day">8</div>
+          <div class="day on">9</div>
+          <div class="day on">10</div>
+          <div class="day on">11</div>
+          <div class="day on">12</div>
+          <div class="day on">13</div>
+          <div class="day on">14</div>
+
+          <div class="day on">15</div>
+          <div class="day hot">16</div>
+          <div class="day">17</div>
+          <div class="day">18</div>
+          <div class="day">19</div>
+          <div class="day">20</div>
+          <div class="day">21</div>
+
+          <div class="day">22</div>
+          <div class="day">23</div>
+          <div class="day">24</div>
+          <div class="day">25</div>
+          <div class="day">26</div>
+          <div class="day">27</div>
+          <div class="day">28</div>
+        </div>
+      </section>
+    </section>
+
+    <!-- 커뮤니티 -->
+    <section class="screen" id="community">
+      <div class="top">
+        <button class="back" data-page="home">‹</button>
+        <h2>커뮤니티</h2>
+        <span></span>
+      </div>
+
+      <div class="community-list">
+        <article class="card post">
+          <h3>오늘의 기록 😊</h3>
+          <div class="post-img">
+            <img src="./images/#" alt="커뮤니티 이미지">
+          </div>
+          <p>오늘 하루 기억에 남는 순간을 공유했어요.</p>
+        </article>
+
+        <article class="card post">
+          <h3>우리집 고양이 귀엽죠?</h3>
+          <div class="post-img">
+            <img src="./images/#" alt="커뮤니티 이미지">
+          </div>
+          <p>사진으로 하루를 남기니까 더 특별한 기억이 돼요.</p>
+        </article>
+      </div>
+
+      <button class="write-fixed" id="writeBtn">글쓰기</button>
+    </section>
+
+    <!-- 글쓰기 -->
+    <section class="screen write" id="write">
+      <div class="top">
+        <button class="back" data-page="community">‹</button>
+        <h2>글쓰기</h2>
+        <button class="chip on">완료</button>
+      </div>
+
+      <textarea placeholder="제목을 입력해주세요&#10;&#10;오늘의 기록을 자유롭게 작성해주세요."></textarea>
+    </section>
+
+    <!-- 프로필 -->
+    <section class="screen" id="profile">
+      <div class="top">
+        <button class="back" data-page="home">‹</button>
+        <h2>프로필</h2>
+        <span></span>
+      </div>
+
+      <section class="card profile-card">
+        <div class="profile-img">
+          <img src="./images/#" alt="프로필 이미지">
+        </div>
+        <h3>OneDay 사용자</h3>
+        <p style="margin-top:10px; color:#4EA3D0;">오늘도 하루를 기록해보세요.</p>
+      </section>
+    </section>
+
+    <!-- 하단 네비 -->
+    <nav class="bottom-nav" id="bottomNav">
+      <button class="nav-btn on" data-page="home">
+        <svg class="nav-icon" viewBox="0 0 24 24">
+          <path d="M3 10L12 3L21 10V20H14V14H10V20H3V10Z" fill="currentColor"/>
+        </svg>
+        홈
+      </button>
+      <button class="nav-btn" data-page="record1">
+        <svg class="nav-icon" viewBox="0 0 24 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M22.6667 0H4C1.8 0 0 1.8 0 4V22.6667C0 24.8667 1.8 26.6667 4 26.6667H24V24H4C3.26667 24 2.66667 23.4 2.66667 22.6667C2.66667 21.9333 3.26667 21.3333 4 21.3333H22.6667C23.4 21.3333 24 20.7333 24 20V1.33333C24 0.6 23.4 0 22.6667 0ZM18.6667 8H6.66667V5.33333H18.6667V8Z" fill="currentColor"/>
+        </svg>
+        기록
+      </button>
+      <button class="nav-btn" data-page="calendar">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M24 12V21.3333C24 22.0406 23.719 22.7189 23.219 23.219C22.7189 23.719 22.0406 24 21.3333 24H2.66667C1.95942 24 1.28115 23.719 0.781048 23.219C0.280951 22.7189 0 22.0406 0 21.3333V12H24ZM17.3333 0C17.687 0 18.0261 0.140476 18.2761 0.390524C18.5262 0.640573 18.6667 0.979711 18.6667 1.33333V2.66667H21.3333C22.0406 2.66667 22.7189 2.94762 23.219 3.44772C23.719 3.94781 24 4.62609 24 5.33333V9.33333H0V5.33333C0 4.62609 0.280951 3.94781 0.781048 3.44772C1.28115 2.94762 1.95942 2.66667 2.66667 2.66667H5.33333V1.33333C5.33333 0.979711 5.47381 0.640573 5.72386 0.390524C5.97391 0.140476 6.31304 0 6.66667 0C7.02029 0 7.35943 0.140476 7.60948 0.390524C7.85952 0.640573 8 0.979711 8 1.33333V2.66667H16V1.33333C16 0.979711 16.1405 0.640573 16.3905 0.390524C16.6406 0.140476 16.9797 0 17.3333 0Z" fill="currentColor"/>
+        </svg>
+        캘린더
+      </button>
+      <button class="nav-btn" data-page="community">
+        <svg class="nav-icon" viewBox="0 0 27 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M13.3333 0C12.2725 0 11.2551 0.421427 10.5049 1.17157C9.75476 1.92172 9.33333 2.93913 9.33333 4C9.33333 5.06087 9.75476 6.07828 10.5049 6.82843C11.2551 7.57857 12.2725 8 13.3333 8C14.3942 8 15.4116 7.57857 16.1618 6.82843C16.9119 6.07828 17.3333 5.06087 17.3333 4C17.3333 2.93913 16.9119 1.92172 16.1618 1.17157C15.4116 0.421427 14.3942 0 13.3333 0ZM14.6667 9.33333H12C8.32 9.33333 5.33333 12.32 5.33333 16V16.6667C5.33333 17.7733 6.22667 18.6667 7.33333 18.6667H19.3333C20.44 18.6667 21.3333 17.7733 21.3333 16.6667V16C21.3333 12.32 18.3467 9.33333 14.6667 9.33333ZM6 8C6.62667 8 7.2 7.84 7.69333 7.56C7.13413 6.66966 6.79209 5.66031 6.69481 4.61343C6.59753 3.56655 6.74775 2.51147 7.13333 1.53333C6.78667 1.41333 6.4 1.33333 6 1.33333C4.08 1.33333 2.66667 2.74667 2.66667 4.66667C2.66667 6.58667 4.08 8 6 8ZM5.48 9.33333H4.66667C2.09333 9.33333 0 11.4267 0 14V15.3333C0 15.7067 0.293333 16 0.666667 16H2.66667C2.66667 13.3867 3.74667 11.0267 5.48 9.33333ZM20.6667 8C22.5867 8 24 6.58667 24 4.66667C24 2.74667 22.5867 1.33333 20.6667 1.33333C20.2533 1.33333 19.88 1.41333 19.5333 1.53333C19.9189 2.51147 20.0691 3.56655 19.9719 4.61343C19.8746 5.66031 19.5325 6.66966 18.9733 7.56C19.4667 7.84 20.0267 8 20.6667 8ZM22 9.33333H21.1867C22.0776 10.2 22.7856 11.2365 23.2688 12.3816C23.7521 13.5267 24.0007 14.7571 24 16H26C26.3733 16 26.6667 15.7067 26.6667 15.3333V14C26.6667 11.4267 24.5733 9.33333 22 9.33333Z" fill="currentColor"/>
+        </svg>
+        커뮤니티
+      </button>
+      <button class="nav-btn" data-page="profile">
+        <svg class="nav-icon" viewBox="0 0 17 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8.16667 0C9.32039 0 10.4482 0.342119 11.4075 0.983094C12.3668 1.62407 13.1145 2.53511 13.556 3.60101C13.9975 4.66692 14.113 5.8398 13.8879 6.97136C13.6628 8.10292 13.1073 9.14232 12.2915 9.95812C11.4756 10.7739 10.4362 11.3295 9.30469 11.5546C8.17314 11.7797 7.00025 11.6641 5.93435 11.2226C4.86844 10.7811 3.9574 10.0334 3.31643 9.07416C2.67545 8.11487 2.33333 6.98706 2.33333 5.83333L2.33917 5.58017C2.40441 4.07838 3.04688 2.65974 4.13259 1.6201C5.21831 0.580465 6.66346 8.68496e-05 8.16667 0ZM10.5 14C12.0471 14 13.5308 14.6146 14.6248 15.7085C15.7188 16.8025 16.3333 18.2862 16.3333 19.8333V21C16.3333 21.6188 16.0875 22.2123 15.6499 22.6499C15.2123 23.0875 14.6188 23.3333 14 23.3333H2.33333C1.71449 23.3333 1.121 23.0875 0.683417 22.6499C0.245833 22.2123 0 21.6188 0 21V19.8333C0 18.2862 0.614582 16.8025 1.70854 15.7085C2.80251 14.6146 4.28624 14 5.83333 14H10.5Z" fill="currentColor"/>
+        </svg>
+        프로필
+      </button>
+    </nav>
+
+      <!-- 공유 팝업 -->
+    <div class="share-overlay" id="sharePopup">
+      <div class="share-popup">
+        <div class="share-title">공유</div>
+
+        <div class="share-row">
+          <div class="share-item">
+            <img src="./images/#" alt="카카오">
+            <span>카카오톡</span>
+          </div>
+          <div class="share-item">
+            <img src="./images/#" alt="더보기">
+            <span>더보기</span>
+          </div>
+        </div>
+
+        <div class="share-link">
+          <img src="./images/#" alt="링크">
+          <span>링크 복사</span>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    const screens = document.querySelectorAll(".screen");
+    const nav = document.getElementById("bottomNav");
+    const navBtns = document.querySelectorAll(".nav-btn");
+
+    let onboardingTimer1 = null;
+    let onboardingTimer2 = null;
+    let onboardingTimer3 = null;
+
+    function clearOnboardingFlow() {
+      clearTimeout(onboardingTimer1);
+      clearTimeout(onboardingTimer2);
+      clearTimeout(onboardingTimer3);
+      onboardingTimer1 = null;
+      onboardingTimer2 = null;
+      onboardingTimer3 = null;
+    }
+
+    function showPage(pageId) {
+      const targetPage = document.getElementById(pageId);
+
+      screens.forEach(function(screen) {
+        screen.classList.remove("active");
+        screen.style.display = "none";
+      });
+
+      targetPage.classList.add("active");
+
+      if (targetPage.classList.contains("onboarding")) {
+        targetPage.style.display = "flex";
+      } else {
+        targetPage.style.display = "block";
+      }
+
+      if (
+        pageId === "splash" ||
+        pageId === "onboarding1" ||
+        pageId === "onboarding2" ||
+        pageId === "onboarding3" ||
+        pageId === "login"
+      ) {
+        nav.classList.remove("show");
+      } else {
+        nav.classList.add("show");
+        clearOnboardingFlow();
+      }
+
+      navBtns.forEach(function(btn) {
+        btn.classList.remove("on");
+
+        if (btn.dataset.page === pageId) {
+          btn.classList.add("on");
+        }
+
+        if (pageId === "record3" && btn.dataset.page === "record1") {
+          btn.classList.add("on");
+        }
+      });
+    }
+
+    function startOnboardingFlow() {
+      clearOnboardingFlow();
+
+      showPage("onboarding1");
+
+      onboardingTimer1 = setTimeout(function() {
+        showPage("onboarding2");
+      }, 3000);
+
+      onboardingTimer2 = setTimeout(function() {
+        showPage("onboarding3");
+      }, 6000);
+
+      onboardingTimer3 = setTimeout(function() {
+        showPage("login");
+      }, 9000);
+    }
+
+    // 스플래쉬 → 온보딩1
+    setTimeout(function() {
+      startOnboardingFlow();
+    }, 2000);
+
+    // 시작하기 버튼 → 로그인으로 이동
+    document.querySelectorAll(".next-onboarding").forEach(function(btn) {
+      btn.addEventListener("click", function() {
+        clearOnboardingFlow();
+        showPage("login");
+      });
+    });
+
+    document.getElementById("loginBtn").addEventListener("click", function() {
+      const inputs = document.querySelectorAll(".login input[type='text'], .login input[type='password']");
+      const id = inputs[0].value.trim();
+      const pw = inputs[1].value.trim();
+
+      if (!id || !pw) {
+        alert("아이디와 비밀번호를 모두 입력해주세요.");
+        return;
+      }
+
+      clearOnboardingFlow();
+      showPage("home");
+    });
+
+    navBtns.forEach(function(btn) {
+      btn.addEventListener("click", function() {
+        clearOnboardingFlow();
+        showPage(btn.dataset.page);
+      });
+    });
+
+    document.querySelectorAll(".back").forEach(function(btn) {
+      btn.addEventListener("click", function() {
+        clearOnboardingFlow();
+        showPage(btn.dataset.page);
+      });
+    });
+
+    document.getElementById("goRecordBtn").addEventListener("click", function() {
+      showPage("record3");
+    });
+
+    document.getElementById("goRecord2").addEventListener("click", function() {
+      showPage("record3");
+    });
+
+    document.getElementById("recordNextBtn").addEventListener("click", function() {
+      const selectedMood = document.querySelector(".record-mood.on span");
+      const textarea = document.querySelector(".record-textarea");
+      const recordText = textarea.value.trim() || "오늘 하루를 기록했어요.";
+      const moodEmoji = selectedMood ? selectedMood.textContent : "😊";
+
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, "0");
+      const date = String(now.getDate()).padStart(2, "0");
+      const hour = now.getHours();
+      const minute = String(now.getMinutes()).padStart(2, "0");
+      const ampm = hour >= 12 ? "PM" : "AM";
+      const displayHour = hour % 12 || 12;
+      const dateText = `${year}-${month}-${date} | ${ampm} ${displayHour}:${minute}`;
+
+      const recordTitle = document.querySelector("#record1 .home-section-title");
+      const newCard = `
+        <article class="my-record-card">
+          <div class="thumb">
+            <img src="./images/#" alt="기록 이미지">
+          </div>
+          <div>
+            <h3>오늘의 감정: <span>${moodEmoji}</span></h3>
+            <p>${recordText}<small>${dateText}</small></p>
+          </div>
+          <span class="send-icon"><img src="./images/mynaui_send-solid.svg" alt="공유"></span>
+        </article>
+      `;
+
+      recordTitle.insertAdjacentHTML("afterend", newCard);
+
+      const homeRecordCard = document.querySelector("#home .my-record-card");
+      if (homeRecordCard) {
+        homeRecordCard.outerHTML = newCard;
+      }
+
+      textarea.value = "";
+      document.querySelectorAll(".record-mood").forEach(function(item) {
+        item.classList.remove("on");
+      });
+
+      showPage("record1");
+    });
+
+    // 감정 선택 활성화
+    document.querySelectorAll(".record-mood").forEach(function(btn) {
+      btn.addEventListener("click", function() {
+        document.querySelectorAll(".record-mood").forEach(function(item) {
+          item.classList.remove("on");
+        });
+        btn.classList.add("on");
+      });
+    });
+
+    document.getElementById("writeBtn").addEventListener("click", function() {
+      showPage("write");
+    });
+  
+    // 메인 뒤로가기 → 로그인
+document.querySelector(".home-back").addEventListener("click", function() {
+  clearOnboardingFlow();
+  showPage("login");
+});
+
+// 공유 팝업
+const sharePopup = document.getElementById("sharePopup");
+
+document.addEventListener("click", function(e) {
+  const shareBtn = e.target.closest(".send-icon");
+  if (shareBtn) {
+    e.stopPropagation();
+    sharePopup.classList.add("show");
+  }
+});
+
+sharePopup.addEventListener("click", function(e){
+  if(e.target === sharePopup){
+    sharePopup.classList.remove("show");
+  }
+});
+
+// 배너 슬라이드 무한루프 느낌
+    const slider = document.getElementById("bannerSlider");
+    let slideIndex = 0;
+    const slideCount = 3;
+    const stayTime = 3000; // 한 장이 멈춰있는 시간
+    const moveTime = 800; // 넘어가는 애니메이션 시간
+
+    setInterval(function() {
+      slideIndex++;
+      slider.style.transition = `transform ${moveTime}ms ease`;
+      slider.style.transform = `translateX(-${slideIndex * 100}%)`;
+
+      if (slideIndex === slideCount) {
+        setTimeout(function() {
+          slider.style.transition = "none";
+          slider.style.transform = "translateX(0)";
+          slideIndex = 0;
+        }, moveTime);
+      }
+    }, stayTime + moveTime);
+  </script>
+</body>
+</html>
