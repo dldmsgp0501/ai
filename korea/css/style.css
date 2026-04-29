@@ -85,7 +85,7 @@
     .top-login-icon{
       width:16px;
       height:16px;
-      background:url('./images/login.svg') center/contain no-repeat;
+      background:url('../images/login.svg') center/contain no-repeat;
       display:inline-block;
       flex:0 0 16px;
     }
@@ -417,7 +417,7 @@
       width:40px;
       height:40px;
       flex:0 0 40px;
-      background:url('./images/inner_Number1.svg') center/contain no-repeat;
+      background:url('../images/inner_Number1.svg') center/contain no-repeat;
       margin-top:4px;
     }
 
@@ -435,7 +435,7 @@
       content:"";
       width:24px;
       height:24px;
-      background:url('./images/inner_yin-yang_9165635 1.svg') center/contain no-repeat;
+      background:url('../images/inner_yin-yang_9165635 1.svg') center/contain no-repeat;
       flex:0 0 24px;
     }
 
@@ -550,7 +550,7 @@
       width:48px;
       height:48px;
       display:block;
-      background:url('./images/plus_button.svg') center/contain no-repeat;
+      background:url('../images/plus_button.svg') center/contain no-repeat;
       font-size:0;
     }
 
@@ -826,7 +826,7 @@
       display:inline-block;
       width:24px;
       height:24px;
-      background:url('./images/arrow.svg') center/contain no-repeat;
+      background:url('../images/arrow.svg') center/contain no-repeat;
       flex:0 0 24px;
     }
 
@@ -1795,12 +1795,12 @@
         display:inline-block;
         width:24px;
         height:24px;
-        background:url('./images/drop down-line.svg') center/contain no-repeat;
+        background:url('../images/drop down-line.svg') center/contain no-repeat;
         flex:0 0 24px;
       }
 
       .tab-menu-item.open > button .menu-arrow{
-        background-image:url('./images/drop up-line.svg');
+        background-image:url('../images/drop up-line.svg');
       }
 
       .tab-menu-item ul{
@@ -1845,7 +1845,7 @@
       .login-icon{
         width:16px;
         height:16px;
-        background:url('./images/login.svg') center/contain no-repeat;
+        background:url('../images/login.svg') center/contain no-repeat;
         display:inline-block;
         flex:0 0 16px;
       }
