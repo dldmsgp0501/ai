@@ -340,7 +340,7 @@
   }
   .problem-card:hover { transform: translateX(4px); box-shadow: var(--shadow); }
   .problem-icon { font-size: 28px; flex-shrink: 0; }
-  .problem-text h4 { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+  .problem-text h3 { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
   .problem-text p { font-size: 13px; color: var(--text-light); line-height: 1.6; }
   .s1-insight {
     background: linear-gradient(135deg, var(--pink-light), white);
@@ -415,7 +415,7 @@
     flex-shrink: 0;
     box-shadow: 0 4px 12px rgba(0,199,60,0.3);
   }
-  .step-content h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  .step-content h3 { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
   .step-content p { font-size: 13px; color: var(--text-light); line-height: 1.6; }
   .kit-grid {
     display: grid;
@@ -790,6 +790,7 @@
   }
   .kit-option input { display: none; }
   .kit-option-num {
+    display: block;
     font-family: 'DM Serif Display', serif;
     font-size: 28px;
     color: var(--green-dark);
@@ -798,8 +799,8 @@
     margin-bottom: 6px;
   }
   .kit-option.selected .kit-option-num { opacity: 1; }
-  .kit-option-name { font-size: 13px; font-weight: 700; }
-  .kit-option-theme { font-size: 11px; color: var(--text-light); margin-top: 4px; }
+  .kit-option-name { display: block; font-size: 13px; font-weight: 700; }
+  .kit-option-theme { display: block; font-size: 11px; color: var(--text-light); margin-top: 4px; }
   .submit-btn {
     width: 100%;
     padding: 16px;
@@ -928,28 +929,28 @@
         <div class="problem-card reveal">
           <span class="problem-icon">🧪</span>
           <div class="problem-text">
-            <h4>성분 혼란</h4>
+            <h3>성분 혼란</h3>
             <p>레티놀, 나이아신아마이드, AHA/BHA… 어떤 성분이 내 피부에 맞는지 알 수 없어 랜덤으로 구매하게 됩니다.</p>
           </div>
         </div>
         <div class="problem-card reveal reveal-delay-1">
           <span class="problem-icon">🌀</span>
           <div class="problem-text">
-            <h4>피부 타입 오판</h4>
+            <h3>피부 타입 오판</h3>
             <p>건성인 줄 알았는데 복합성이었거나, 지성인 줄 알았는데 탈수성인 경우. 잘못된 시작이 실패를 부릅니다.</p>
           </div>
         </div>
         <div class="problem-card reveal reveal-delay-2">
           <span class="problem-icon">📋</span>
           <div class="problem-text">
-            <h4>순서 혼란</h4>
+            <h3>순서 혼란</h3>
             <p>스킨 → 앰플 → 로션인지, 앰플을 먼저 써야 하는지. 순서 하나로 제품의 효과가 완전히 달라집니다.</p>
           </div>
         </div>
         <div class="problem-card reveal reveal-delay-3">
           <span class="problem-icon">💸</span>
           <div class="problem-text">
-            <h4>비용 낭비의 반복</h4>
+            <h3>비용 낭비의 반복</h3>
             <p>풀사이즈를 구매했다가 맞지 않아 포기. 실패가 반복될수록 스킨케어에 대한 불신이 쌓입니다.</p>
           </div>
         </div>
@@ -982,21 +983,21 @@
         <div class="step-item">
           <div class="step-num">1</div>
           <div class="step-content">
-            <h4>피부 타입 진단</h4>
+            <h3>피부 타입 진단</h3>
             <p>4가지 피부 유형 중 내 피부에 가장 가까운 타입을 선택합니다.</p>
           </div>
         </div>
         <div class="step-item">
           <div class="step-num">2</div>
           <div class="step-content">
-            <h4>체험 키트 선택</h4>
+            <h3>체험 키트 선택</h3>
             <p>3가지 테마 키트 중 하나를 골라 2주간 집중 테스트합니다.</p>
           </div>
         </div>
         <div class="step-item">
           <div class="step-num">3</div>
           <div class="step-content">
-            <h4>반응 기록 & 분석</h4>
+            <h3>반응 기록 &amp; 분석</h3>
             <p>6종 샘플 각각에 대한 피부 반응을 체크하며 최적 조합을 찾습니다.</p>
           </div>
         </div>
@@ -1170,21 +1171,21 @@
         <div class="kit-selector">
           <label class="kit-option" onclick="selectKit(this, 'Kit 1')">
             <input type="radio" name="kit" value="Kit 1">
-            <div class="kit-option-num">01</div>
-            <div class="kit-option-name">Kit 1</div>
-            <div class="kit-option-theme">진정 케어</div>
+            <span class="kit-option-num">01</span>
+            <span class="kit-option-name">Kit 1</span>
+            <span class="kit-option-theme">진정 케어</span>
           </label>
           <label class="kit-option" onclick="selectKit(this, 'Kit 2')">
             <input type="radio" name="kit" value="Kit 2">
-            <div class="kit-option-num">02</div>
-            <div class="kit-option-name">Kit 2</div>
-            <div class="kit-option-theme">수분 충전</div>
+            <span class="kit-option-num">02</span>
+            <span class="kit-option-name">Kit 2</span>
+            <span class="kit-option-theme">수분 충전</span>
           </label>
           <label class="kit-option" onclick="selectKit(this, 'Kit 3')">
             <input type="radio" name="kit" value="Kit 3">
-            <div class="kit-option-num">03</div>
-            <div class="kit-option-name">Kit 3</div>
-            <div class="kit-option-theme">피지 밸런스</div>
+            <span class="kit-option-num">03</span>
+            <span class="kit-option-name">Kit 3</span>
+            <span class="kit-option-theme">피지 밸런스</span>
           </label>
         </div>
       </div>
@@ -1246,15 +1247,13 @@
       'Trial Kit': selectedKit
     });
 
-    try {
-      // no-cors로 요청 — Apps Script가 GET 파라미터를 정상 수신함
-      await fetch(SCRIPT_URL + '?' + params.toString(), {
-        method: 'GET',
-        mode: 'no-cors'
-      });
-    } catch (e) {
-      console.error('Submit error:', e);
-    }
+    // Image 트릭: CORS·리다이렉트 문제 없이 Apps Script에 데이터 전달
+    await new Promise((resolve) => {
+      const img = new Image();
+      img.onload = img.onerror = resolve;   // 성공·실패 모두 진행
+      img.src = SCRIPT_URL + '?' + params.toString();
+      setTimeout(resolve, 3000);            // 3초 타임아웃 안전장치
+    });
 
     document.getElementById('formView').style.display = 'none';
     document.getElementById('successView').style.display = 'block';
