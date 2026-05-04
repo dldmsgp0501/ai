@@ -24,7 +24,7 @@
       <div class="image-box onboarding-img">
         <img src="./images/onboarding1.png" alt="온보딩 이미지1">
       </div>
-      <button class="btn next-onboarding" data-next="onboarding2">시작하기</button>
+      <button type="button" class="btn next-onboarding" data-next="onboarding2">시작하기</button>
     </section>
 
     <!-- 온보딩2 -->
@@ -34,7 +34,7 @@
       <div class="image-box onboarding-img">
         <img src="./images/onboarding2.png" alt="온보딩 이미지2">
       </div>
-      <button class="btn next-onboarding" data-next="onboarding3">시작하기</button>
+      <button type="button" class="btn next-onboarding" data-next="onboarding3">시작하기</button>
     </section>
 
     <!-- 온보딩3 -->
@@ -44,21 +44,21 @@
       <div class="image-box onboarding-img">
         <img src="./images/onboarding3.png" alt="온보딩 이미지3">
       </div>
-      <button class="btn next-onboarding" data-next="login">시작하기</button>
+      <button type="button" class="btn next-onboarding" data-next="login">시작하기</button>
     </section>
 
     <!-- 로그인 -->
     <section class="screen full login" id="login">
       <h1>OneDay</h1>
-      <input type="text" placeholder="아이디 또는 이메일을 입력해주세요.">
-      <input type="password" placeholder="비밀번호를 입력해주세요.">
+      <input type="text" placeholder="아이디 또는 이메일을 입력해주세요." aria-label="아이디 또는 이메일">
+      <input type="password" placeholder="비밀번호를 입력해주세요." aria-label="비밀번호">
 
       <div class="login-option">
         <label><input type="checkbox"> 자동 로그인</label>
         <label><input type="checkbox"> 아이디 저장</label>
       </div>
 
-      <button class="btn" id="loginBtn">로그인</button>
+      <button type="button" class="btn" id="loginBtn">로그인</button>
 
       <div class="find">
         <span>아이디 찾기</span>
@@ -69,9 +69,9 @@
       <div class="or-line">OR</div>
 
       <div class="sns">
-        <button><img src="./images/kakaotalk_logo.svg.png" alt="카카오"></button>
-        <button><img src="./images/naver_corporation_icon.jpeg.png" alt="네이버"></button>
-        <button><img src="./images/facebook_logo.png" alt="페이스북"></button>
+        <button type="button"><img src="./images/kakaotalk_logo.svg.png" alt="카카오"></button>
+        <button type="button"><img src="./images/naver_corporation_icon.jpeg.png" alt="네이버"></button>
+        <button type="button"><img src="./images/facebook_logo.png" alt="페이스북"></button>
       </div>
     </section>
 
@@ -79,14 +79,14 @@
     <section class="screen" id="home">
       <h2 class="sr-only">홈</h2>
       <div class="home-header">
-        <button class="home-back">‹</button>
+        <button type="button" class="home-back">‹</button>
 
         <div class="home-chip-area">
-          <button class="home-chip">
+          <button type="button" class="home-chip">
             오늘 날짜
             <small>2026.03.16 월</small>
           </button>
-          <button class="home-chip">연속 7일 기록중 🔥</button>
+          <button type="button" class="home-chip">연속 7일 기록중 🔥</button>
         </div>
       </div>
 
@@ -108,7 +108,7 @@
       </div>
 
       <div class="home-content">
-        <button class="btn home-record-btn" id="goRecordBtn">오늘 기록하기 📷</button>
+        <button type="button" class="btn home-record-btn" id="goRecordBtn">오늘 기록하기 📷</button>
 
         <h2 class="home-section-title">오늘의 내 기록</h2>
         <article class="my-record-card">
@@ -201,19 +201,19 @@
     <section class="screen" id="record1">
       <h2 class="sr-only">기록 목록</h2>
       <div class="home-header">
-        <button class="home-back back" data-page="home">‹</button>
+        <button type="button" class="home-back back" data-page="home">‹</button>
 
         <div class="home-chip-area">
-          <button class="home-chip">
+          <button type="button" class="home-chip">
             오늘 날짜
             <small>2026.03.16 월</small>
           </button>
-          <button class="home-chip">연속 7일 기록중 🔥</button>
+          <button type="button" class="home-chip">연속 7일 기록중 🔥</button>
         </div>
       </div>
 
       <div class="home-content">
-        <button class="btn home-record-btn" id="goRecord2">오늘 기록하기 📷</button>
+        <button type="button" class="btn home-record-btn" id="goRecord2">오늘 기록하기 📷</button>
 
         <h2 class="home-section-title">내 기록</h2>
 
@@ -300,14 +300,14 @@
     <section class="screen" id="record3">
       <h2 class="sr-only">기록 작성</h2>
       <div class="record-header">
-        <button class="home-back back" data-page="home">‹</button>
+        <button type="button" class="home-back back" data-page="home">‹</button>
 
         <div class="record-chip-area">
-          <button class="record-chip">
+          <button type="button" class="record-chip">
             오늘 날짜
             <small>2026.03.16 월</small>
           </button>
-          <button class="record-chip">연속 7일 기록중 🔥</button>
+          <button type="button" class="record-chip">연속 7일 기록중 🔥</button>
         </div>
       </div>
 
@@ -322,20 +322,20 @@
 
       <h3 class="record-section-title">오늘의 감정은?</h3>
       <div class="record-mood-list">
-        <button class="record-mood"><span>😊</span>행복</button>
-        <button class="record-mood"><span>😌</span>평온</button>
-        <button class="record-mood"><span>😡</span>화남</button>
-        <button class="record-mood"><span>😢</span>우울</button>
-        <button class="record-mood"><span>😭</span>슬픔</button>
-        <button class="record-mood"><span>😫</span>힘듦</button>
-        <button class="record-mood"><span>😨</span>당황</button>
-        <button class="record-mood"><span>😴</span>피곤</button>
+        <button type="button" class="record-mood"><span>😊</span>행복</button>
+        <button type="button" class="record-mood"><span>😌</span>평온</button>
+        <button type="button" class="record-mood"><span>😡</span>화남</button>
+        <button type="button" class="record-mood"><span>😢</span>우울</button>
+        <button type="button" class="record-mood"><span>😭</span>슬픔</button>
+        <button type="button" class="record-mood"><span>😫</span>힘듦</button>
+        <button type="button" class="record-mood"><span>😨</span>당황</button>
+        <button type="button" class="record-mood"><span>😴</span>피곤</button>
       </div>
 
       <h3 class="record-section-title">기록 하기</h3>
-      <textarea class="record-textarea" placeholder="오늘 하루는 어떠셨나요?&#10;오늘 하루를 짧은 한줄로 남겨주세요."></textarea>
+      <textarea class="record-textarea" aria-label="오늘 하루 기록" placeholder="오늘 하루는 어떠셨나요?&#10;오늘 하루를 짧은 한줄로 남겨주세요."></textarea>
 
-      <button class="record-upload-btn" id="recordNextBtn">업로드 하기</button>
+      <button type="button" class="record-upload-btn" id="recordNextBtn">업로드 하기</button>
     </section>
 
     <!-- 캘린더 -->
@@ -346,7 +346,7 @@
     <!-- 커뮤니티 -->
     <section class="screen" id="community">
       <div class="community-header">
-        <button class="home-back back" data-page="home">‹</button>
+        <button type="button" class="home-back back" data-page="home">‹</button>
         <h2 class="community-title">커뮤니티</h2>
       </div>
 
@@ -457,7 +457,7 @@
         </article>
       </div>
 
-      <button class="write-fixed" id="writeBtn">
+      <button type="button" class="write-fixed" id="writeBtn">
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M4 16.5V20H7.5L17.81 9.69L14.31 6.19L4 16.5ZM20.71 6.79C21.1 6.4 21.1 5.77 20.71 5.38L18.62 3.29C18.23 2.9 17.6 2.9 17.21 3.29L15.58 4.92L19.08 8.42L20.71 6.79Z" fill="currentColor"/>
         </svg>
@@ -468,7 +468,7 @@
     <!-- 커뮤니티 상세 -->
     <section class="screen" id="communityDetail">
       <div class="community-header">
-        <button class="home-back back" data-page="community">‹</button>
+        <button type="button" class="home-back back" data-page="community">‹</button>
         <h2 class="community-title">커뮤니티</h2>
       </div>
 
@@ -501,8 +501,8 @@
         </div>
 
         <div class="comment-input-wrap">
-          <input type="text" placeholder="댓글을 입력하세요.">
-          <button class="comment-send"><img src="./images/mynaui_send-solid.svg" alt="전송"></button>
+          <input type="text" placeholder="댓글을 입력하세요." aria-label="댓글 입력">
+          <button type="button" class="comment-send"><img src="./images/mynaui_send-solid.svg" alt="전송"></button>
         </div>
       </article>
     </section>
@@ -510,15 +510,15 @@
     <!-- 글쓰기 -->
 <section class="screen write" id="write">
   <div class="write-header">
-    <button class="home-back back" data-page="community">‹</button>
+    <button type="button" class="home-back back" data-page="community">‹</button>
     <h2 class="write-title">글쓰기</h2>
-    <button class="write-upload-btn" id="writeUploadBtn">업로드</button>
+    <button type="button" class="write-upload-btn" id="writeUploadBtn">업로드</button>
   </div>
 
   <div class="write-box">
-    <input class="write-title-input" type="text" placeholder="제목을 입력해 주세요">
+    <input class="write-title-input" type="text" placeholder="제목을 입력해 주세요" aria-label="게시글 제목">
 
-    <textarea class="write-content-area" placeholder="OneDay 유저들과 자유롭게 얘기해보세요.&#10;#일상 #여유"></textarea>
+    <textarea class="write-content-area" aria-label="게시글 내용" placeholder="OneDay 유저들과 자유롭게 얘기해보세요.&#10;#일상 #여유"></textarea>
 
     <div class="record-upload-box" id="writeImageUploadBox">
       <img class="record-preview-img" id="writePreviewImg" src="./images/#" alt="선택 이미지">
@@ -530,7 +530,7 @@
       <p>이미지를 업로드 하세요</p>
     </div>
 
-    <button class="rule-btn">커뮤니티 이용규칙 <span>›</span></button>
+    <button type="button" class="rule-btn">커뮤니티 이용규칙 <span>›</span></button>
   </div>
 </section>
 
@@ -541,31 +541,31 @@
 
     <!-- 하단 네비 -->
     <nav class="bottom-nav" id="bottomNav">
-      <button class="nav-btn on" data-page="home">
+      <button type="button" class="nav-btn on" data-page="home">
         <svg class="nav-icon" viewBox="0 0 24 24">
           <path d="M3 10L12 3L21 10V20H14V14H10V20H3V10Z" fill="currentColor"/>
         </svg>
         홈
       </button>
-      <button class="nav-btn" data-page="record1">
+      <button type="button" class="nav-btn" data-page="record1">
         <svg class="nav-icon" viewBox="0 0 24 27" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M22.6667 0H4C1.8 0 0 1.8 0 4V22.6667C0 24.8667 1.8 26.6667 4 26.6667H24V24H4C3.26667 24 2.66667 23.4 2.66667 22.6667C2.66667 21.9333 3.26667 21.3333 4 21.3333H22.6667C23.4 21.3333 24 20.7333 24 20V1.33333C24 0.6 23.4 0 22.6667 0ZM18.6667 8H6.66667V5.33333H18.6667V8Z" fill="currentColor"/>
         </svg>
         기록
       </button>
-      <button class="nav-btn" data-page="calendar">
+      <button type="button" class="nav-btn" data-page="calendar">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M24 12V21.3333C24 22.0406 23.719 22.7189 23.219 23.219C22.7189 23.719 22.0406 24 21.3333 24H2.66667C1.95942 24 1.28115 23.719 0.781048 23.219C0.280951 22.7189 0 22.0406 0 21.3333V12H24ZM17.3333 0C17.687 0 18.0261 0.140476 18.2761 0.390524C18.5262 0.640573 18.6667 0.979711 18.6667 1.33333V2.66667H21.3333C22.0406 2.66667 22.7189 2.94762 23.219 3.44772C23.719 3.94781 24 4.62609 24 5.33333V9.33333H0V5.33333C0 4.62609 0.280951 3.94781 0.781048 3.44772C1.28115 2.94762 1.95942 2.66667 2.66667 2.66667H5.33333V1.33333C5.33333 0.979711 5.47381 0.640573 5.72386 0.390524C5.97391 0.140476 6.31304 0 6.66667 0C7.02029 0 7.35943 0.140476 7.60948 0.390524C7.85952 0.640573 8 0.979711 8 1.33333V2.66667H16V1.33333C16 0.979711 16.1405 0.640573 16.3905 0.390524C16.6406 0.140476 16.9797 0 17.3333 0Z" fill="currentColor"/>
         </svg>
         캘린더
       </button>
-      <button class="nav-btn" data-page="community">
+      <button type="button" class="nav-btn" data-page="community">
         <svg class="nav-icon" viewBox="0 0 27 19" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M13.3333 0C12.2725 0 11.2551 0.421427 10.5049 1.17157C9.75476 1.92172 9.33333 2.93913 9.33333 4C9.33333 5.06087 9.75476 6.07828 10.5049 6.82843C11.2551 7.57857 12.2725 8 13.3333 8C14.3942 8 15.4116 7.57857 16.1618 6.82843C16.9119 6.07828 17.3333 5.06087 17.3333 4C17.3333 2.93913 16.9119 1.92172 16.1618 1.17157C15.4116 0.421427 14.3942 0 13.3333 0ZM14.6667 9.33333H12C8.32 9.33333 5.33333 12.32 5.33333 16V16.6667C5.33333 17.7733 6.22667 18.6667 7.33333 18.6667H19.3333C20.44 18.6667 21.3333 17.7733 21.3333 16.6667V16C21.3333 12.32 18.3467 9.33333 14.6667 9.33333ZM6 8C6.62667 8 7.2 7.84 7.69333 7.56C7.13413 6.66966 6.79209 5.66031 6.69481 4.61343C6.59753 3.56655 6.74775 2.51147 7.13333 1.53333C6.78667 1.41333 6.4 1.33333 6 1.33333C4.08 1.33333 2.66667 2.74667 2.66667 4.66667C2.66667 6.58667 4.08 8 6 8ZM5.48 9.33333H4.66667C2.09333 9.33333 0 11.4267 0 14V15.3333C0 15.7067 0.293333 16 0.666667 16H2.66667C2.66667 13.3867 3.74667 11.0267 5.48 9.33333ZM20.6667 8C22.5867 8 24 6.58667 24 4.66667C24 2.74667 22.5867 1.33333 20.6667 1.33333C20.2533 1.33333 19.88 1.41333 19.5333 1.53333C19.9189 2.51147 20.0691 3.56655 19.9719 4.61343C19.8746 5.66031 19.5325 6.66966 18.9733 7.56C19.4667 7.84 20.0267 8 20.6667 8ZM22 9.33333H21.1867C22.0776 10.2 22.7856 11.2365 23.2688 12.3816C23.7521 13.5267 24.0007 14.7571 24 16H26C26.3733 16 26.6667 15.7067 26.6667 15.3333V14C26.6667 11.4267 24.5733 9.33333 22 9.33333Z" fill="currentColor"/>
         </svg>
         커뮤니티
       </button>
-      <button class="nav-btn" data-page="profile">
+      <button type="button" class="nav-btn" data-page="profile">
         <svg class="nav-icon" viewBox="0 0 17 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M8.16667 0C9.32039 0 10.4482 0.342119 11.4075 0.983094C12.3668 1.62407 13.1145 2.53511 13.556 3.60101C13.9975 4.66692 14.113 5.8398 13.8879 6.97136C13.6628 8.10292 13.1073 9.14232 12.2915 9.95812C11.4756 10.7739 10.4362 11.3295 9.30469 11.5546C8.17314 11.7797 7.00025 11.6641 5.93435 11.2226C4.86844 10.7811 3.9574 10.0334 3.31643 9.07416C2.67545 8.11487 2.33333 6.98706 2.33333 5.83333L2.33917 5.58017C2.40441 4.07838 3.04688 2.65974 4.13259 1.6201C5.21831 0.580465 6.66346 8.68496e-05 8.16667 0ZM10.5 14C12.0471 14 13.5308 14.6146 14.6248 15.7085C15.7188 16.8025 16.3333 18.2862 16.3333 19.8333V21C16.3333 21.6188 16.0875 22.2123 15.6499 22.6499C15.2123 23.0875 14.6188 23.3333 14 23.3333H2.33333C1.71449 23.3333 1.121 23.0875 0.683417 22.6499C0.245833 22.2123 0 21.6188 0 21V19.8333C0 18.2862 0.614582 16.8025 1.70854 15.7085C2.80251 14.6146 4.28624 14 5.83333 14H10.5Z" fill="currentColor"/>
         </svg>
@@ -599,16 +599,16 @@
       <!-- 이미지 업로드 선택 팝업 -->
     <div class="image-upload-overlay" id="imageUploadPopup">
       <div class="image-upload-menu">
-        <button id="selectPhotoBtn"><img src="./images/material-symbols_image.png" alt="사진">사진</button>
-        <button><img src="./images/mdi_camera.png" alt="카메라">카메라</button>
-        <button><img src="./images/line-md_file-filled.png" alt="파일">파일</button>
+        <button type="button" id="selectPhotoBtn"><img src="./images/material-symbols_image.png" alt="사진">사진</button>
+        <button type="button"><img src="./images/mdi_camera.png" alt="카메라">카메라</button>
+        <button type="button"><img src="./images/line-md_file-filled.png" alt="파일">파일</button>
       </div>
     </div>
 
       <!-- 커뮤니티 이용규칙 팝업 -->
     <div class="rules-overlay" id="rulesPopup">
       <div class="rules-popup">
-        <button class="rules-close" id="rulesCloseBtn">×</button>
+        <button type="button" class="rules-close" id="rulesCloseBtn">×</button>
         <h2>커뮤니티 이용규칙</h2>
         <p>커뮤니티는 사용자들이 자유롭게 정보를 공유하고 소통하는 공간입니다.</p>
         <p>모든 이용자는 아래 규칙을 준수해야 하며, 위반 시 게시물 삭제 또는 이용 제한이 발생할 수 있습니다.</p>
@@ -655,7 +655,7 @@
       </div>
     </div>
 <input type="file" id="imageFileInput" accept="image/*" style="display:none;">
-<input type="file" id="cameraFileInput" accept="image/*" capture="environment" style="display:none;">
+<input type="file" id="cameraFileInput" accept="image/*" style="display:none;">
   </main>
 <script src="./script/script.js"></script>
 </body>
