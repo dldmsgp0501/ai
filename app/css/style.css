@@ -1732,3 +1732,33 @@
   white-space: nowrap;
   border: 0;
 }
+.write-image-btn {
+  margin-top: 12px;
+  width: 80px;
+  height: 32px;
+  border-radius: 16px;
+  background: #4EA3D0;
+  color: #fff;
+  font-size: 13px;
+}
+
+.write-image-preview {
+  margin-top: 12px;
+  width: 100%;
+  height: 180px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.write-image-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+#write .record-upload-box {
+  background: #f2f2f2;
+}
+#write .record-upload-box {
+  background: #f2f2f2;
+  border: 1px dashed #ccc;
+}

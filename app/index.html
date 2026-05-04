@@ -508,19 +508,31 @@
     </section>
 
     <!-- 글쓰기 -->
-    <section class="screen write" id="write">
-      <div class="write-header">
-        <button class="home-back back" data-page="community">‹</button>
-        <h2 class="write-title">글쓰기</h2>
-        <button class="write-upload-btn" id="writeUploadBtn">업로드</button>
+<section class="screen write" id="write">
+  <div class="write-header">
+    <button class="home-back back" data-page="community">‹</button>
+    <h2 class="write-title">글쓰기</h2>
+    <button class="write-upload-btn" id="writeUploadBtn">업로드</button>
+  </div>
+
+  <div class="write-box">
+    <input class="write-title-input" type="text" placeholder="제목을 입력해 주세요">
+
+    <textarea class="write-content-area" placeholder="OneDay 유저들과 자유롭게 얘기해보세요.&#10;#일상 #여유"></textarea>
+
+    <div class="record-upload-box" id="writeImageUploadBox">
+      <img class="record-preview-img" id="writePreviewImg" src="./images/#" alt="선택 이미지">
+
+      <div class="record-upload-icon">
+        <img src="./images/icons_image.png" alt="이미지 업로드 아이콘">
       </div>
 
-      <div class="write-box">
-        <input class="write-title-input" type="text" placeholder="제목을 입력해 주세요">
-        <textarea class="write-content-area" placeholder="OneDay 유저들과 자유롭게 얘기해보세요.&#10;#일상 #여유"></textarea>
-        <button class="rule-btn">커뮤니티 이용규칙 <span>›</span></button>
-      </div>
-    </section>
+      <p>이미지를 업로드 하세요</p>
+    </div>
+
+    <button class="rule-btn">커뮤니티 이용규칙 <span>›</span></button>
+  </div>
+</section>
 
     <!-- 프로필 -->
     <section class="screen" id="profile">
@@ -642,7 +654,8 @@
         </ul>
       </div>
     </div>
-
+<input type="file" id="imageFileInput" accept="image/*" style="display:none;">
+<input type="file" id="cameraFileInput" accept="image/*" capture="environment" style="display:none;">
   </main>
 <script src="./script/script.js"></script>
 </body>
