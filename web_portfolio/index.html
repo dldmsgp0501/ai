@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Creative Portfolio</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7f4ef;
+      color: #222;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    img {
+      width: 100%;
+      display: block;
+    }
+
+    .inner {
+      width: min(1180px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.82);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    }
+
+    .header-inner {
+      height: 78px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: -1px;
+    }
+
+    .logo span {
+      color: #ff4d2e;
+    }
+
+    .gnb {
+      display: flex;
+      align-items: center;
+      gap: 34px;
+      font-size: 14px;
+      font-weight: 700;
+      color: rgba(0, 0, 0, 0.62);
+    }
+
+    .gnb a {
+      position: relative;
+      transition: 0.25s;
+    }
+
+    .gnb a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -8px;
+      width: 0;
+      height: 2px;
+      background: #ff4d2e;
+      transition: 0.25s;
+    }
+
+    .gnb a:hover {
+      color: #111;
+    }
+
+    .gnb a:hover::after {
+      width: 100%;
+    }
+
+    .menu-btn {
+      display: none;
+      width: 42px;
+      height: 42px;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      background: #fff;
+      color: #111;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: 78px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      width: 520px;
+      height: 520px;
+      right: -120px;
+      top: 130px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 180, 130, 0.42), transparent 68%);
+      filter: blur(8px);
+    }
+
+    .hero::after {
+      content: "PORTFOLIO";
+      position: absolute;
+      right: -40px;
+      bottom: 70px;
+      font-size: 118px;
+      font-weight: 900;
+      letter-spacing: -6px;
+      color: rgba(0, 0, 0, 0.04);
+      pointer-events: none;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 70px;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 22px;
+      color: #ff4d2e;
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 42px;
+      height: 2px;
+      background: #ff4d2e;
+    }
+
+    .hero h1 {
+      font-size: clamp(48px, 7vw, 96px);
+      line-height: 0.95;
+      letter-spacing: -5px;
+      margin-bottom: 28px;
+    }
+
+    .hero p {
+      max-width: 560px;
+      color: rgba(0, 0, 0, 0.58);
+      font-size: 18px;
+      line-height: 1.75;
+      margin-bottom: 38px;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 54px;
+      padding: 0 28px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 800;
+      transition: 0.25s;
+    }
+
+    .btn-primary {
+      background: #ff4d2e;
+      color: #fff;
+      box-shadow: 0 18px 36px rgba(255, 77, 46, 0.26);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 24px 44px rgba(255, 77, 46, 0.38);
+    }
+
+    .btn-line {
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      color: #222;
+      background: #fff;
+    }
+
+    .btn-line:hover {
+      border-color: #ff4d2e;
+      color: #ff4d2e;
+    }
+
+    .hero-visual {
+      position: relative;
+      min-height: 560px;
+    }
+
+    .photo-card {
+      position: absolute;
+      border-radius: 28px;
+      overflow: hidden;
+      background: #ffffff;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.12);
+    }
+
+    .photo-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .photo-card.main {
+      width: 74%;
+      right: 0;
+      top: 40px;
+      aspect-ratio: 3 / 4;
+    }
+
+    .photo-card.sub {
+      width: 46%;
+      left: 0;
+      bottom: 50px;
+      aspect-ratio: 1 / 1.18;
+      border: 5px solid ivory;
+    }
+
+    .photo-card .placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #f4ede4, #e7ddd0);
+      color: rgba(0, 0, 0, 0.22);
+      font-size: 20px;
+      font-weight: 900;
+      border: 5px solid ivory;
+    }
+
+    .floating-box {
+      position: absolute;
+      left: 42px;
+      top: 42px;
+      padding: 22px 24px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.78);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+    }
+
+    .floating-box strong {
+      display: block;
+      font-size: 34px;
+      margin-bottom: 4px;
+    }
+
+    .floating-box span {
+      font-size: 13px;
+      color: rgba(0, 0, 0, 0.56);
+    }
+
+    section {
+      padding: 120px 0;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 30px;
+      margin-bottom: 56px;
+    }
+
+    .section-head h2 {
+      font-size: clamp(36px, 5vw, 64px);
+      line-height: 1;
+      letter-spacing: -3px;
+    }
+
+    .section-head p {
+      max-width: 460px;
+      color: rgba(255, 255, 255, 0.6);
+      line-height: 1.7;
+    }
+
+    .about {
+      background: #fff;
+      color: #111;
+    }
+
+    .about .section-head p,
+    .about-text p {
+      color: rgba(0, 0, 0, 0.62);
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 0.85fr 1.15fr;
+      gap: 70px;
+      align-items: center;
+    }
+
+    .about-img {
+      min-height: 520px;
+      border-radius: 30px;
+      background: linear-gradient(135deg, #ececec, #cfcfcf);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(0, 0, 0, 0.28);
+      font-size: 24px;
+      font-weight: 900;
+    }
+
+    .about-text h3 {
+      font-size: 38px;
+      line-height: 1.2;
+      letter-spacing: -1.5px;
+      margin-bottom: 22px;
+    }
+
+    .about-text p {
+      font-size: 17px;
+      line-height: 1.85;
+      margin-bottom: 30px;
+    }
+
+    .portfolio {
+      background: #fffaf5;
+    }
+
+    .filter {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 36px;
+    }
+
+    .filter button {
+      height: 40px;
+      padding: 0 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(0, 0, 0, 0.16);
+      background: #fff;
+      color: rgba(0, 0, 0, 0.68);
+      cursor: pointer;
+      font-weight: 700;
+      transition: 0.25s;
+    }
+
+    .filter button.active,
+    .filter button:hover {
+      background: #ff4d2e;
+      border-color: #ff4d2e;
+      color: #fff;
+    }
+
+    .work-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .work-card {
+      position: relative;
+      border-radius: 26px;
+      overflow: hidden;
+      min-height: 420px;
+      background: #202025;
+      cursor: pointer;
+      isolation: isolate;
+    }
+
+    .work-card:nth-child(2),
+    .work-card:nth-child(5) {
+      transform: translateY(54px);
+    }
+
+    .work-thumb {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, #2b2b33, #16161b);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255, 255, 255, 0.22);
+      font-size: 22px;
+      font-weight: 900;
+      transition: 0.45s;
+      overflow: hidden;
+    }
+
+    .work-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .work-card:hover .work-thumb {
+      transform: scale(1.08);
+      filter: brightness(0.55);
+    }
+
+    .work-info {
+      position: absolute;
+      left: 24px;
+      right: 24px;
+      bottom: 24px;
+      z-index: 2;
+      transform: translateY(18px);
+      opacity: 0;
+      transition: 0.35s;
+    }
+
+    .work-card:hover .work-info {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .work-info span {
+      color: #ff4d2e;
+      font-size: 13px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .work-info h3 {
+      margin-top: 8px;
+      font-size: 26px;
+      letter-spacing: -1px;
+    }
+
+    .services {
+      background: #f3ece3;
+    }
+
+    .service-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+
+    .service-card {
+      padding: 38px;
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: 0.3s;
+    }
+
+    .service-card:hover {
+      transform: translateY(-10px);
+      background: rgba(255, 255, 255, 0.09);
+    }
+
+    .service-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #ff4d2e;
+      font-size: 28px;
+      margin-bottom: 30px;
+    }
+
+    .service-card h3 {
+      font-size: 24px;
+      margin-bottom: 16px;
+    }
+
+    .service-card p {
+      color: rgba(0, 0, 0, 0.58);
+      line-height: 1.75;
+      font-size: 15px;
+    }
+
+    .contact {
+      background: #fff;
+      color: #111;
+      text-align: center;
+    }
+
+    .contact h2 {
+      font-size: clamp(42px, 7vw, 90px);
+      letter-spacing: -5px;
+      line-height: 1;
+      margin-bottom: 26px;
+    }
+
+    .contact p {
+      max-width: 620px;
+      margin: 0 auto 34px;
+      color: rgba(0, 0, 0, 0.62);
+      line-height: 1.75;
+      font-size: 17px;
+    }
+
+    footer {
+      padding: 34px 0;
+      background: #fff;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      color: rgba(0, 0, 0, 0.54);
+      font-size: 14px;
+    }
+
+    .sns {
+      display: flex;
+      gap: 18px;
+      font-weight: 700;
+    }
+
+    .sns a:hover {
+      color: #ff4d2e;
+    }
+
+    .project-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(0, 0, 0, 0.54);
+      opacity: 0;
+      visibility: hidden;
+      transition: 0.3s;
+    }
+
+    .project-modal.show {
+      opacity: 1;
+      visibility: visible;
+      display: flex;
+      pointer-events: auto;
+    }
+
+    .modal-content {
+      position: relative;
+      width: min(520px, 100%);
+      padding: 42px;
+      border-radius: 28px;
+      background: #fffaf5;
+      box-shadow: 0 28px 80px rgba(0, 0, 0, 0.24);
+      transform: translateY(24px);
+      transition: 0.3s;
+    }
+
+    .project-modal.show .modal-content {
+      transform: translateY(0);
+    }
+
+    .modal-close {
+      position: absolute;
+      right: 22px;
+      top: 20px;
+      border: none;
+      background: transparent;
+      font-size: 30px;
+      cursor: pointer;
+      color: #222;
+    }
+
+    .modal-category {
+      display: inline-block;
+      margin-bottom: 14px;
+      color: #ff4d2e;
+      font-size: 13px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .modal-content h3 {
+      margin-bottom: 16px;
+      font-size: 34px;
+      line-height: 1.15;
+      letter-spacing: -1.5px;
+    }
+
+    .modal-content p {
+      margin-bottom: 28px;
+      color: rgba(0, 0, 0, 0.62);
+      line-height: 1.75;
+      font-size: 16px;
+    }
+
+    .modal-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 50px;
+      padding: 0 26px;
+      border-radius: 999px;
+      background: #ff4d2e;
+      color: #fff;
+      font-weight: 800;
+      box-shadow: 0 16px 32px rgba(255, 77, 46, 0.24);
+      transition: 0.25s;
+    }
+
+    .modal-link:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 22px 42px rgba(255, 77, 46, 0.34);
+    }
+
+    .top-btn {
+      position: fixed;
+      right: 28px;
+      bottom: 28px;
+      width: 52px;
+      height: 52px;
+      border: none;
+      border-radius: 50%;
+      background: #ff4d2e;
+      color: #fff;
+      font-size: 24px;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 14px 30px rgba(255, 77, 46, 0.28);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(16px);
+      transition: 0.3s;
+      z-index: 120;
+    }
+
+    .top-btn.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .top-btn:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 18px 38px rgba(255, 77, 46, 0.38);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: 0.7s ease;
+    }
+
+    .reveal.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 900px) {
+      .gnb {
+        position: fixed;
+        right: -100%;
+        top: 78px;
+        width: 74%;
+        height: calc(100vh - 78px);
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 42px;
+        background: #fffaf5;
+        transition: 0.35s;
+      }
+
+      .gnb.active {
+        right: 0;
+      }
+
+      .menu-btn {
+        display: block;
+      }
+
+      .hero-grid,
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+
+      .hero {
+        padding: 130px 0 70px;
+      }
+
+      .hero-visual {
+        min-height: 480px;
+      }
+
+      .section-head {
+        display: block;
+      }
+
+      .section-head h2 {
+        margin-bottom: 18px;
+      }
+
+      .work-grid,
+      .service-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .work-card:nth-child(2),
+      .work-card:nth-child(5) {
+        transform: none;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .inner {
+        width: min(100% - 28px, 1180px);
+      }
+
+      .hero h1,
+      .contact h2 {
+        letter-spacing: -2.5px;
+      }
+
+      .hero p {
+        font-size: 16px;
+      }
+
+      .hero-visual {
+        min-height: 390px;
+      }
+
+      .photo-card.main {
+        width: 78%;
+      }
+
+      .photo-card.sub {
+        width: 52%;
+      }
+
+      section {
+        padding: 86px 0;
+      }
+
+      .about-img {
+        min-height: 360px;
+      }
+
+      .stats,
+      .work-grid,
+      .service-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .work-card {
+        min-height: 360px;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="inner header-inner">
+      <a href="#" class="logo">EUNHYE<span>.</span></a>
+      <nav class="gnb" id="gnb">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#portfolio">Portfolio</a>
+        <a href="#services">Services</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <button class="menu-btn" id="menuBtn" type="button">☰</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="inner hero-grid">
+        <div class="hero-copy reveal">
+          <span class="eyebrow">Creative Designer</span>
+          <h1>Designing bold digital experiences.</h1>
+          <p>
+            감각적인 비주얼과 명확한 구조를 바탕으로 브랜드, 웹사이트, 상세페이지를 설계하는 크리에이티브 포트폴리오입니다.
+          </p>
+          <div class="hero-actions">
+            <a href="#portfolio" class="btn btn-primary">View Portfolio</a>
+            <a href="#contact" class="btn btn-line">Contact Me</a>
+          </div>
+        </div>
+
+        <div class="hero-visual reveal">
+          <div class="photo-card main">
+            <div class="placeholder"><img src="./images/sentia.png" alt="센티아"></div>
+          </div>
+          <div class="photo-card sub">
+            <div class="placeholder"><img src="./images/main_img 1.jpg" alt=""></div>
+          </div>
+          <!-- <div class="floating-box">
+            <strong>3+</strong>
+            <span>Years of Creative Work</span>
+          </div> -->
+        </div>
+      </div>
+    </section>
+
+    <section class="about" id="about">
+      <div class="inner">
+        <div class="section-head reveal">
+          <h2>About Me</h2>
+          
+        </div>
+
+        <div class="about-grid">
+          <div class="about-img reveal">PROFILE IMAGE</div>
+          <div class="about-text reveal">
+            <h3>사용자의 시선이 머무는 구조를 디자인합니다.</h3>
+            <p>
+              단순히 예쁜 화면보다 목적이 분명한 화면을 중요하게 생각합니다. 브랜드의 분위기, 제품의 장점, 사용자의 행동 흐름을 고려해 완성도 높은 웹 경험을 만듭니다.
+            </p>
+            <p>
+              (산대특) UI/UX 웹디자인 교육 수료
+            </p>
+            <p>
+              자격증 · GTQ (그래픽기술자격) 1급 · 운전면허 2종보통
+            </p>
+          </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="portfolio" id="portfolio">
+      <div class="inner">
+        <div class="section-head reveal">
+          <h2>Selected Works</h2>
+          <p>이미지 영역은 현재 대체 박스로 넣어두었습니다. 나중에 직접 작업물 이미지로 교체하면 됩니다.</p>
+        </div>
+
+        <div class="filter reveal">
+          <button type="button" class="active" data-filter="all">All</button>
+          <button type="button" data-filter="web">Web</button>
+          <button type="button" data-filter="detail">Detail Page</button>
+          <button type="button" data-filter="card">Card</button>
+          
+        </div>
+
+        <div class="work-grid">
+          <article class="work-card reveal" data-category="web" data-title="한국한복문화예술협회" data-desc="한국 전통 한복 문화와 예술 콘텐츠를 소개하는 협회 웹사이트입니다. 전통적인 분위기와 현대적인 웹 레이아웃을 조화롭게 구성하여 정보 전달성과 브랜드 아이덴티티를 강화했습니다." data-link="https://dldmsgp0501.github.io/ai/korea/index.html">
+            <div class="work-thumb"><img src="./images/hanbok.jpg" alt=""></div>
+            <div class="work-info">
+              <span>Association Website</span>
+              <h3>한국한복문화예술협회</h3>
+            </div>
+          </article>
+          <article class="work-card reveal" data-category="web" data-title="집반찬연구소 리뉴얼" data-desc="집반찬연구소 쇼핑몰을 리뉴얼한 웹 프로젝트입니다. 사용자 중심의 상품 탐색 구조와 깔끔한 UI 레이아웃을 기반으로 메인 화면과 상품 영역을 재구성했습니다." data-link="https://dldmsgp0501.github.io/ai/shpmall/index3.html">
+            <div class="work-thumb"><img src="./images/banchan.png" alt=""></div>
+            <div class="work-info">
+              <span>Shopping Mall Renewal</span>
+              <h3>집반찬연구소 리뉴얼</h3>
+            </div>
+          </article>
+
+          <article class="work-card reveal" data-category="detail" data-title="빵 상세페이지" data-desc="제품의 식감과 분위기를 감성적으로 전달할 수 있도록 구성한 베이커리 상세페이지 디자인입니다." data-link="./images/bread-detail.jpg">
+            <div class="work-thumb"><img src="./images/bread.jpg" alt=""></div>
+            <div class="work-info">
+              <span>Detail Page</span>
+              <h3>빵 상세페이지</h3>
+            </div>
+          </article>
+
+          <article class="work-card reveal" data-category="detail" data-title="트리트먼트 상세페이지" data-desc="헤어 케어 제품의 특징과 사용 전후 효과를 강조한 트리트먼트 상세페이지 디자인입니다." data-link="./images/treatment-detail.jpg">
+            <div class="work-thumb"><img src="./images/treatment.jpg" alt=""></div>
+            <div class="work-info">
+              <span>Detail Page</span>
+              <h3>트리트먼트 상세페이지</h3>
+            </div>
+          </article>
+
+          <article class="work-card reveal" data-category="detail" data-title="앰플 상세페이지" data-desc="제품의 핵심 성분과 피부 개선 포인트를 중심으로 구성한 앰플 상세페이지 디자인입니다." data-link="./images/ample-detail.jpg">
+            <div class="work-thumb"><img src="./images/sarum.jpg" alt=""></div>
+            <div class="work-info">
+              <span>Detail Page</span>
+              <h3>앰플 상세페이지</h3>
+            </div>
+          </article>
+
+          <article class="work-card reveal" data-category="card" data-title="홍보카드" data-desc="인스타그램, 카카오톡, 기획전 배너 등 다양한 온라인 프로모션 콘텐츠 디자인 작업입니다." data-link="./images/promotion.jpg">
+            <div class="work-thumb">
+              <img src="./images/promotion.jpg" alt="홍보카드">
+            </div>
+            <div class="work-info">
+              <span>Card Design</span>
+              <h3>홍보카드</h3>
+            </div>
+          </article>
+          
+        </div>
+      </div>
+    </section>
+
+    <section class="services" id="services">
+      <div class="inner">
+        <div class="section-head reveal">
+          <h2>Services</h2>
+          
+        </div>
+
+        <div class="service-grid">
+          <div class="service-card reveal">
+            <div class="service-icon">Ps</div>
+            <h3>Photoshop</h3>
+            <p>상세페이지, 배너, 카드뉴스 등 다양한 비주얼 콘텐츠 디자인 작업이 가능합니다.</p>
+          </div>
+
+          <div class="service-card reveal">
+            <div class="service-icon">Fg</div>
+            <h3>Figma</h3>
+            <p>UI/UX 설계 및 와이어프레임, 프로토타입 제작과 디자인 시스템 작업이 가능합니다.</p>
+          </div>
+
+          <div class="service-card reveal">
+            <div class="service-icon">&lt;/&gt;</div>
+            <h3>HTML / CSS</h3>
+            <p>반응형 웹사이트 구조 설계 및 퍼블리싱 작업을 구현할 수 있습니다.</p>
+          </div>
+
+          <div class="service-card reveal">
+            <div class="service-icon">JS</div>
+            <h3>JavaScript</h3>
+            <p>탭, 슬라이드, 인터랙션 등 사용자 경험 중심의 동적인 기능 구현이 가능합니다.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact" id="contact">
+      <div class="inner reveal">
+        <h2>Let’s work together.</h2>
+        <p>포트폴리오, 상세페이지, 브랜드 랜딩페이지 제작에 관심이 있다면 편하게 연락 주세요.</p>
+        <a href="tel:01075689501" class="btn btn-primary">010-7568-9501</a>
+      </div>
+    </section>
+  </main>
+
+  <div class="project-modal" id="projectModal">
+    <div class="modal-content">
+      <button class="modal-close" id="modalClose" type="button" aria-label="팝업 닫기">×</button>
+      <span class="modal-category" id="modalCategory">Category</span>
+      <h3 id="modalTitle">Project Title</h3>
+      <p id="modalDesc">Project description</p>
+      <a href="#" class="modal-link" id="modalLink" target="_blank" rel="noopener">작업물 보러가기</a>
+    </div>
+  </div>
+
+  <button class="top-btn" id="topBtn" type="button" aria-label="맨 위로 이동">↑</button>
+
+  <footer>
+    <div class="inner footer-inner">
+      <p>© 2026 EUNHYE Portfolio. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    const menuBtn = document.getElementById('menuBtn');
+    const gnb = document.getElementById('gnb');
+
+    menuBtn.addEventListener('click', () => {
+      gnb.classList.toggle('active');
+      menuBtn.textContent = gnb.classList.contains('active') ? '×' : '☰';
+    });
+
+    const navLinks = document.querySelectorAll('.gnb a');
+
+    navLinks.forEach((link) => {
+      link.addEventListener('click', () => {
+        gnb.classList.remove('active');
+        menuBtn.textContent = '☰';
+      });
+    });
+
+    const filterBtns = document.querySelectorAll('.filter button');
+    const workCards = document.querySelectorAll('.work-card');
+
+    filterBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach((item) => item.classList.remove('active'));
+        btn.classList.add('active');
+
+        const filterValue = btn.getAttribute('data-filter');
+
+        workCards.forEach((card) => {
+          const category = card.getAttribute('data-category');
+
+          if (filterValue === 'all' || filterValue === category) {
+            card.style.display = 'block';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+
+    const projectModal = document.getElementById('projectModal');
+    const modalClose = document.getElementById('modalClose');
+    const modalCategory = document.getElementById('modalCategory');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalDesc = document.getElementById('modalDesc');
+    const modalLink = document.getElementById('modalLink');
+
+    document.addEventListener('click', (event) => {
+      const card = event.target.closest('.work-card');
+
+      if (!card) return;
+
+      const title = card.dataset.title || card.querySelector('h3').textContent;
+      const category = card.querySelector('.work-info span').textContent;
+      const desc = card.dataset.desc || '작업물 상세 설명입니다.';
+      const link = card.dataset.link || '#';
+
+      modalTitle.textContent = title;
+      modalCategory.textContent = category;
+      modalDesc.textContent = desc;
+      modalLink.href = link;
+      projectModal.classList.add('show');
+    });
+
+    modalClose.addEventListener('click', () => {
+      projectModal.classList.remove('show');
+    });
+
+    projectModal.addEventListener('click', (event) => {
+      if (event.target === projectModal) {
+        projectModal.classList.remove('show');
+      }
+    });
+
+    const topBtn = document.getElementById('topBtn');
+
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 400) {
+        topBtn.classList.add('show');
+      } else {
+        topBtn.classList.remove('show');
+      }
+    });
+
+    topBtn.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+
+    const revealItems = document.querySelectorAll('.reveal');
+
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('show');
+        }
+      });
+    }, {
+      threshold: 0.15
+    });
+
+    revealItems.forEach((item) => {
+      revealObserver.observe(item);
+    });
+  </script>
+</body>
+</html>
